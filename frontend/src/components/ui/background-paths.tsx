@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useEffect } from "react";
 
 interface Point {
   x: number;
@@ -128,9 +128,15 @@ const FloatingPaths = memo(function FloatingPaths({
     },
   };
 
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <svg
+      {isMounted && (
+        <svg
         className="h-full w-full text-slate-950/40 dark:text-white/40"
         fill="none"
         preserveAspectRatio="xMidYMid slice"
@@ -226,6 +232,7 @@ const FloatingPaths = memo(function FloatingPaths({
           ))}
         </g>
       </svg>
+      )}
     </div>
   );
 });

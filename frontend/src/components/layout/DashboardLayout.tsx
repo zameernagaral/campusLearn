@@ -74,7 +74,7 @@ export function DashboardLayout({ children, requiredRole }: DashboardLayoutProps
         />
 
         <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-[1400px] mx-auto animate-fade-in">
+          <div className="max-w-[1400px] mx-auto">
             {children}
           </div>
         </main>

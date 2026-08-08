@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuthStore } from '@/store/authStore';
-import { User, Mail, Briefcase, MapPin, Calendar, Clock, Edit2, LogOut, ArrowLeft, BookOpen, Users } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getInitials } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -56,23 +56,23 @@ export default function FacultyProfilePage() {
               <p className="text-zinc-500 font-medium mb-6">Faculty Member</p>
 
               <div className="flex justify-center gap-3 mb-8">
-                <button className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors text-sm">
-                  <Edit2 size={16} /> Edit Profile
+                <button className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
+                  Edit Profile
                 </button>
               </div>
 
-              <div className="pt-6 border-t border-zinc-100 dark:border-zinc-800 flex flex-col gap-4">
-                <div className="flex items-center gap-3 text-zinc-600 dark:text-zinc-400 text-sm">
-                  <Mail size={16} className="text-zinc-400" />
-                  <span className="truncate">{user.email}</span>
+              <div className="pt-6 border-t border-zinc-100 dark:border-zinc-800 flex flex-col gap-4 text-left">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Email</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-300 truncate">{user.email}</span>
                 </div>
-                <div className="flex items-center gap-3 text-zinc-600 dark:text-zinc-400 text-sm">
-                  <Briefcase size={16} className="text-zinc-400" />
-                  <span>Employee ID: {user.employeeId || 'F2026-042'}</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Employee ID</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-300">{user.employeeId || 'F2026-042'}</span>
                 </div>
-                <div className="flex items-center gap-3 text-zinc-600 dark:text-zinc-400 text-sm">
-                  <MapPin size={16} className="text-zinc-400" />
-                  <span>Faculty Block B, Room 402</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Office</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-300">Faculty Block B, Room 402</span>
                 </div>
               </div>
             </div>
@@ -88,8 +88,8 @@ export default function FacultyProfilePage() {
         >
           {/* Professional Details */}
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
-              <Briefcase size={20} className="text-blue-500" /> Professional Details
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-6">
+              Professional Details
             </h3>
             
             <div className="grid sm:grid-cols-2 gap-6">
@@ -116,33 +116,25 @@ export default function FacultyProfilePage() {
 
           {/* Activity Overview */}
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
-              <Clock size={20} className="text-emerald-500" /> Teaching Overview
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-6">
+              Teaching Overview
             </h3>
             
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center">
-                    <BookOpen size={18} />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-zinc-900 dark:text-white text-sm">Active Courses</p>
-                    <p className="text-xs text-zinc-500 mt-0.5">Currently teaching 3 courses this semester</p>
-                  </div>
+              <div className="flex items-center justify-between p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+                <div>
+                  <p className="font-semibold text-zinc-900 dark:text-white text-base mb-1">Active Courses</p>
+                  <p className="text-sm text-zinc-500">Currently teaching 3 courses this semester</p>
                 </div>
+                <div className="text-2xl font-black text-blue-500">3</div>
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center">
-                    <Users size={18} />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-zinc-900 dark:text-white text-sm">Total Students</p>
-                    <p className="text-xs text-zinc-500 mt-0.5">Managing 150+ students across sections</p>
-                  </div>
+              <div className="flex items-center justify-between p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+                <div>
+                  <p className="font-semibold text-zinc-900 dark:text-white text-base mb-1">Total Students</p>
+                  <p className="text-sm text-zinc-500">Managing 150+ students across sections</p>
                 </div>
+                <div className="text-2xl font-black text-blue-500">150+</div>
               </div>
             </div>
           </div>
@@ -151,9 +143,9 @@ export default function FacultyProfilePage() {
           <div className="mt-8">
             <button 
               onClick={handleLogout}
-              className="w-full py-4 rounded-2xl bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 font-bold flex items-center justify-center gap-2 transition-colors border border-red-100 dark:border-red-500/20"
+              className="w-full py-4 rounded-2xl bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 font-bold flex items-center justify-center transition-colors border border-red-100 dark:border-red-500/20"
             >
-              <LogOut size={18} /> Sign Out of CampusLearn
+              Sign Out of CampusLearn
             </button>
           </div>
 

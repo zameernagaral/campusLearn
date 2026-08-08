@@ -132,11 +132,11 @@ export default function StudentAssignmentsPage() {
 
       {/* Submit Modal */}
       {selectedAssignment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[10vh] pb-8 bg-black/60 backdrop-blur-sm overflow-y-auto">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-lg rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl"
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="w-full max-w-lg rounded-3xl p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl relative"
           >
             <h2 className="text-xl font-bold mb-1 text-zinc-900 dark:text-white">Submit Assignment</h2>
             <p className="text-sm mb-6 text-zinc-500 dark:text-zinc-400">{selectedAssignment.title}</p>
