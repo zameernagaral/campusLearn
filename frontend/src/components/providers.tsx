@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from '@/store/authStore';
 
+import { ThemeProvider } from 'next-themes';
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const checkAuth = useAuthStore(s => s.checkAuth);
 
@@ -12,7 +14,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, [checkAuth]);
 
   return (
-    <>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       {children}
       <Toaster
         position="top-right"
@@ -39,6 +41,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
           },
         }}
       />
-    </>
+    </ThemeProvider>
   );
 }
