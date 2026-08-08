@@ -71,8 +71,14 @@ exports.getCourse = async (req, res, next) => {
 // ─── @access  Private (Faculty)
 exports.createCourse = async (req, res, next) => {
   try {
+    const {
+      title, description, shortDescription, department, semester, credits,
+      year, subjectCode, tags, level, learningOutcomes, prerequisites, language, isPublished
+    } = req.body;
+
     const course = await Course.create({
-      ...req.body,
+      title, description, shortDescription, department, semester, credits,
+      year, subjectCode, tags, level, learningOutcomes, prerequisites, language, isPublished,
       faculty: req.user._id,
       thumbnail: req.file?.path || '',
     });

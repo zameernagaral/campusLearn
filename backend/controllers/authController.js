@@ -212,6 +212,15 @@ exports.updatePassword = async (req, res, next) => {
 // ─── @desc    Logout (client should delete tokens)
 // ─── @route   POST /api/auth/logout
 // ─── @access  Private
-exports.logout = (req, res) => {
-  successResponse(res, 200, 'Logged out successfully.');
+exports.logout = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      user.refreshToken = undefined;
+      await user.save({ validateBeforeSave: false });
+    }
+    successResponse(res, 200, 'Logged out successfully.');
+  } catch (error) {
+    next(error);
+  }
 };

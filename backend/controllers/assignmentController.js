@@ -89,6 +89,12 @@ exports.submitAssignment = async (req, res, next) => {
     const assignment = await Assignment.findById(req.params.id);
     if (!assignment) return errorResponse(res, 404, 'Assignment not found.');
 
+    const Course = require('../models/Course');
+    const course = await Course.findOne({ _id: assignment.course, enrolledStudents: req.user._id });
+    if (!course) {
+      return errorResponse(res, 403, 'You are not enrolled in this course.');
+    }
+
     const isLate = new Date() > new Date(assignment.dueDate);
     if (isLate && !assignment.allowLateSubmission) {
       return errorResponse(res, 400, 'Submission deadline has passed.');
@@ -134,6 +140,11 @@ exports.submitAssignment = async (req, res, next) => {
 // ─── @access  Private (Faculty)
 exports.getSubmissions = async (req, res, next) => {
   try {
+    const assignment = await Assignment.findOne({ _id: req.params.id, faculty: req.user._id });
+    if (!assignment && req.user.role !== 'admin') {
+      return errorResponse(res, 403, 'Not authorized to view these submissions.');
+    }
+
     const submissions = await Submission.find({ assignment: req.params.id })
       .populate('student', 'name email rollNumber avatar')
       .sort({ submittedAt: -1 });

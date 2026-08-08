@@ -56,7 +56,8 @@ router.get('/search', protect, async (req, res, next) => {
       { email: { $regex: q, $options: 'i' } },
     ];
 
-    const users = await User.find(query).select('name email avatar role rollNumber').limit(20);
+    const selectFields = req.user.role === 'student' ? 'name avatar role rollNumber' : 'name email avatar role rollNumber';
+    const users = await User.find(query).select(selectFields).limit(20);
     successResponse(res, 200, 'Search results.', users);
   } catch (error) { next(error); }
 });

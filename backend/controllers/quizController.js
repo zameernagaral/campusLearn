@@ -119,9 +119,21 @@ exports.submitQuiz = async (req, res, next) => {
       attemptNumber: attemptCount + 1,
     });
 
+    let safeCorrectAnswers;
+    if (quiz.showResults) {
+      safeCorrectAnswers = quiz.questions.map(q => {
+        const correctOpt = q.type !== 'short' ? q.options.find(o => o.isCorrect) : null;
+        return {
+          questionId: q._id,
+          correctAnswer: q.type === 'short' ? q.correctAnswer : undefined,
+          correctOptionId: correctOpt ? correctOpt._id : undefined,
+        };
+      });
+    }
+
     successResponse(res, 201, 'Quiz submitted.', {
       result,
-      correctAnswers: quiz.showResults ? quiz.questions : undefined,
+      correctAnswers: safeCorrectAnswers,
     });
   } catch (error) { next(error); }
 };

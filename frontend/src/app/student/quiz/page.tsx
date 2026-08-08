@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, CheckCircle, XCircle, Award, Brain, Play, ChevronRight } from 'lucide-react';
 import type { Quiz, QuizQuestion } from '@/types';
 import toast from 'react-hot-toast';
+import confetti from 'canvas-confetti';
 
 type QuizPhase = 'list' | 'taking' | 'result';
 
@@ -45,15 +46,33 @@ export default function StudentQuizPage() {
         selectedOption: answers[i] || null,
       }));
       const { data } = await quizAPI.submit(activeQuiz._id, { answers: answerPayload });
-      setResult(data.data);
+      
+      const backendResult = data.data.result;
+      const passed = backendResult.passed;
+      
+      setResult({
+        score: backendResult.score,
+        total: backendResult.totalMarks,
+        passed: passed
+      });
       setPhase('result');
+      
+      if (passed) {
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }
     } catch {
       // Mock result if API fails
       const total = activeQuiz.questions.reduce((s, q) => s + q.marks, 0);
       const answered = Object.keys(answers).length;
       const score = Math.floor((answered / activeQuiz.questions.length) * total * 0.7);
-      setResult({ score, total, passed: score >= activeQuiz.passingMarks });
+      const passed = score >= activeQuiz.passingMarks;
+      setResult({ score, total, passed });
       setPhase('result');
+      if (passed) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
     } finally { setIsSubmitting(false); }
   };
 
