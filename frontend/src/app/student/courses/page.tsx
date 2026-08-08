@@ -15,10 +15,6 @@ export default function StudentCoursesPage() {
   const [levelFilter, setLevelFilter] = useState('');
   const [tab, setTab] = useState<'enrolled' | 'browse'>('enrolled');
 
-  useEffect(() => {
-    fetchCourses();
-  }, [search, levelFilter, tab]);
-
   const fetchCourses = async () => {
     setIsLoading(true);
     try {
@@ -29,6 +25,10 @@ export default function StudentCoursesPage() {
     } catch { toast.error('Failed to load courses'); }
     finally { setIsLoading(false); }
   };
+
+  useEffect(() => {
+    fetchCourses();
+  }, [search, levelFilter, tab]);
 
   const handleEnroll = async (id: string) => {
     try {

@@ -18,10 +18,6 @@ export default function FacultyDashboard() {
   const [stats, setStats] = useState({ totalStudents: 0, pendingGrading: 0, totalCourses: 0, pendingAssignments: 0 });
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const [coursesRes, assignmentsRes] = await Promise.allSettled([
@@ -44,6 +40,10 @@ export default function FacultyDashboard() {
     finally { setIsLoading(false); }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const attendanceData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
     datasets: [
@@ -63,7 +63,7 @@ export default function FacultyDashboard() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>
-            Welcome, {user?.name?.split(' ')[0]} 👋
+            Welcome, {user?.name?.split(' ')[0]}!
           </h1>
           <p className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>
             {user?.designation} · {formatDate(new Date().toISOString())}

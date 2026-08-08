@@ -21,10 +21,6 @@ export default function AdminUsersPage() {
 
   const LIMIT = 15;
 
-  useEffect(() => {
-    fetchUsers();
-  }, [search, roleFilter, page]);
-
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
@@ -34,6 +30,10 @@ export default function AdminUsersPage() {
     } catch { toast.error('Failed to load users'); }
     finally { setIsLoading(false); }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, [search, roleFilter, page]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this user?')) return;

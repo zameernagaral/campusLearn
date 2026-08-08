@@ -25,19 +25,6 @@ export default function StudentQuizPage() {
     quizAPI.getAll().then(res => setQuizzes(res.data.data || [])).catch(() => {}).finally(() => setIsLoading(false));
   }, []);
 
-  // Timer
-  useEffect(() => {
-    if (phase !== 'taking' || !activeQuiz) return;
-    setTimeLeft(activeQuiz.duration * 60);
-    const interval = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) { clearInterval(interval); handleSubmitQuiz(); return 0; }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [phase, activeQuiz]);
-
   const startQuiz = (quiz: Quiz) => {
     setActiveQuiz(quiz);
     setCurrentQuestion(0);
@@ -69,6 +56,18 @@ export default function StudentQuizPage() {
       setPhase('result');
     } finally { setIsSubmitting(false); }
   };
+
+  useEffect(() => {
+    if (phase !== 'taking' || !activeQuiz) return;
+    setTimeLeft(activeQuiz.duration * 60);
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) { clearInterval(interval); handleSubmitQuiz(); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [phase, activeQuiz]);
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);

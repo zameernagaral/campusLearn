@@ -20,10 +20,6 @@ export default function StudentDashboard() {
   const [pendingAssignments, setPendingAssignments] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const [coursesRes, attendanceRes, assignmentsRes, announcementsRes] = await Promise.allSettled([
@@ -46,6 +42,10 @@ export default function StudentDashboard() {
     } catch (_) {}
     finally { setIsLoading(false); }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // Sample chart data
   const weeklyProgress = {
@@ -76,7 +76,7 @@ export default function StudentDashboard() {
         <div className="relative z-10 flex items-center justify-between">
           <div>
             <motion.p className="text-white/80 text-sm mb-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'} 👋
+              Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}
             </motion.p>
             <motion.h1 className="text-2xl font-bold text-white" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
               {user?.name?.split(' ')[0]}, ready to learn?
@@ -114,7 +114,7 @@ export default function StudentDashboard() {
               label="Enrolled Courses"
               value={courses.length || user?.enrolledCourses?.length || 0}
               icon={<BookOpen size={20} />}
-              gradient="linear-gradient(135deg, #6366f1, #8b5cf6)"
+              gradient="linear-gradient(135deg, #f97316, #ea580c)"
               change="+2 this semester"
               changeType="up"
               delay={0}
@@ -123,7 +123,7 @@ export default function StudentDashboard() {
               label="Attendance"
               value={`${avgAttendance}%`}
               icon={<UserCheck size={20} />}
-              gradient="linear-gradient(135deg, #10b981, #06b6d4)"
+              gradient="linear-gradient(135deg, #52525b, #3f3f46)"
               change={avgAttendance >= 75 ? 'Above minimum' : 'Below threshold'}
               changeType={avgAttendance >= 75 ? 'up' : 'down'}
               delay={0.1}
@@ -132,7 +132,7 @@ export default function StudentDashboard() {
               label="Pending Assignments"
               value={pendingAssignments}
               icon={<ClipboardList size={20} />}
-              gradient="linear-gradient(135deg, #f59e0b, #ef4444)"
+              gradient="linear-gradient(135deg, #f97316, #f59e0b)"
               change="Due this week"
               changeType="neutral"
               delay={0.2}
@@ -141,8 +141,8 @@ export default function StudentDashboard() {
               label="Points Earned"
               value={user?.points || 0}
               icon={<Trophy size={20} />}
-              gradient="linear-gradient(135deg, #8b5cf6, #ec4899)"
-              change={`🔥 ${user?.streak || 0} day streak`}
+              gradient="linear-gradient(135deg, #3f3f46, #27272a)"
+              change={`${user?.streak || 0} day streak`}
               changeType="up"
               delay={0.3}
             />
@@ -188,7 +188,7 @@ export default function StudentDashboard() {
           ) : (
             <div className="grid sm:grid-cols-2 gap-4">
               {courses.slice(0, 4).map((course, i) => (
-                <CourseCard key={course._id} course={course} showProgress progress={Math.floor(Math.random() * 60) + 20} delay={i * 0.1} />
+                <CourseCard key={course._id} course={course} showProgress progress={course.title ? (course.title.length * 10) % 100 : 50} delay={i * 0.1} />
               ))}
             </div>
           )}
@@ -211,7 +211,7 @@ export default function StudentDashboard() {
                 {announcements.slice(0, 4).map(a => (
                   <div key={a._id} className="p-3 rounded-xl" style={{ background: 'var(--surface)' }}>
                     <div className="flex items-start gap-2">
-                      <span className="text-base mt-0.5">{a.priority === 'urgent' ? '🚨' : a.priority === 'high' ? '📢' : '📌'}</span>
+                      <span className="text-base mt-0.5">{a.priority === 'urgent' ? '!' : a.priority === 'high' ? '*' : '-'}</span>
                       <div>
                         <p className="text-xs font-semibold" style={{ color: 'var(--foreground)' }}>{a.title}</p>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>{formatDate(a.createdAt)}</p>
@@ -230,7 +230,7 @@ export default function StudentDashboard() {
               <div className="flex flex-wrap gap-2">
                 {user.badges.map(badge => (
                   <span key={badge} className="px-3 py-1.5 rounded-xl text-sm" style={{ background: 'var(--surface-2)' }} title={badge}>
-                    {BADGE_ICONS[badge] || '🏅'} <span className="text-xs capitalize">{badge.replace(/_/g, ' ')}</span>
+                    <span className="text-xs capitalize">{badge.replace(/_/g, ' ')}</span>
                   </span>
                 ))}
               </div>

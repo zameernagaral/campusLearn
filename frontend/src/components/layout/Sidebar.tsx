@@ -100,8 +100,8 @@ export function Sidebar({ isOpen, onClose, role }: SidebarProps) {
     >
       {/* Header */}
       <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: 'var(--border)' }}>
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl gradient-primary flex items-center justify-center">
+        <Link href={`/${role}/dashboard`} className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-xl bg-orange-500 flex items-center justify-center">
             <GraduationCap size={16} className="text-white" />
           </div>
           <div>

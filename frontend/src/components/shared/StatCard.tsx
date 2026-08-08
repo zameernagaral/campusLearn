@@ -23,11 +23,7 @@ export function StatCard({ label, value, change, changeType = 'neutral', icon, i
       transition={{ duration: 0.4, delay }}
       className="stat-card"
     >
-      {/* Gradient orb */}
-      <div
-        className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -translate-y-6 translate-x-6"
-        style={{ background: gradient || 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
-      />
+      {/* No orb */}
 
       <div className="flex items-start justify-between relative z-10">
         <div>
@@ -54,8 +50,8 @@ export function StatCard({ label, value, change, changeType = 'neutral', icon, i
           )}
         </div>
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center text-white flex-shrink-0"
-          style={{ background: iconBg || gradient || 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
+          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: 'var(--surface-2)', color: 'var(--foreground)' }}
         >
           {icon}
         </div>

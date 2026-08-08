@@ -22,12 +22,12 @@ const LEVEL_COLORS = {
 };
 
 const THUMBNAIL_GRADIENTS = [
-  'linear-gradient(135deg, #6366f1, #8b5cf6)',
-  'linear-gradient(135deg, #06b6d4, #6366f1)',
-  'linear-gradient(135deg, #f59e0b, #ef4444)',
-  'linear-gradient(135deg, #10b981, #06b6d4)',
-  'linear-gradient(135deg, #ec4899, #8b5cf6)',
-  'linear-gradient(135deg, #f97316, #eab308)',
+  'linear-gradient(135deg, #f97316, #ea580c)',
+  'linear-gradient(135deg, #f97316, #f59e0b)',
+  'linear-gradient(135deg, #ea580c, #c2410c)',
+  'linear-gradient(135deg, #3f3f46, #27272a)',
+  'linear-gradient(135deg, #52525b, #3f3f46)',
+  'linear-gradient(135deg, #71717a, #52525b)',
 ];
 
 export function CourseCard({ course, showProgress, progress = 0, showEnroll, onEnroll, delay = 0 }: CourseCardProps) {

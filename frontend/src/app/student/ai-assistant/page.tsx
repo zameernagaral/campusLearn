@@ -175,7 +175,7 @@ export default function AIAssistantPage() {
                   <Sparkles size={36} className="text-white" />
                 </motion.div>
                 <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
-                  Hi {user?.name?.split(' ')[0]}! 👋
+                  Hi {user?.name?.split(' ')[0]}!
                 </h3>
                 <p className="text-sm" style={{ color: 'var(--muted)' }}>
                   I&apos;m your AI study assistant. Ask me anything about your courses, concepts, or exam preparation.
