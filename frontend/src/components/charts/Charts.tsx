@@ -19,7 +19,7 @@ const DEFAULT_OPTIONS = {
     legend: {
       labels: {
         font: { family: 'Inter, sans-serif', size: 12 },
-        color: 'var(--muted)',
+        color: '#94a3b8', // slate-400
         boxWidth: 12,
         padding: 16,
       },
@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS = {
       titleColor: '#f1f5f9',
       bodyColor: '#94a3b8',
       padding: 12,
-      borderColor: 'rgba(99,102,241,0.3)',
+      borderColor: 'rgba(249,115,22,0.3)', // orange-500
       borderWidth: 1,
       cornerRadius: 8,
       displayColors: true,
@@ -38,11 +38,11 @@ const DEFAULT_OPTIONS = {
   scales: {
     x: {
       grid: { color: 'rgba(148,163,184,0.08)' },
-      ticks: { color: 'var(--muted)', font: { family: 'Inter, sans-serif', size: 11 } },
+      ticks: { color: '#94a3b8', font: { family: 'Inter, sans-serif', size: 11 } },
     },
     y: {
       grid: { color: 'rgba(148,163,184,0.08)' },
-      ticks: { color: 'var(--muted)', font: { family: 'Inter, sans-serif', size: 11 } },
+      ticks: { color: '#94a3b8', font: { family: 'Inter, sans-serif', size: 11 } },
     },
   },
 };
@@ -141,7 +141,7 @@ export function PieChart({ labels, data, colors, height = 250 }: PieChartProps) 
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom' as const, labels: { font: { family: 'Inter' }, color: 'var(--muted)', padding: 16 } },
+      legend: { position: 'bottom' as const, labels: { font: { family: 'Inter' }, color: '#94a3b8', padding: 16 } },
       tooltip: DEFAULT_OPTIONS.plugins.tooltip,
     },
   };
@@ -173,7 +173,7 @@ export function DoughnutChart({ labels, data, colors, height = 250 }: PieChartPr
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom' as const, labels: { font: { family: 'Inter' }, color: 'var(--muted)', padding: 16 } },
+      legend: { position: 'bottom' as const, labels: { font: { family: 'Inter' }, color: '#94a3b8', padding: 16 } },
       tooltip: DEFAULT_OPTIONS.plugins.tooltip,
     },
   };

@@ -12,7 +12,6 @@ import type { User, Notification } from '@/types';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { authAPI } from '@/lib/api';
-import ActionSearchBar from '@/components/ui/action-search-bar';
 
 interface DashboardNavbarProps {
   user: User;
@@ -96,8 +95,23 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
       </button>
 
       {/* Search */}
-      <div className="flex-1 max-w-[480px] relative hidden md:flex items-center">
-        <ActionSearchBar />
+      <div className="flex-1 max-w-md relative hidden md:block">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+        <input
+          type="text"
+          placeholder="Search courses, assignments..."
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          className="w-full pl-9 pr-4 py-2 text-sm rounded-xl transition-all"
+          style={{
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            color: 'var(--foreground)',
+            outline: 'none',
+          }}
+          onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+          onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
+        />
       </div>
 
       <div className="flex items-center gap-2 ml-auto">

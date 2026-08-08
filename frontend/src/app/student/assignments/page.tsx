@@ -16,6 +16,7 @@ export default function StudentAssignmentsPage() {
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [content, setContent] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     assignmentAPI.getAll().then(res => {
@@ -135,29 +136,35 @@ export default function StudentAssignmentsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-lg rounded-3xl p-6"
-            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
+            className="w-full max-w-lg rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl"
           >
-            <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--foreground)' }}>Submit Assignment</h2>
-            <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>{selectedAssignment.title}</p>
+            <h2 className="text-xl font-bold mb-1 text-zinc-900 dark:text-white">Submit Assignment</h2>
+            <p className="text-sm mb-6 text-zinc-500 dark:text-zinc-400">{selectedAssignment.title}</p>
 
             <textarea
               value={content}
               onChange={e => setContent(e.target.value)}
               placeholder="Write your answer or describe your submitted work here..."
-              rows={5}
-              className="w-full p-3 rounded-xl text-sm resize-none outline-none mb-4"
-              style={{ background: 'var(--surface)', border: '1.5px solid var(--border)', color: 'var(--foreground)' }}
+              rows={4}
+              className="w-full p-4 rounded-2xl text-sm resize-none outline-none mb-4 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all"
             />
-
-            <p className="text-xs mb-4" style={{ color: 'var(--muted)' }}>
-              💡 You can also upload files. For now, paste your code or answer in the text area.
-            </p>
+            
+            <div className={`mb-4 p-6 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:border-orange-500/50 ${file ? 'border-orange-500 bg-orange-500/5' : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950'}`}>
+              <Upload size={20} style={{ color: file ? '#f97316' : 'var(--muted)' }} />
+              <p className="text-sm font-medium" style={{ color: file ? '#f97316' : 'var(--foreground)' }}>
+                {file ? file.name : 'Upload a file'}
+              </p>
+              {!file && <p className="text-xs" style={{ color: 'var(--muted)' }}>PDF, DOCX, ZIP (Max 10MB)</p>}
+              <input type="file" className="hidden" id="file-upload" onChange={e => setFile(e.target.files?.[0] || null)} />
+              <label htmlFor="file-upload" className="mt-2 btn btn-secondary text-xs px-3 py-1.5 cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-700">
+                {file ? 'Change File' : 'Choose File'}
+              </label>
+            </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setSelectedAssignment(null)} className="btn btn-secondary flex-1 text-sm">Cancel</button>
-              <button onClick={handleSubmit} disabled={submitting || !content.trim()} className="btn btn-primary flex-1 text-sm">
-                {submitting ? <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Submitting...</span> : 'Submit Assignment'}
+              <button onClick={() => { setSelectedAssignment(null); setFile(null); setContent(''); }} className="btn btn-secondary flex-1 text-sm">Cancel</button>
+              <button onClick={handleSubmit} disabled={submitting || (!content.trim() && !file)} className="btn btn-primary flex-1 text-sm bg-orange-500 hover:bg-orange-600 text-white border-0 disabled:opacity-50">
+                {submitting ? <span className="flex items-center gap-2 justify-center"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Submitting...</span> : 'Submit Assignment'}
               </button>
             </div>
           </motion.div>
