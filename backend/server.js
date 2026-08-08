@@ -15,6 +15,8 @@ connectDB();
 
 const app = express();
 
+// Trust Render/proxy headers (required for rate limiting behind a reverse proxy)
+app.set('trust proxy', 1);
 // ─── Security Middleware ──────────────────────────────────────────────────────
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
