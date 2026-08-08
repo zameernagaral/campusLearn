@@ -20,23 +20,37 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+
     const allowedOrigins = [
       'http://localhost:3000',
-      process.env.CLIENT_URL
+      process.env.CLIENT_URL,
     ].filter(Boolean);
-    
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+
+    // Allow all vercel.app preview/production URLs
+    const isVercel = origin.endsWith('.vercel.app');
+    // Allow all onrender.com URLs
+    const isRender = origin.endsWith('.onrender.com');
+
+    if (allowedOrigins.includes(origin) || isVercel || isRender) {
       callback(null, true);
     } else {
+      console.error('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+// Handle all OPTIONS preflight requests explicitly
+app.options('*', cors(corsOptions));
 
 // ─── General Middleware ───────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
