@@ -133,9 +133,6 @@ function HeroSection() {
               <Link href="/register" className="btn btn-primary px-7 py-3 text-base hover:scale-105 active:scale-95 transition-transform duration-200">
                 Start Free Today <ArrowRight size={16} />
               </Link>
-              <a href="#courses" className="btn btn-secondary px-7 py-3 text-base hover:scale-105 active:scale-95 transition-transform duration-200">
-                <Play size={16} className="text-zinc-900 dark:text-white" /> Watch Demo
-              </a>
             </motion.div>
             
             <div className="relative z-50">

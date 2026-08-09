@@ -99,7 +99,7 @@ export default function RegisterPage() {
             </div>
 
             <h2 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2 tracking-tight">Create an account</h2>
-            <p className="text-zinc-500 dark:text-zinc-400 mb-8">Enter your details to get started.</p>
+            <p className="text-zinc-500 dark:text-zinc-400 mb-8">Please provide your personal and academic details to set up your profile.</p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               
@@ -147,7 +147,7 @@ export default function RegisterPage() {
                     <Hash size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-orange-500 transition-colors" />
                     <input 
                       {...register('rollNumber')} 
-                      placeholder="Roll Number" 
+                      placeholder="Roll Number (e.g. CS21001)" 
                       className="w-full pl-10 pr-4 py-3 rounded-xl text-sm bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:bg-white dark:focus:bg-zinc-900 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all" 
                     />
                   </div>

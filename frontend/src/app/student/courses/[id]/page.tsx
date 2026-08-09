@@ -6,7 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { courseAPI } from '@/lib/api';
 import type { Course } from '@/types';
 import toast from 'react-hot-toast';
-import { ArrowLeft, BookOpen, Clock, Users, Award, PlayCircle } from 'lucide-react';
+import { ArrowLeft, BookOpen, Clock, Users, Award, PlayCircle, FileText, Download } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -127,6 +127,39 @@ export default function CourseDetailsPage() {
                   </div>
                   <button className="text-sm font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
                     Start
+                  </button>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Course Materials & Notes Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+          >
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
+              <FileText className="text-orange-500" size={24} /> 
+              Course Materials & Notes
+            </h2>
+            <div className="space-y-3">
+              {[1, 2].map((noteIndex) => (
+                <div key={noteIndex} className="p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-between group hover:border-orange-500/30 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+                      <FileText size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">
+                        Chapter {noteIndex} Summary.pdf
+                      </h4>
+                      <p className="text-xs font-medium text-zinc-500 mt-0.5">2.4 MB • PDF Document</p>
+                    </div>
+                  </div>
+                  <button className="flex items-center gap-2 text-sm font-semibold text-orange-500 bg-orange-50 dark:bg-orange-500/10 hover:bg-orange-100 dark:hover:bg-orange-500/20 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+                    <Download size={16} /> Download
                   </button>
                 </div>
               ))}

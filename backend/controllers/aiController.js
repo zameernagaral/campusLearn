@@ -1,9 +1,9 @@
-const OpenAI = require('openai');
+const { GoogleGenAI } = require('@google/genai');
 const { successResponse, errorResponse } = require('../utils/response');
 
-let openai;
-if (process.env.OPENAI_API_KEY) {
-  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+let ai;
+if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your-gemini-api-key-here') {
+  ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 }
 
 // ─── @desc    Chat with AI Study Assistant
@@ -25,14 +25,8 @@ Be concise, encouraging, and educational. Use examples and analogies when helpfu
 Format your responses with clear structure using markdown when appropriate.
 Student name: ${req.user.name}, Role: ${req.user.role}`;
 
-    const messages = [
-      { role: 'system', content: systemPrompt },
-      ...history.slice(-10).map(h => ({ role: h.role, content: h.content })),
-      { role: 'user', content: message },
-    ];
-
-    if (!openai) {
-      // Fallback mock responses when OpenAI is not configured
+    if (!ai) {
+      // Fallback mock responses when Gemini is not configured
       const mockResponses = [
         `Great question about "${message.substring(0, 50)}..."! Let me explain this concept step by step...`,
         `Here's a clear explanation: This topic involves understanding the fundamental principles. Let me break it down for you...`,
@@ -42,18 +36,27 @@ Student name: ${req.user.name}, Role: ${req.user.role}`;
       return successResponse(res, 200, 'AI response generated.', { reply, isDemo: true });
     }
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages,
-      max_tokens: 1000,
-      temperature: 0.7,
+    // Map history to Gemini format
+    const contents = history.slice(-10).map(h => ({
+      role: h.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: h.content }]
+    }));
+    contents.push({ role: 'user', parts: [{ text: message }] });
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents,
+      config: {
+        systemInstruction: systemPrompt,
+        temperature: 0.7,
+      }
     });
 
-    const reply = response.choices[0].message.content;
+    const reply = response.text;
     successResponse(res, 200, 'AI response generated.', { reply });
   } catch (error) {
     // Graceful fallback
-    if (error.code === 'insufficient_quota' || error.status === 429) {
+    if (error.status === 429) {
       return errorResponse(res, 429, 'AI service is temporarily unavailable. Please try again later.');
     }
     next(error);
@@ -67,7 +70,7 @@ exports.generateQuiz = async (req, res, next) => {
   try {
     const { topic, numQuestions = 5, difficulty = 'medium', type = 'mcq' } = req.body;
 
-    if (!openai) {
+    if (!ai) {
       return errorResponse(res, 503, 'AI service not configured.');
     }
 
@@ -82,14 +85,16 @@ Return a JSON array with this structure:
 }]
 Return only valid JSON, no markdown.`;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 2000,
-      temperature: 0.7,
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        temperature: 0.7,
+      }
     });
 
-    const questions = JSON.parse(response.choices[0].message.content);
+    const questions = JSON.parse(response.text);
     successResponse(res, 200, 'Questions generated.', questions);
   } catch (error) {
     next(error);
@@ -104,18 +109,20 @@ exports.summarize = async (req, res, next) => {
     const { text, length = 'medium' } = req.body;
     if (!text) return errorResponse(res, 400, 'Text is required.');
 
-    if (!openai) return errorResponse(res, 503, 'AI service not configured.');
+    if (!ai) return errorResponse(res, 503, 'AI service not configured.');
 
     const wordLimit = length === 'short' ? 100 : length === 'long' ? 400 : 200;
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [{
-        role: 'user',
-        content: `Summarize the following text in approximately ${wordLimit} words, preserving key concepts:\n\n${text}`,
-      }],
-      max_tokens: 600,
+    
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: `Summarize the following text in approximately ${wordLimit} words, preserving key concepts:\n\n${text}`,
+      config: {
+        temperature: 0.7,
+      }
     });
 
-    successResponse(res, 200, 'Summary generated.', { summary: response.choices[0].message.content });
-  } catch (error) { next(error); }
+    successResponse(res, 200, 'Summary generated.', { summary: response.text });
+  } catch (error) { 
+    next(error); 
+  }
 };

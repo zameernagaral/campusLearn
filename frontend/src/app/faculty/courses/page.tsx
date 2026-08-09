@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { courseAPI } from '@/lib/api';
 import type { Course } from '@/types';
@@ -101,9 +102,9 @@ export default function FacultyCoursesPage() {
               </div>
 
               <div className="flex items-center gap-3 mt-auto">
-                <button className="w-full py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
+                <Link href={`/faculty/courses/${course._id}`} className="w-full py-3 text-center bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
                   Manage Course
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}
