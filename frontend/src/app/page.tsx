@@ -52,11 +52,8 @@ function LandingNavbar() {
 
         {/* CTA buttons */}
         <div className="hidden md:flex items-center gap-3">
-          <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-orange-500 dark:text-zinc-300 transition-colors px-4 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">
-            Sign In
-          </Link>
-          <Link href="/register" className="btn btn-primary text-sm px-5 py-2">
-            Get Started <ArrowRight size={14} />
+          <Link href="/login" className="btn btn-primary text-sm px-5 py-2">
+            Sign In <ArrowRight size={14} />
           </Link>
         </div>
 
@@ -82,8 +79,7 @@ function LandingNavbar() {
                 {item}
               </a>
             ))}
-            <Link href="/login" className="block text-zinc-600 dark:text-zinc-300 hover:text-orange-500 py-2 text-sm">Sign In</Link>
-            <Link href="/register" className="btn btn-primary w-full mt-2 text-sm">Get Started</Link>
+            <Link href="/login" className="btn btn-primary w-full mt-2 text-sm">Sign In</Link>
           </div>
         </motion.div>
       )}
@@ -130,7 +126,7 @@ function HeroSection() {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               className="flex flex-wrap gap-4 mb-12"
             >
-              <Link href="/register" className="btn btn-primary px-7 py-3 text-base hover:scale-105 active:scale-95 transition-transform duration-200">
+              <Link href="/login" className="btn btn-primary px-7 py-3 text-base hover:scale-105 active:scale-95 transition-transform duration-200">
                 Start Free Today <ArrowRight size={16} />
               </Link>
             </motion.div>
@@ -445,11 +441,8 @@ function CTASection() {
             Join CampusLearn today and experience the future of college education.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/register" className="btn btn-primary px-8 py-3.5 text-base">
-              Get Started Free <ArrowRight size={16} />
-            </Link>
-            <Link href="/login" className="btn btn-secondary text-sm px-8 py-3.5">
-              Sign In
+            <Link href="/login" className="btn btn-primary px-8 py-3.5 text-base">
+              Get Started <ArrowRight size={16} />
             </Link>
           </div>
         </motion.div>
