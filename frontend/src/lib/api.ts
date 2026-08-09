@@ -159,6 +159,7 @@ export const certificateAPI = {
 export const adminAPI = {
   getStats: () => api.get('/admin/stats'),
   getUsers: (params?: Record<string, unknown>) => api.get('/admin/users', { params }),
+  bulkCreateUsers: (users: unknown[]) => api.post('/admin/users/bulk', users),
   updateUser: (id: string, data: Record<string, unknown>) => api.put(`/admin/users/${id}`, data),
   deleteUser: (id: string) => api.delete(`/admin/users/${id}`),
   getDepartments: () => api.get('/admin/departments'),

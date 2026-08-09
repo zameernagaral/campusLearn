@@ -125,6 +125,39 @@ exports.deleteUser = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+// ─── @desc    Bulk create users
+// ─── @route   POST /api/admin/users/bulk
+// ─── @access  Private (Admin)
+exports.bulkCreateUsers = async (req, res, next) => {
+  try {
+    const users = req.body;
+    if (!users || !Array.isArray(users)) {
+      return errorResponse(res, 400, 'Invalid users data.');
+    }
+
+    const bcrypt = require('bcryptjs');
+    const salt = await bcrypt.genSalt(12);
+    const defaultPasswordHash = await bcrypt.hash('CampusLearn@123', salt);
+
+    const processedUsers = users.map(user => ({
+      ...user,
+      password: defaultPasswordHash,
+      role: user.role ? user.role.toLowerCase() : 'student',
+      isEmailVerified: true,
+      isActive: true,
+    }));
+
+    const result = await User.insertMany(processedUsers, { ordered: false });
+    successResponse(res, 201, `Successfully created ${result.length} users.`);
+  } catch (error) {
+    if (error.code === 11000) {
+      const insertedCount = error.insertedDocs ? error.insertedDocs.length : 0;
+      return successResponse(res, 207, `Created ${insertedCount} users. Skipped duplicates.`);
+    }
+    next(error);
+  }
+};
+
 // ─── @desc    Manage departments
 // ─── @route   POST /api/admin/departments
 // ─── @access  Private (Admin)

@@ -52,7 +52,7 @@ exports.getCourse = async (req, res, next) => {
       .populate('department', 'name code')
       .populate({
         path: 'modules',
-        populate: { path: 'lessons', select: 'title type duration isFree isPublished order' },
+        populate: { path: 'lessons', select: 'title type duration isFree isPublished order documentUrl documentName videoUrl' },
       });
 
     if (!course) return errorResponse(res, 404, 'Course not found.');

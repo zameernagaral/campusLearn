@@ -3,32 +3,69 @@
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import { Upload, X, FileText, File } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { moduleAPI } from '@/lib/api';
+import { moduleAPI, courseAPI } from '@/lib/api';
+import type { Course } from '@/types';
 
 export default function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const unwrappedParams = use(params);
+  const courseId = unwrappedParams.id;
+
+  const [course, setCourse] = useState<Course | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
+  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [uploadFile, setUploadFile] = useState<globalThis.File | null>(null);
   const [uploadTitle, setUploadTitle] = useState('');
   const [isUploading, setIsUploading] = useState(false);
 
+  const [showAddModuleModal, setShowAddModuleModal] = useState(false);
+  const [moduleTitle, setModuleTitle] = useState('');
+  const [isCreatingModule, setIsCreatingModule] = useState(false);
+
+  const fetchCourse = async () => {
+    try {
+      const { data } = await courseAPI.getOne(courseId);
+      setCourse(data.data);
+    } catch (error) {
+      toast.error('Failed to load course details');
+      router.push('/faculty/courses');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (courseId) fetchCourse();
+  }, [courseId, router]);
+
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!uploadFile) return toast.error('Please select a PDF file.');
+    if (!selectedModuleId) return toast.error('Please select a module.');
+
     setIsUploading(true);
     try {
-      // In a real integration, we'd use FormData with moduleAPI.createDocumentLesson
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const formData = new FormData();
+      formData.append('title', uploadTitle);
+      formData.append('document', uploadFile);
+      formData.append('module', selectedModuleId);
+      formData.append('course', courseId);
+      formData.append('duration', '0');
+      formData.append('isPublished', 'true');
+
+      await moduleAPI.createDocumentLesson(formData);
+      
       toast.success('Notes uploaded successfully!');
       setShowUploadModal(false);
       setUploadFile(null);
       setUploadTitle('');
+      fetchCourse();
     } catch {
       toast.error('Failed to upload notes.');
     } finally {
@@ -36,22 +73,40 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
     }
   };
 
-  // Mock data for the specific course
-  const course = {
-    id: unwrappedParams.id,
-    title: 'Machine Learning Fundamentals',
-    subjectCode: 'CS601',
-    credits: 4,
-    enrolled: 45,
-    status: 'PUBLISHED',
-    description: 'Learn Machine Learning from scratch with hands-on projects. We cover regression, classification, neural networks, and more.',
+  const handleCreateModule = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!moduleTitle.trim()) return toast.error('Please enter a module title.');
+
+    setIsCreatingModule(true);
+    try {
+      await moduleAPI.create({
+        title: moduleTitle,
+        course: courseId,
+        order: (course?.modules?.length || 0) + 1,
+      });
+
+      toast.success('Module created successfully!');
+      setShowAddModuleModal(false);
+      setModuleTitle('');
+      fetchCourse();
+    } catch {
+      toast.error('Failed to create module.');
+    } finally {
+      setIsCreatingModule(false);
+    }
   };
 
-  const sections = [
-    { title: 'Week 1: Introduction to ML', modules: 3 },
-    { title: 'Week 2: Linear Regression', modules: 4 },
-    { title: 'Week 3: Neural Networks', modules: 5 },
-  ];
+  if (isLoading) {
+    return (
+      <DashboardLayout requiredRole="faculty">
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!course) return null;
 
   return (
     <DashboardLayout requiredRole="faculty">
@@ -70,10 +125,10 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <span className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-widest rounded-lg">
-                  {course.subjectCode}
+                  {course.subjectCode || 'N/A'}
                 </span>
                 <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-500">
-                  {course.status}
+                  {course.isPublished ? 'PUBLISHED' : 'DRAFT'}
                 </span>
               </div>
               <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2 leading-tight">
@@ -93,7 +148,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-zinc-100 dark:border-zinc-800/60">
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Enrolled Students</span>
-              <span className="text-xl font-black text-zinc-900 dark:text-white">{course.enrolled}</span>
+              <span className="text-xl font-black text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Course Credits</span>
@@ -101,11 +156,11 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Assignments</span>
-              <span className="text-xl font-black text-zinc-900 dark:text-white">4</span>
+              <span className="text-xl font-black text-zinc-900 dark:text-white">0</span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Total Modules</span>
-              <span className="text-xl font-black text-zinc-900 dark:text-white">12</span>
+              <span className="text-xl font-black text-zinc-900 dark:text-white">{course.modules?.length || 0}</span>
             </div>
           </div>
         </div>
@@ -113,39 +168,50 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
         {/* Course Content Management */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Course Content</h2>
-          <button className="px-4 py-2 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-xs uppercase tracking-widest">
+          <button 
+            onClick={() => setShowAddModuleModal(true)}
+            className="px-4 py-2 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-xs uppercase tracking-widest"
+          >
             + Add Section
           </button>
         </div>
 
         <div className="space-y-4">
-          {sections.map((section, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-orange-500/30 transition-colors"
-            >
-              <div>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors mb-1">
-                  {section.title}
-                </h3>
-                <p className="text-xs font-medium text-zinc-500">{section.modules} Modules</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => { setSelectedSection(section.title); setShowUploadModal(true); }}
-                  className="flex items-center gap-2 text-sm font-bold text-orange-500 hover:text-white hover:bg-orange-500 transition-colors border border-orange-500/20 px-4 py-2 rounded-lg bg-orange-50 dark:bg-orange-500/10"
-                >
-                  <FileText size={16} /> Upload Notes
-                </button>
-                <button className="text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
-                  Manage
-                </button>
-              </div>
-            </motion.div>
-          ))}
+          {course.modules && course.modules.length > 0 ? (
+            course.modules.map((module, i) => (
+              <motion.div 
+                key={module._id || i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-orange-500/30 transition-colors"
+              >
+                <div>
+                  <h3 className="text-base font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors mb-1">
+                    {module.title}
+                  </h3>
+                  <p className="text-xs font-medium text-zinc-500">{module.lessons?.length || 0} Lessons</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => { 
+                      setSelectedSection(module.title); 
+                      setSelectedModuleId(module._id);
+                      setShowUploadModal(true); 
+                    }}
+                    className="flex items-center gap-2 text-sm font-bold text-orange-500 hover:text-white hover:bg-orange-500 transition-colors border border-orange-500/20 px-4 py-2 rounded-lg bg-orange-50 dark:bg-orange-500/10"
+                  >
+                    <FileText size={16} /> Upload Notes
+                  </button>
+                  <button className="text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
+                    Manage
+                  </button>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <p className="text-sm text-zinc-500">No modules found for this course.</p>
+          )}
         </div>
       </div>
 
@@ -225,6 +291,56 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
                     Uploading...
                   </>
                 ) : 'Upload Notes'}
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Create Module Modal */}
+      {showAddModuleModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-zinc-900 rounded-3xl p-6 w-full max-w-md shadow-2xl border border-zinc-200 dark:border-zinc-800"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                <FileText size={20} className="text-orange-500" />
+                Add New Section
+              </h3>
+              <button 
+                onClick={() => setShowAddModuleModal(false)}
+                className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+              >
+                <X size={20} className="text-zinc-500" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleCreateModule} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">Section Title</label>
+                <input 
+                  required
+                  value={moduleTitle}
+                  onChange={(e) => setModuleTitle(e.target.value)}
+                  placeholder="e.g. Week 1: Introduction"
+                  className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-zinc-900 dark:text-white"
+                />
+              </div>
+
+              <button 
+                type="submit"
+                disabled={isCreatingModule}
+                className="w-full py-3 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/20 mt-4 flex justify-center items-center gap-2"
+              >
+                {isCreatingModule ? (
+                  <>
+                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Creating...
+                  </>
+                ) : 'Create Section'}
               </button>
             </form>
           </motion.div>

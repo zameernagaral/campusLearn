@@ -46,6 +46,9 @@ export default function CourseDetailsPage() {
 
   if (!course) return null;
 
+  const courseModules = course.modules || [];
+  const documentNotes = courseModules.flatMap(m => m.lessons?.filter(l => l.type === 'document') || []);
+
   return (
     <DashboardLayout requiredRole="student">
       <div className="mb-6">
@@ -114,22 +117,26 @@ export default function CourseDetailsPage() {
           >
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">Course Curriculum</h2>
             <div className="space-y-4">
-              {[1, 2, 3, 4].map((moduleIndex) => (
-                <div key={moduleIndex} className="p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-between group cursor-pointer hover:border-orange-500/30 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-                      <PlayCircle size={20} />
+              {courseModules.length > 0 ? (
+                courseModules.map((module, index) => (
+                  <div key={module._id || index} className="p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-between group cursor-pointer hover:border-orange-500/30 transition-colors">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
+                        <PlayCircle size={20} />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-zinc-900 dark:text-white">{module.title || `Module ${index + 1}`}</h4>
+                        <p className="text-sm text-zinc-500">{module.lessons?.length || 0} Lessons • {module.duration || 0} mins</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-medium text-zinc-900 dark:text-white">Module {moduleIndex}: Core Concepts</h4>
-                      <p className="text-sm text-zinc-500">3 Lessons • 45 mins</p>
-                    </div>
+                    <button className="text-sm font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      Start
+                    </button>
                   </div>
-                  <button className="text-sm font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                    Start
-                  </button>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-sm text-zinc-500">Curriculum not available yet.</p>
+              )}
             </div>
           </motion.div>
 
@@ -145,24 +152,34 @@ export default function CourseDetailsPage() {
               Course Materials & Notes
             </h2>
             <div className="space-y-3">
-              {[1, 2].map((noteIndex) => (
-                <div key={noteIndex} className="p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-between group hover:border-orange-500/30 transition-colors cursor-pointer">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
-                      <FileText size={20} />
+              {documentNotes.length > 0 ? (
+                documentNotes.map((note, index) => (
+                  <div key={note._id || index} className="p-4 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-between group hover:border-orange-500/30 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+                        <FileText size={20} />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">
+                          {note.documentName || note.title}
+                        </h4>
+                        <p className="text-xs font-medium text-zinc-500 mt-0.5">Document</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-medium text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">
-                        Chapter {noteIndex} Summary.pdf
-                      </h4>
-                      <p className="text-xs font-medium text-zinc-500 mt-0.5">2.4 MB • PDF Document</p>
-                    </div>
+                    {note.documentUrl ? (
+                      <a href={note.documentUrl} download target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-semibold text-orange-500 bg-orange-50 dark:bg-orange-500/10 hover:bg-orange-100 dark:hover:bg-orange-500/20 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+                        <Download size={16} /> Download
+                      </a>
+                    ) : (
+                      <button disabled className="flex items-center gap-2 text-sm font-semibold text-zinc-400 bg-zinc-50 dark:bg-zinc-800 px-4 py-2 rounded-lg opacity-50 cursor-not-allowed transition-all">
+                        <Download size={16} /> Unavailable
+                      </button>
+                    )}
                   </div>
-                  <button className="flex items-center gap-2 text-sm font-semibold text-orange-500 bg-orange-50 dark:bg-orange-500/10 hover:bg-orange-100 dark:hover:bg-orange-500/20 px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
-                    <Download size={16} /> Download
-                  </button>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-sm text-zinc-500">No materials available for this course.</p>
+              )}
             </div>
           </motion.div>
         </div>

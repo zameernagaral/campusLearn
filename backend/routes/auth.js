@@ -4,10 +4,11 @@ const {
   register, login, refreshToken, verifyEmail,
   forgotPassword, resetPassword, getMe, updatePassword, logout,
 } = require('../controllers/authController');
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 const { authLimiter } = require('../middleware/rateLimiter');
 
-router.post('/register', authLimiter, register);
+// Only allow admins to register new users (students/faculty)
+router.post('/register', protect, authorize('admin', 'hod'), register);
 router.post('/login', authLimiter, login);
 router.post('/refresh', refreshToken);
 router.get('/verify-email/:token', verifyEmail);

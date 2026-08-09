@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: true,
 
       login: async (email, password) => {
         set({ isLoading: true });
@@ -68,10 +68,16 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true });
           const { data } = await authAPI.getMe();
           set({ user: data.data, isAuthenticated: true, isLoading: false });
-        } catch {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          set({ user: null, isAuthenticated: false, isLoading: false });
+        } catch (error: any) {
+          // Only log out if the token is explicitly invalid (401)
+          if (error.response?.status === 401 || error.response?.status === 403) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            set({ user: null, isAuthenticated: false, isLoading: false });
+          } else {
+            // If it's a network error or 500, keep the current state but stop loading
+            set({ isLoading: false });
+          }
         }
       },
     }),
