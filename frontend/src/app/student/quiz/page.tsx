@@ -64,16 +64,11 @@ export default function StudentQuizPage() {
           origin: { y: 0.6 }
         });
       }
-    } catch {
-      // Mock result if API fails
-      const total = activeQuiz.questions.reduce((s, q) => s + q.marks, 0);
-      const answered = Object.keys(answers).length;
-      const score = Math.floor((answered / activeQuiz.questions.length) * total * 0.7);
-      const passed = score >= activeQuiz.passingMarks;
-      setResult({ score, total, passed });
-      setPhase('result');
-      if (passed) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-    } finally { setIsSubmitting(false); }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to submit quiz');
+    } finally { 
+      setIsSubmitting(false); 
+    }
   };
 
   useEffect(() => {
@@ -130,7 +125,7 @@ export default function StudentQuizPage() {
                       <span>•</span>
                       <span>{quiz.questions.length} questions</span>
                       <span>•</span>
-                      <span>Pass: {quiz.passingMarks}/{quiz.totalMarks}</span>
+                      <span>Pass: {quiz.passingMarks}%</span>
                     </div>
                     <button
                       onClick={() => startQuiz(quiz)}
@@ -294,7 +289,7 @@ export default function StudentQuizPage() {
                   <p className="text-xs" style={{ color: 'var(--muted)' }}>Score</p>
                 </div>
                 <div className="p-3 rounded-xl" style={{ background: 'var(--surface)' }}>
-                  <p className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>{activeQuiz.passingMarks}</p>
+                  <p className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>{activeQuiz.passingMarks}%</p>
                   <p className="text-xs" style={{ color: 'var(--muted)' }}>Passing</p>
                 </div>
                 <div className="p-3 rounded-xl" style={{ background: 'var(--surface)' }}>

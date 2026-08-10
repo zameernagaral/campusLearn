@@ -1,18 +1,43 @@
 'use client';
 import toast from 'react-hot-toast';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { assignmentAPI } from '@/lib/api';
 
 export default function FacultyAssignmentsPage() {
   const [activeTab, setActiveTab] = useState<'active' | 'graded'>('active');
+  const [assignments, setAssignments] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const assignments = [
-    { id: 1, title: 'Build a Neural Network from Scratch', course: 'Machine Learning', due: '15 Oct 2026', submissions: 32, total: 45, status: 'active' },
-    { id: 2, title: 'Implement Dijkstra Algorithm', course: 'Data Structures', due: '10 Oct 2026', submissions: 42, total: 45, status: 'active' },
-    { id: 3, title: 'React Performance Optimization', course: 'Web Development', due: '1 Oct 2026', submissions: 45, total: 45, status: 'graded' },
-  ];
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const res = await assignmentAPI.getAll();
+        const data = res.data?.data || res.data || [];
+        
+        // Format them for the UI
+        const formatted = data.map((a: any) => ({
+          id: a._id,
+          title: a.title,
+          course: a.course?.title || 'Unknown Course',
+          due: new Date(a.dueDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          submissions: a.submissionsCount || 0,
+          total: a.maxMarks || 100,
+          status: new Date(a.dueDate) < new Date() ? 'graded' : 'active'
+        }));
+        
+        setAssignments(formatted);
+      } catch (error) {
+        toast.error('Failed to load assignments');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAssignments();
+  }, []);
 
   const filteredAssignments = assignments.filter(a => a.status === activeTab);
 
@@ -23,9 +48,9 @@ export default function FacultyAssignmentsPage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Assignments Overview</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Manage assignments and grade student submissions</p>
         </div>
-        <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
+        <Link href="/faculty/assignments/create" className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
           Create Assignment
-        </button>
+        </Link>
       </div>
 
       {/* Tabs */}
@@ -45,7 +70,11 @@ export default function FacultyAssignmentsPage() {
       </div>
 
       <div className="space-y-4">
-        {filteredAssignments.map((assignment, i) => (
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <span className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+          </div>
+        ) : filteredAssignments.map((assignment, i) => (
           <motion.div 
             key={assignment.id}
             initial={{ opacity: 0, y: 10 }}
@@ -81,7 +110,7 @@ export default function FacultyAssignmentsPage() {
           </motion.div>
         ))}
         
-        {filteredAssignments.length === 0 && (
+        {!isLoading && filteredAssignments.length === 0 && (
           <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-12 text-center bg-zinc-50 dark:bg-zinc-900/20">
             <p className="text-zinc-500 font-medium">No {activeTab} assignments found.</p>
           </div>

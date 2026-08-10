@@ -199,5 +199,11 @@ export const moduleAPI = {
   createDocumentLesson: (data: FormData) => api.post('/modules/lessons/document', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   completeLesson: (id: string) => api.patch(`/modules/lessons/${id}/complete`),
 };
+// ─── Live Class API ───────────────────────────────────────────────────────────
+
+export const liveClassAPI = {
+  getAll: (params?: Record<string, unknown>) => api.get('/live-classes', { params }),
+  create: (data: Record<string, unknown>) => api.post('/live-classes', data),
+};
 
 export default api;

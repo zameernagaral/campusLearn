@@ -184,29 +184,65 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-orange-500/30 transition-colors"
+                className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col gap-4 group hover:border-orange-500/30 transition-colors"
               >
-                <div>
-                  <h3 className="text-base font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors mb-1">
-                    {module.title}
-                  </h3>
-                  <p className="text-xs font-medium text-zinc-500">{module.lessons?.length || 0} Lessons</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-base font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors mb-1">
+                      {module.title}
+                    </h3>
+                    <p className="text-xs font-medium text-zinc-500">{module.lessons?.length || 0} Lessons</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => { 
+                        setSelectedSection(module.title); 
+                        setSelectedModuleId(module._id);
+                        setShowUploadModal(true); 
+                      }}
+                      className="flex items-center gap-2 text-sm font-bold text-orange-500 hover:text-white hover:bg-orange-500 transition-colors border border-orange-500/20 px-4 py-2 rounded-lg bg-orange-50 dark:bg-orange-500/10"
+                    >
+                      <FileText size={16} /> Upload Notes
+                    </button>
+                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
+                      Manage
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => { 
-                      setSelectedSection(module.title); 
-                      setSelectedModuleId(module._id);
-                      setShowUploadModal(true); 
-                    }}
-                    className="flex items-center gap-2 text-sm font-bold text-orange-500 hover:text-white hover:bg-orange-500 transition-colors border border-orange-500/20 px-4 py-2 rounded-lg bg-orange-50 dark:bg-orange-500/10"
-                  >
-                    <FileText size={16} /> Upload Notes
-                  </button>
-                  <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
-                    Manage
-                  </button>
-                </div>
+
+                {module.lessons && module.lessons.length > 0 && (
+                  <div className="mt-2 space-y-2 border-t border-zinc-100 dark:border-zinc-800/60 pt-4">
+                    {module.lessons.map((lesson: any, j: number) => (
+                      <div key={lesson._id || j} className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800 group/lesson">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center group-hover/lesson:scale-110 transition-transform">
+                            {lesson.type === 'document' ? (
+                              <FileText size={16} className="text-orange-600 dark:text-orange-400" />
+                            ) : (
+                              <File size={16} className="text-orange-600 dark:text-orange-400" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-zinc-900 dark:text-white">{lesson.title}</p>
+                            {lesson.type === 'document' && lesson.documentName && (
+                              <p className="text-[10px] text-zinc-500 uppercase tracking-wider">{lesson.documentName}</p>
+                            )}
+                          </div>
+                        </div>
+                        {lesson.type === 'document' && lesson.documentUrl && (
+                          <a 
+                            href={lesson.documentUrl.startsWith('http') ? lesson.documentUrl : `http://localhost:5001/${lesson.documentUrl.replace(/\\/g, '/')}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors px-3 py-1.5 rounded-lg bg-orange-50 dark:bg-orange-500/10 hover:bg-orange-100 dark:hover:bg-orange-500/20"
+                          >
+                            View PDF
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </motion.div>
             ))
           ) : (

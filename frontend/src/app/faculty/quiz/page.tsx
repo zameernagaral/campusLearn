@@ -1,18 +1,53 @@
 'use client';
 import toast from 'react-hot-toast';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { quizAPI } from '@/lib/api';
 
 export default function FacultyQuizPage() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed'>('upcoming');
+  const [quizzes, setQuizzes] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const quizzes = [
-    { id: 1, title: 'Neural Networks Fundamentals', course: 'CS601', date: '20 Oct 2026', time: '10:00 AM', duration: '45 mins', status: 'upcoming', submissions: 0 },
-    { id: 2, title: 'Data Structures Midterm', course: 'CS501', date: '5 Oct 2026', time: '02:00 PM', duration: '90 mins', status: 'completed', submissions: 48 },
-    { id: 3, title: 'Sorting Algorithms Quiz', course: 'CS501', date: '25 Sep 2026', time: '11:00 AM', duration: '30 mins', status: 'completed', submissions: 50 },
-  ];
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        const res = await quizAPI.getAll();
+        const data = res.data?.data || res.data || [];
+        
+        const formatted = data.map((q: any) => {
+          const startTime = new Date(q.startTime);
+          const endTime = new Date(q.endTime);
+          const now = new Date();
+          
+          let status = 'upcoming';
+          if (now > endTime) status = 'completed';
+          
+          return {
+            id: q._id,
+            title: q.title,
+            course: q.course?.subjectCode || q.course?.title || 'N/A',
+            date: startTime.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+            time: startTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+            duration: `${q.duration} mins`,
+            status,
+            submissions: q.submissionsCount || 0, // Mock for now if not populated
+          };
+        });
+        
+        setQuizzes(formatted);
+      } catch (error) {
+        toast.error('Failed to load quizzes');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchQuizzes();
+  }, []);
 
   const filteredQuizzes = quizzes.filter(q => q.status === activeTab);
 
@@ -23,9 +58,12 @@ export default function FacultyQuizPage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Quizzes</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Manage your course quizzes and assessments</p>
         </div>
-        <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
+        <Link 
+          href="/faculty/quiz/create"
+          className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap"
+        >
           Create Quiz
-        </button>
+        </Link>
       </div>
 
       {/* Tabs */}
@@ -45,7 +83,11 @@ export default function FacultyQuizPage() {
       </div>
 
       <div className="space-y-4">
-        {filteredQuizzes.map((quiz, i) => (
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <span className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+          </div>
+        ) : filteredQuizzes.map((quiz, i) => (
           <motion.div 
             key={quiz.id}
             initial={{ opacity: 0, y: 10 }}
@@ -87,7 +129,7 @@ export default function FacultyQuizPage() {
           </motion.div>
         ))}
         
-        {filteredQuizzes.length === 0 && (
+        {!isLoading && filteredQuizzes.length === 0 && (
           <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-12 text-center bg-zinc-50 dark:bg-zinc-900/20">
             <p className="text-zinc-500 font-medium">No {activeTab} quizzes found.</p>
           </div>

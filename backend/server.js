@@ -81,6 +81,7 @@ app.use('/api/ai', require('./routes/ai'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/hod', require('./routes/hod'));
 app.use('/api/announcements', require('./routes/announcements'));
+app.use('/api/live-classes', require('./routes/liveClasses'));
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
