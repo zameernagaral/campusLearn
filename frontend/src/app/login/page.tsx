@@ -69,10 +69,10 @@ export default function LoginPage() {
             <p className="text-xs font-bold text-orange-500 uppercase tracking-widest mb-1">Demo Credentials</p>
             <div className="space-y-3">
               {[
-                { role: 'Admin', email: 'admin@campuslearn.com', pass: 'password123' },
-                { role: 'HOD', email: 'rajesh.kumar@campuslearn.com', pass: 'password123' },
-                { role: 'Faculty', email: 'priya.sharma@campuslearn.com', pass: 'password123' },
-                { role: 'Student', email: 'arjun.mehta@campuslearn.com', pass: 'password123' },
+                { role: 'Admin', email: 'admin@campuslearn.edu', pass: 'password123' },
+                { role: 'HOD', email: 'hod.cse@campuslearn.edu', pass: 'password123' },
+                { role: 'Faculty', email: 'dr..ishan.desai.cse.sem1@campuslearn.edu', pass: 'password123' },
+                { role: 'Student', email: 'arjun.nagaral1.cse.sem1@campuslearn.edu', pass: 'password123' },
               ].map(d => (
                 <div key={d.role} className="flex justify-between items-center pb-3 border-b border-zinc-800 last:border-0 last:pb-0">
                   <span className="font-semibold text-sm text-zinc-300">{d.role}</span>
