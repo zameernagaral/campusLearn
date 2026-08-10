@@ -112,7 +112,7 @@ export default function AdminSettingsPage() {
                         <div className="w-4 h-4 bg-white rounded-full shadow-sm" />
                       </div>
                     ) : item.action ? (
-                      <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="text-xs font-bold text-zinc-500 hover:text-orange-500 transition-colors uppercase tracking-widest border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
+                      <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="text-xs font-bold text-zinc-500 hover:text-orange-500 transition-colors uppercase tracking-widest border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
                         Manage
                       </button>
                     ) : (

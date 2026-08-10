@@ -123,11 +123,11 @@ export default function SettingsPage() {
                    item.value ? (
                     <span className="text-zinc-500 text-sm">{item.value}</span>
                   ) : item.action ? (
-                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-8 h-8 rounded-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                    <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="w-8 h-8 rounded-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
                       <ChevronRight size={16} />
                     </button>
                   ) : item.toggle !== undefined ? (
-                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className={`w-12 h-6 rounded-full p-1 transition-colors ${item.toggle ? 'bg-orange-500' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
+                    <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className={`w-12 h-6 rounded-full p-1 transition-colors ${item.toggle ? 'bg-orange-500' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
                       <div className={`w-4 h-4 rounded-full bg-white transition-transform ${item.toggle ? 'translate-x-6' : 'translate-x-0'}`} />
                     </button>
                   ) : null}

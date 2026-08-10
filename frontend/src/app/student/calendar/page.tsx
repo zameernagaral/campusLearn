@@ -22,7 +22,7 @@ export default function CalendarPage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Academic Calendar</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Manage your classes, exams, and deadlines</p>
         </div>
-        <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="btn btn-primary flex items-center gap-2 text-sm bg-orange-500 hover:bg-orange-600 border-0 text-white shadow-lg shadow-orange-500/20">
+        <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="btn btn-primary flex items-center gap-2 text-sm bg-orange-500 hover:bg-orange-600 border-0 text-white shadow-lg shadow-orange-500/20">
           <Plus size={16} /> Add Event
         </button>
       </div>
@@ -37,13 +37,13 @@ export default function CalendarPage() {
                 <CalendarIcon size={20} className="text-orange-500" /> August 2026
               </h2>
               <div className="flex items-center gap-2">
-                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
+                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
                   <ChevronLeft size={20} />
                 </button>
-                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-sm font-semibold text-zinc-700 dark:text-zinc-300">
                   Today
                 </button>
-                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
+                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
                   <ChevronRight size={20} />
                 </button>
               </div>

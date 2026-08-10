@@ -161,7 +161,7 @@ export default function FacultyLivePage() {
             <div className="flex items-center gap-4 border-t md:border-t-0 md:border-l border-zinc-100 dark:border-zinc-800/60 pt-4 md:pt-0 md:pl-8">
               {activeTab === 'upcoming' ? (
                 <>
-                  <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })} className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
+                  <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }} className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
                     Edit
                   </button>
                   <a 
@@ -174,7 +174,7 @@ export default function FacultyLivePage() {
                   </a>
                 </>
               ) : (
-                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })} className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
+                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }} className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
                   View Recording
                 </button>
               )}

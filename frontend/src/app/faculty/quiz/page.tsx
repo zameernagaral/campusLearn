@@ -122,7 +122,7 @@ export default function FacultyQuizPage() {
                 </span>
               </div>
               
-              <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap">
+              <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap">
                 {activeTab === 'upcoming' ? 'Edit Quiz' : 'View Results'}
               </button>
             </div>

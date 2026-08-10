@@ -64,7 +64,7 @@ export default function ProfilePage() {
                 {user.email}
               </p>
 
-              <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-full py-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors">
+              <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="w-full py-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors">
                 <Edit2 size={16} /> Edit Profile
               </button>
             </div>

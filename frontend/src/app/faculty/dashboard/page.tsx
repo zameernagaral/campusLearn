@@ -7,7 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard, StatCardSkeleton } from '@/components/shared/StatCard';
 import { LineChart, BarChart, DoughnutChart } from '@/components/charts/Charts';
 import { useAuthStore } from '@/store/authStore';
-import { courseAPI, assignmentAPI, announcementAPI } from '@/lib/api';
+import { courseAPI, assignmentAPI, attendanceAPI } from '@/lib/api';
 import { formatDate, formatRelativeTime } from '@/lib/utils';
 import type { Course } from '@/types';
 import Link from 'next/link';
@@ -16,25 +16,63 @@ export default function FacultyDashboard() {
   const { user } = useAuthStore();
   const [courses, setCourses] = useState<Course[]>([]);
   const [stats, setStats] = useState({ totalStudents: 0, pendingGrading: 0, totalCourses: 0, pendingAssignments: 0 });
+  const [attendanceData, setAttendanceData] = useState({
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+    datasets: [
+      { label: 'Present', data: [0, 0, 0, 0, 0], color: '#10b981' },
+      { label: 'Absent', data: [0, 0, 0, 0, 0], color: '#ef4444' },
+    ],
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
     try {
-      const [coursesRes, assignmentsRes] = await Promise.allSettled([
+      const [coursesRes, assignmentsRes, attendanceRes] = await Promise.allSettled([
         courseAPI.getAll({ faculty: user?._id, limit: 6 }),
         assignmentAPI.getAll({ limit: 10 }),
+        attendanceAPI.getAll()
       ]);
 
       if (coursesRes.status === 'fulfilled') {
         const data = coursesRes.value.data.data || [];
         setCourses(data);
-        const totalStudents = data.reduce((sum: number, c: Course) => sum + (c.enrolledStudents?.length || 0), 0);
-        setStats(prev => ({ ...prev, totalCourses: data.length, totalStudents }));
+        const uniqueStudents = new Set();
+        data.forEach((c: any) => {
+          c.enrolledStudents?.forEach((s: any) => uniqueStudents.add(s._id || s));
+        });
+        setStats(prev => ({ ...prev, totalCourses: data.length, totalStudents: uniqueStudents.size }));
       }
       if (assignmentsRes.status === 'fulfilled') {
         const data = assignmentsRes.value.data.data || [];
         const pending = data.filter((a: { status?: string }) => a.status === 'submitted').length;
         setStats(prev => ({ ...prev, pendingGrading: pending, pendingAssignments: data.length }));
+      }
+      if (attendanceRes.status === 'fulfilled') {
+        const logs = attendanceRes.value.data.data || [];
+        const daysPresent = [0, 0, 0, 0, 0];
+        const daysAbsent = [0, 0, 0, 0, 0];
+        
+        logs.forEach((log: any) => {
+          const date = new Date(log.date);
+          const day = date.getDay(); // 0 is Sunday, 1 is Monday...
+          if (day >= 1 && day <= 5) {
+            log.records.forEach((r: any) => {
+              if (r.status === 'present' || r.status === 'late') {
+                daysPresent[day - 1]++;
+              } else {
+                daysAbsent[day - 1]++;
+              }
+            });
+          }
+        });
+
+        setAttendanceData({
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          datasets: [
+            { label: 'Present', data: daysPresent, color: '#10b981' },
+            { label: 'Absent', data: daysAbsent, color: '#ef4444' },
+          ],
+        });
       }
     } catch (_) {}
     finally { setIsLoading(false); }
@@ -44,17 +82,9 @@ export default function FacultyDashboard() {
     fetchData();
   }, []);
 
-  const attendanceData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-    datasets: [
-      { label: 'Present', data: [28, 25, 30, 27, 29], color: '#10b981' },
-      { label: 'Absent', data: [2, 5, 0, 3, 1], color: '#ef4444' },
-    ],
-  };
-
   const performanceData = {
     labels: ['0-40', '40-60', '60-75', '75-90', '90-100'],
-    datasets: [{ label: 'Students', data: [2, 5, 12, 18, 8], color: '#6366f1' }],
+    datasets: [{ label: 'Students', data: [0, 0, 1, 3, 2], color: '#6366f1' }],
   };
 
   return (

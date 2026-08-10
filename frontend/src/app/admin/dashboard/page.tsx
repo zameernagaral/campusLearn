@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard, StatCardSkeleton } from '@/components/shared/StatCard';
-import { LineChart, BarChart, DoughnutChart } from '@/components/charts/Charts';
+import { LineChart, DoughnutChart } from '@/components/charts/Charts';
 import { adminAPI } from '@/lib/api';
 import { Users, BookOpen, Building, TrendingUp, Bell, Settings, Shield, Database } from 'lucide-react';
 import { formatDate, formatRelativeTime, getRoleColor } from '@/lib/utils';
@@ -19,6 +19,7 @@ interface AdminStats {
   totalDepartments: number;
   activeCourses: number;
   recentUsers: { _id: string; name: string; email: string; role: string; avatar?: string; createdAt: string }[];
+  recentCourses?: { _id: string; title: string; faculty: { name: string }; isPublished: boolean; createdAt: string }[];
   userGrowth: { date: string; count: number }[];
   roleDistribution: { role: string; count: number; color: string }[];
 }
@@ -40,14 +41,6 @@ export default function AdminDashboard() {
     labels: stats?.roleDistribution.map(r => r.role) || [],
     data: stats?.roleDistribution.map(r => r.count) || [],
     colors: stats?.roleDistribution.map(r => r.color) || [],
-  };
-
-  const platformActivity = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      { label: 'Active Users', data: [120, 180, 95, 210, 160, 80, 45], color: '#6366f1' },
-      { label: 'Submissions', data: [30, 45, 20, 55, 40, 15, 8], color: '#10b981' },
-    ],
   };
 
   return (
@@ -74,7 +67,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {isLoading ? Array(8).fill(null).map((_, i) => <StatCardSkeleton key={i} />) : (
           <>
-            <StatCard label="Total Users" value={stats?.totalUsers || 0} icon={<Users size={20} />} gradient="linear-gradient(135deg, #6366f1, #8b5cf6)" change="+12 this week" changeType="up" delay={0} />
+            <StatCard label="Total Users" value={stats?.totalUsers || 0} icon={<Users size={20} />} gradient="linear-gradient(135deg, #6366f1, #8b5cf6)" change="+Active" changeType="up" delay={0} />
             <StatCard label="Students" value={stats?.totalStudents || 0} icon={<Users size={20} />} gradient="linear-gradient(135deg, #10b981, #06b6d4)" delay={0.1} />
             <StatCard label="Faculty" value={stats?.totalFaculty || 0} icon={<Users size={20} />} gradient="linear-gradient(135deg, #8b5cf6, #ec4899)" delay={0.2} />
             <StatCard label="Departments" value={stats?.totalDepartments || 0} icon={<Building size={20} />} gradient="linear-gradient(135deg, #06b6d4, #6366f1)" delay={0.3} />
@@ -104,10 +97,35 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Platform Activity */}
+        {/* Recent Courses */}
         <div className="lg:col-span-2 card p-5">
-          <h3 className="font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Weekly Platform Activity</h3>
-          <LineChart labels={platformActivity.labels} datasets={platformActivity.datasets} height={200} />
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold" style={{ color: 'var(--foreground)' }}>Recent Courses</h3>
+            <Link href="/admin/courses" className="text-xs" style={{ color: 'var(--primary)' }}>View all →</Link>
+          </div>
+          {isLoading ? (
+            <div className="space-y-3">{Array(4).fill(null).map((_, i) => <div key={i} className="skeleton h-12 rounded-xl" />)}</div>
+          ) : (
+            <div className="space-y-3">
+              {stats?.recentCourses?.map(c => (
+                <div key={c._id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[var(--surface)] transition-colors border border-[var(--border)]">
+                  <div className="w-8 h-8 rounded-full bg-[var(--primary)]/10 flex items-center justify-center text-[var(--primary)] font-bold">
+                    <BookOpen size={16} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate" style={{ color: 'var(--foreground)' }}>{c.title}</p>
+                    <p className="text-xs truncate" style={{ color: 'var(--muted)' }}>By {c.faculty?.name || 'Unknown'}</p>
+                  </div>
+                  <span className={cn('badge text-xs', c.isPublished ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-500' : 'bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-500')}>
+                    {c.isPublished ? 'Published' : 'Draft'}
+                  </span>
+                </div>
+              ))}
+              {!stats?.recentCourses?.length && (
+                 <p className="text-sm text-zinc-500 py-4 text-center">No courses found.</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Recent Users */}
@@ -144,7 +162,7 @@ export default function AdminDashboard() {
           {[
             { label: 'Manage Users', href: '/admin/users', icon: <Users size={22} />, color: '#6366f1' },
             { label: 'Departments', href: '/admin/departments', icon: <Building size={22} />, color: '#8b5cf6' },
-            { label: 'Send Notification', href: '#', icon: <Bell size={22} />, color: '#f59e0b' },
+            { label: 'Send Notification', href: '/admin/settings', icon: <Bell size={22} />, color: '#f59e0b' },
             { label: 'System Settings', href: '/admin/settings', icon: <Settings size={22} />, color: '#10b981' },
           ].map(a => (
             <Link key={a.label} href={a.href}

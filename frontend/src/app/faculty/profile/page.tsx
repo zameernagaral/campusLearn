@@ -57,7 +57,7 @@ export default function FacultyProfilePage() {
               <p className="text-zinc-500 font-medium mb-6">Faculty Member</p>
 
               <div className="flex justify-center gap-3 mb-8">
-                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
+                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
                   Edit Profile
                 </button>
               </div>

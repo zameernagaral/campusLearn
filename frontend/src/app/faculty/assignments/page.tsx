@@ -103,8 +103,8 @@ export default function FacultyAssignmentsPage() {
                 </div>
               </div>
               
-              <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap">
-                {activeTab === 'active' ? 'Grade Now' : 'View Grades'}
+              <button disabled className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white/50 font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap opacity-50 cursor-not-allowed">
+                {activeTab === 'active' ? 'Pending Review' : 'View Grades'}
               </button>
             </div>
           </motion.div>

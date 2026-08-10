@@ -245,7 +245,7 @@ export default function AdminUsersPage() {
                   </td>
                   <td>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="p-1.5 rounded-lg hover:bg-[var(--surface-2)] transition-colors" title="Edit">
+                      <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="p-1.5 rounded-lg hover:bg-[var(--surface-2)] transition-colors">
                         <Edit size={14} style={{ color: 'var(--primary)' }} />
                       </button>
                       <button
