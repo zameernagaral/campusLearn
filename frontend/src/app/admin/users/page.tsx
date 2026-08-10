@@ -12,6 +12,7 @@ import type { User } from '@/types';
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
@@ -24,7 +25,7 @@ export default function AdminUsersPage() {
   const [isUploading, setIsUploading] = useState(false);
 
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'student' });
+  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'student', department: '' });
   const [isAddingUser, setIsAddingUser] = useState(false);
 
   const LIMIT = 15;
@@ -39,8 +40,18 @@ export default function AdminUsersPage() {
     finally { setIsLoading(false); }
   };
 
+  const fetchDepartments = async () => {
+    try {
+      const res = await adminAPI.getDepartments();
+      setDepartments(res.data?.data || []);
+    } catch (err) {
+      console.error('Failed to load departments');
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
+    fetchDepartments();
   }, [search, roleFilter, page]);
 
   const handleDelete = async (id: string) => {
@@ -57,7 +68,19 @@ export default function AdminUsersPage() {
       await adminAPI.updateUser(id, { role });
       toast.success('Role updated');
       fetchUsers();
-    } catch { toast.error('Failed to update role'); }
+    } catch (err) {
+      toast.error('Failed to update role');
+    }
+  };
+
+  const handleUpdateDepartment = async (id: string, department: string) => {
+    try {
+      await adminAPI.updateUser(id, { department: department === 'none' ? null : department });
+      toast.success('Department updated');
+      fetchUsers();
+    } catch (err) {
+      toast.error('Failed to update department');
+    }
   };
 
   const handleToggleActive = async (user: User) => {
@@ -96,7 +119,23 @@ export default function AdminUsersPage() {
         throw new Error('CSV is empty or invalid.');
       }
 
-      const { data } = await adminAPI.bulkCreateUsers(parsedUsers);
+      // Map string department to department Object ID
+      const mappedUsers = parsedUsers.map(user => {
+        if (user.department) {
+          const deptStr = user.department.toLowerCase();
+          const match = departments.find(d => 
+            d.name.toLowerCase() === deptStr || d.code.toLowerCase() === deptStr || d._id === user.department
+          );
+          if (match) {
+            user.department = match._id;
+          } else {
+            delete user.department;
+          }
+        }
+        return user;
+      });
+
+      const { data } = await adminAPI.bulkCreateUsers(mappedUsers);
       toast.success(data.message || 'Users created successfully!');
       setShowBulkModal(false);
       setCsvFile(null);
@@ -117,7 +156,7 @@ export default function AdminUsersPage() {
       const { data } = await adminAPI.bulkCreateUsers([newUser]);
       toast.success(data.message || 'User created successfully!');
       setShowAddUserModal(false);
-      setNewUser({ name: '', email: '', role: 'student' });
+      setNewUser({ name: '', email: '', role: 'student', department: '' });
       fetchUsers();
     } catch (error: any) {
       toast.error(error.message || 'Failed to create user.');
@@ -225,9 +264,16 @@ export default function AdminUsersPage() {
                     </select>
                   </td>
                   <td>
-                    <span className="text-sm" style={{ color: 'var(--muted)' }}>
-                      {typeof user.department === 'object' ? (user.department as { name?: string })?.name : 'N/A'}
-                    </span>
+                    <select
+                      value={typeof user.department === 'object' && user.department ? (user.department as any)._id : user.department || 'none'}
+                      onChange={e => handleUpdateDepartment(user._id, e.target.value)}
+                      className="badge text-xs capitalize border-0 cursor-pointer bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    >
+                      <option value="none">No Department</option>
+                      {departments.map(d => (
+                        <option key={d._id} value={d._id}>{d.name}</option>
+                      ))}
+                    </select>
                   </td>
                   <td>
                     <button
@@ -327,7 +373,7 @@ export default function AdminUsersPage() {
                   ) : (
                     <div className="flex flex-col items-center gap-2">
                       <span className="text-sm font-semibold">Click or drag and drop</span>
-                      <span className="text-xs text-zinc-500">CSV must have headers: name, email, role</span>
+                      <span className="text-xs text-zinc-500">CSV headers: name, email, role, department (optional)</span>
                     </div>
                   )}
                 </div>
@@ -413,6 +459,20 @@ export default function AdminUsersPage() {
                   <option value="faculty">Faculty</option>
                   <option value="hod">HOD</option>
                   <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Department (Optional)</label>
+                <select
+                  value={newUser.department}
+                  onChange={e => setNewUser({ ...newUser, department: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+                >
+                  <option value="">No Department</option>
+                  {departments.map(d => (
+                    <option key={d._id} value={d._id}>{d.name}</option>
+                  ))}
                 </select>
               </div>
 

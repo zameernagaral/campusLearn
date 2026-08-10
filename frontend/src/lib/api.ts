@@ -163,6 +163,7 @@ export const adminAPI = {
   updateUser: (id: string, data: Record<string, unknown>) => api.put(`/admin/users/${id}`, data),
   deleteUser: (id: string) => api.delete(`/admin/users/${id}`),
   getDepartments: () => api.get('/admin/departments'),
+  getDepartment: (id: string) => api.get('/admin/departments/' + id),
   createDepartment: (data: Record<string, unknown>) => api.post('/admin/departments', data),
   updateDepartment: (id: string, data: Record<string, unknown>) => api.put(`/admin/departments/${id}`, data),
   sendNotification: (data: Record<string, unknown>) => api.post('/admin/notify', data),

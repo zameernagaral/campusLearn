@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { adminAPI } from '@/lib/api';
 import { X, Building } from 'lucide-react';
 
@@ -78,39 +79,40 @@ export default function AdminDepartmentsPage() {
           ))
         ) : departments.length > 0 ? (
           departments.map((dept, i) => (
-            <motion.div 
-              key={dept._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col group hover:shadow-2xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              
-              <div className="flex justify-between items-start mb-6">
-                <span className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-widest rounded-lg">
-                  {dept.code}
-                </span>
-              </div>
-
-              <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2 leading-tight group-hover:text-orange-500 transition-colors">
-                {dept.name}
-              </h3>
-              <p className="text-sm text-zinc-500 font-medium mb-6 flex-1">
-                Head: {dept.hod?.name || dept.head || 'Not Assigned'}
-              </p>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-500/5">
-                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest block mb-1 group-hover:text-orange-500/70 transition-colors">Faculty</span>
-                  <span className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalFaculty || 0}</span>
+            <Link key={dept._id} href={`/admin/departments/${dept._id}`} className="block">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col group hover:shadow-2xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all relative overflow-hidden h-full cursor-pointer"
+              >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="flex justify-between items-start mb-6">
+                  <span className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-widest rounded-lg">
+                    {dept.code}
+                  </span>
                 </div>
-                <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-500/5">
-                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest block mb-1 group-hover:text-orange-500/70 transition-colors">Students</span>
-                  <span className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalStudents || 0}</span>
+
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2 leading-tight group-hover:text-orange-500 transition-colors">
+                  {dept.name}
+                </h3>
+                <p className="text-sm text-zinc-500 font-medium mb-6 flex-1">
+                  Head: {dept.hod?.name || dept.head || 'Not Assigned'}
+                </p>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-500/5">
+                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest block mb-1 group-hover:text-orange-500/70 transition-colors">Faculty</span>
+                    <span className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalFaculty || 0}</span>
+                  </div>
+                  <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-500/5">
+                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest block mb-1 group-hover:text-orange-500/70 transition-colors">Students</span>
+                    <span className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalStudents || 0}</span>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </Link>
           ))
         ) : (
           <div className="col-span-full border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-12 text-center bg-zinc-50 dark:bg-zinc-900/20">

@@ -16,6 +16,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
 
   const [course, setCourse] = useState<Course | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
@@ -37,6 +38,20 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
       router.push('/faculty/courses');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleTogglePublish = async () => {
+    if (!course) return;
+    setIsUpdating(true);
+    try {
+      await courseAPI.update(course._id, { isPublished: !course.isPublished });
+      toast.success(course.isPublished ? 'Course moved to Draft' : 'Course Published');
+      fetchCourse();
+    } catch (err) {
+      toast.error('Failed to update course status');
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -136,8 +151,16 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
               </h1>
             </div>
             
-            <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
-              Edit Course
+            <button 
+              onClick={handleTogglePublish}
+              disabled={isUpdating}
+              className={`px-6 py-2.5 font-bold rounded-xl transition-colors text-sm shadow-lg whitespace-nowrap disabled:opacity-50 ${
+                course.isPublished 
+                  ? 'bg-zinc-100 hover:bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-white border border-zinc-200 dark:border-zinc-700'
+                  : 'bg-orange-500 hover:bg-orange-600 text-white shadow-orange-500/20'
+              }`}
+            >
+              {isUpdating ? 'Updating...' : (course.isPublished ? 'Move to Draft' : 'Publish Course')}
             </button>
           </div>
 

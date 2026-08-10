@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 type SettingsItem = {
   label: string;
@@ -25,6 +25,24 @@ export default function AdminSettingsPage() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [toggles, setToggles] = useState<Record<string, boolean>>({
+    'Email Notifications': true,
+    'System Maintenance Alerts': true,
+    'Audit Logging': false,
+    'Two-Factor Authentication': false,
+  });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleToggle = (label: string) => {
+    setToggles(prev => ({
+      ...prev,
+      [label]: !prev[label]
+    }));
+  };
 
   const handleLogout = () => {
     logout();
@@ -46,19 +64,25 @@ export default function AdminSettingsPage() {
         { 
           label: 'Theme', 
           custom: (
-            <div className="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl w-fit">
-              <button 
-                onClick={() => setTheme('light')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-white text-orange-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'}`}
-              >
-                LIGHT
-              </button>
-              <button 
-                onClick={() => setTheme('dark')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-zinc-700 text-orange-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'}`}
-              >
-                DARK
-              </button>
+            <div className="flex items-center gap-2 bg-zinc-100 dark:bg-zinc-800 p-1 rounded-xl w-fit h-9">
+              {mounted ? (
+                <>
+                  <button 
+                    onClick={() => setTheme('light')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'light' ? 'bg-white text-orange-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'}`}
+                  >
+                    LIGHT
+                  </button>
+                  <button 
+                    onClick={() => setTheme('dark')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${theme === 'dark' ? 'bg-zinc-700 text-orange-500 shadow-sm' : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'}`}
+                  >
+                    DARK
+                  </button>
+                </>
+              ) : (
+                <div className="w-24" />
+              )}
             </div>
           )
         },
@@ -108,8 +132,15 @@ export default function AdminSettingsPage() {
                     {item.custom ? (
                       item.custom
                     ) : item.toggle ? (
-                      <div className="w-12 h-6 bg-orange-500 rounded-full p-1 cursor-pointer flex justify-end transition-colors shadow-inner">
-                        <div className="w-4 h-4 bg-white rounded-full shadow-sm" />
+                      <div 
+                        onClick={() => handleToggle(item.label)}
+                        className={`w-12 h-6 rounded-full p-1 cursor-pointer flex transition-colors shadow-inner ${toggles[item.label] ? 'bg-orange-500 justify-end' : 'bg-zinc-300 dark:bg-zinc-700 justify-start'}`}
+                      >
+                        <motion.div 
+                          layout
+                          transition={{ type: "spring", stiffness: 700, damping: 30 }}
+                          className="w-4 h-4 bg-white rounded-full shadow-sm" 
+                        />
                       </div>
                     ) : item.action ? (
                       <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="text-xs font-bold text-zinc-500 hover:text-orange-500 transition-colors uppercase tracking-widest border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">

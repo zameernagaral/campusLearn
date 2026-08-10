@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, Search, Bell, Sun, Moon, LogOut, User as UserIcon, Settings, ChevronDown } from 'lucide-react';
+import { Bell, Search, Sun, Moon, LogOut, User as UserIcon, Settings, ChevronDown, LayoutGrid, Users, BookOpen, BarChart2, CheckSquare, Menu } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
-import { notificationAPI } from '@/lib/api';
+import { notificationAPI, authAPI } from '@/lib/api';
 import { getInitials, formatRelativeTime, getRoleColor } from '@/lib/utils';
 import type { User, Notification } from '@/types';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
-import { authAPI } from '@/lib/api';
+import { ActionSearchBar, Action } from '@/components/ui/ActionSearchBar';
 
 interface DashboardNavbarProps {
   user: User;
@@ -24,9 +24,9 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
   const [showProfile, setShowProfile] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { logout } = useAuthStore();
+  const pathname = usePathname();
   const router = useRouter();
+  const { logout } = useAuthStore();
 
   useEffect(() => {
     const stored = localStorage.getItem('theme');
@@ -77,6 +77,34 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
     return icons[type] || '🔔';
   };
 
+  const getActions = (): Action[] => {
+    const roleActions: Record<string, Action[]> = {
+      admin: [
+        { id: 'admin-1', label: 'Dashboard', route: '/admin/dashboard', icon: <LayoutGrid className="w-4 h-4 text-orange-500" />, end: 'Page' },
+        { id: 'admin-2', label: 'Manage Users', route: '/admin/users', icon: <Users className="w-4 h-4 text-blue-500" />, end: 'Page' },
+        { id: 'admin-3', label: 'Departments', route: '/admin/departments', icon: <LayoutGrid className="w-4 h-4 text-purple-500" />, end: 'Page' },
+        { id: 'admin-4', label: 'University Courses', route: '/admin/courses', icon: <BookOpen className="w-4 h-4 text-green-500" />, end: 'Page' },
+        { id: 'admin-5', label: 'Platform Analytics', route: '/admin/analytics', icon: <BarChart2 className="w-4 h-4 text-pink-500" />, end: 'Page' },
+        { id: 'admin-6', label: 'Settings', route: '/admin/settings', icon: <Settings className="w-4 h-4 text-gray-500" />, end: 'Page' },
+      ],
+      faculty: [
+        { id: 'faculty-1', label: 'Dashboard', route: '/faculty/dashboard', icon: <LayoutGrid className="w-4 h-4 text-orange-500" />, end: 'Page' },
+        { id: 'faculty-2', label: 'My Courses', route: '/faculty/courses', icon: <BookOpen className="w-4 h-4 text-blue-500" />, end: 'Page' },
+        { id: 'faculty-3', label: 'Assignments', route: '/faculty/assignments', icon: <CheckSquare className="w-4 h-4 text-purple-500" />, end: 'Page' },
+        { id: 'faculty-4', label: 'Quizzes', route: '/faculty/quizzes', icon: <LayoutGrid className="w-4 h-4 text-green-500" />, end: 'Page' },
+        { id: 'faculty-5', label: 'Analytics', route: '/faculty/analytics', icon: <BarChart2 className="w-4 h-4 text-pink-500" />, end: 'Page' },
+      ],
+      student: [
+        { id: 'student-1', label: 'Dashboard', route: '/student/dashboard', icon: <LayoutGrid className="w-4 h-4 text-orange-500" />, end: 'Page' },
+        { id: 'student-2', label: 'My Courses', route: '/student/courses', icon: <BookOpen className="w-4 h-4 text-blue-500" />, end: 'Page' },
+        { id: 'student-3', label: 'Assignments', route: '/student/assignments', icon: <CheckSquare className="w-4 h-4 text-purple-500" />, end: 'Page' },
+        { id: 'student-4', label: 'Quizzes', route: '/student/quizzes', icon: <LayoutGrid className="w-4 h-4 text-green-500" />, end: 'Page' },
+        { id: 'student-5', label: 'Grades & Results', route: '/student/results', icon: <BarChart2 className="w-4 h-4 text-pink-500" />, end: 'Page' },
+      ]
+    };
+    return roleActions[user.role] || roleActions.student;
+  };
+
   return (
     <header
       className="sticky top-0 z-20 flex items-center gap-4 px-6 h-16"
@@ -86,7 +114,6 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
         backdropFilter: 'blur(20px)',
       }}
     >
-      {/* Mobile menu button */}
       <button
         onClick={onMenuClick}
         className="md:hidden p-2 rounded-lg transition-colors hover:bg-[var(--surface-2)]"
@@ -94,29 +121,14 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
         <Menu size={20} style={{ color: 'var(--muted)' }} />
       </button>
 
-      {/* Search */}
-      <div className="flex-1 max-w-md relative hidden md:block">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-        <input
-          type="text"
-          placeholder="Search courses, assignments..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          className="w-full pl-9 pr-4 py-2 text-sm rounded-xl transition-all"
-          style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            color: 'var(--foreground)',
-            outline: 'none',
-          }}
-          onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
-          onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
-        />
+      {/* Search Bar - Hidden on mobile */}
+      <div className="hidden md:block flex-1 max-w-xl mx-4">
+        <ActionSearchBar actions={getActions()} />
       </div>
 
       <div className="flex items-center gap-2 ml-auto">
         {/* Streak badge */}
-        {user.streak > 0 && (
+        {user.role === 'student' && user.streak > 0 && (
           <div
             className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-semibold"
             style={{ background: 'rgba(251,146,60,0.1)', color: '#f97316', border: '1px solid rgba(251,146,60,0.2)' }}

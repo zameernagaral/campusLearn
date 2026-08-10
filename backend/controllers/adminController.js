@@ -176,6 +176,15 @@ exports.getDepartments = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+exports.getDepartmentById = async (req, res, next) => {
+  try {
+    const department = await Department.findById(req.params.id)
+      .populate('hod', 'name email avatar');
+    if (!department) return errorResponse(res, 404, 'Department not found.');
+    successResponse(res, 200, 'Department fetched.', department);
+  } catch (error) { next(error); }
+};
+
 exports.updateDepartment = async (req, res, next) => {
   try {
     const dept = await Department.findByIdAndUpdate(req.params.id, req.body, { new: true });
