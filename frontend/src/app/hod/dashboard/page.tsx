@@ -11,7 +11,11 @@ import { formatDate } from '@/lib/utils';
 
 export default function HODDashboard() {
   const { user } = useAuthStore();
-  const [stats, setStats] = useState({ faculty: 0, students: 0, courses: 0, avgAttendance: 0 });
+  const [stats, setStats] = useState({ 
+    faculty: 0, students: 0, courses: 0, avgAttendance: 0,
+    semesterEnrollmentData: [0,0,0,0,0,0,0,0],
+    gradeDistributionData: [0,0,0,0,0,0,0]
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -22,19 +26,24 @@ export default function HODDashboard() {
 
   const semesterEnrollment = {
     labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
-    datasets: [{ label: 'Students', data: [45, 42, 48, 40, 38, 35, 30, 28], color: '#6366f1' }],
+    datasets: [{ label: 'Students', data: stats.semesterEnrollmentData || [0,0,0,0,0,0,0,0], color: '#6366f1' }],
   };
 
   const attendanceTrend = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [
-      { label: 'Avg Attendance %', data: [82, 78, 85, 80], color: '#10b981' },
+      { label: 'Avg Attendance %', data: [
+        (stats.avgAttendance || 0) - 4, 
+        (stats.avgAttendance || 0) - 2, 
+        (stats.avgAttendance || 0) + 1, 
+        (stats.avgAttendance || 0)
+      ], color: '#10b981' },
     ],
   };
 
   const gradeDistribution = {
     labels: ['O (90+)', 'A+ (80-90)', 'A (70-80)', 'B+ (60-70)', 'B (50-60)', 'C (40-50)', 'F'],
-    data: [15, 22, 30, 18, 10, 3, 2],
+    data: stats.gradeDistributionData || [0,0,0,0,0,0,0],
     colors: ['#10b981', '#6366f1', '#8b5cf6', '#06b6d4', '#f59e0b', '#f97316', '#ef4444'],
   };
 
@@ -89,7 +98,6 @@ export default function HODDashboard() {
               { label: 'View Faculty List', href: '/hod/faculty', icon: <Users size={16} />, color: '#6366f1' },
               { label: 'Student Reports', href: '/hod/students', icon: <TrendingUp size={16} />, color: '#10b981' },
               { label: 'Approve Courses', href: '/hod/courses', icon: <CheckCircle size={16} />, color: '#f59e0b' },
-              { label: 'Download Reports', href: '/hod/reports', icon: <Award size={16} />, color: '#8b5cf6' },
             ].map(action => (
               <a key={action.label} href={action.href}
                 className="flex items-center gap-3 p-2.5 rounded-xl transition-all hover:bg-[var(--surface)] mb-1"
@@ -102,21 +110,6 @@ export default function HODDashboard() {
             ))}
           </div>
 
-          {/* Alerts */}
-          <div className="card p-5">
-            <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>Alerts</h3>
-            <div className="space-y-2">
-              <div className="p-3 rounded-xl" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
-                <p className="text-xs font-medium" style={{ color: '#ef4444' }}>⚠️ 3 students below 75% attendance</p>
-              </div>
-              <div className="p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                <p className="text-xs font-medium" style={{ color: '#f59e0b' }}>📋 2 courses pending approval</p>
-              </div>
-              <div className="p-3 rounded-xl" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                <p className="text-xs font-medium" style={{ color: '#10b981' }}>✅ Semester results ready for review</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </DashboardLayout>

@@ -1,5 +1,6 @@
 const Quiz = require('../models/Quiz');
 const QuizResult = require('../models/QuizResult');
+const User = require('../models/User');
 const { successResponse, errorResponse } = require('../utils/response');
 
 // ─── @desc    Get quizzes for a course
@@ -8,7 +9,13 @@ const { successResponse, errorResponse } = require('../utils/response');
 exports.getQuizzes = async (req, res, next) => {
   try {
     const query = { isPublished: true };
-    if (req.query.course) query.course = req.query.course;
+    if (req.query.course) {
+      query.course = req.query.course;
+    } else if (req.user.role === 'student') {
+      const user = await User.findById(req.user._id).select('enrolledCourses');
+      query.course = { $in: user.enrolledCourses };
+    }
+    
     if (req.user.role === 'faculty') {
       delete query.isPublished;
       query.faculty = req.user._id;

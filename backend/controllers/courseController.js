@@ -10,18 +10,35 @@ const { successResponse, errorResponse, paginatedResponse } = require('../utils/
 // ─── @access  Public/Private
 exports.getCourses = async (req, res, next) => {
   try {
-    const { search, department, semester, faculty, page = 1, limit = 12 } = req.query;
+    const { search, department, semester, faculty, enrolled, page = 1, limit = 12 } = req.query;
     const query = {};
 
     if (search) query.$text = { $search: search };
     if (department) query.department = department;
     if (semester) query.semester = parseInt(semester);
-    if (faculty) query.faculty = faculty;
+    if (faculty) {
+      query.faculty = faculty;
+    } else if (req.user && req.user.role === 'faculty') {
+      // If a faculty member requests courses without specifying a faculty ID, default to their own courses.
+      query.faculty = req.user._id;
+    }
 
     // Students/public only see published+approved courses
     if (!req.user || req.user.role === 'student') {
       query.isPublished = true;
       query.isApproved = true;
+      
+      if (req.user) {
+        // Students should only see courses for their own semester
+        if (req.user.semester) {
+          query.semester = req.user.semester;
+        }
+        
+        // If they only want enrolled courses
+        if (enrolled === 'true') {
+          query.enrolledStudents = req.user._id;
+        }
+      }
     }
 
     const skip = (page - 1) * limit;

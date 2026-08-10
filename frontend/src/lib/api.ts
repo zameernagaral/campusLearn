@@ -206,5 +206,12 @@ export const liveClassAPI = {
   getAll: (params?: Record<string, unknown>) => api.get('/live-classes', { params }),
   create: (data: Record<string, unknown>) => api.post('/live-classes', data),
 };
+// ─── Calendar API ─────────────────────────────────────────────────────────────
+
+export const calendarAPI = {
+  getAll: (params?: Record<string, unknown>) => api.get('/calendar', { params }),
+  create: (data: Record<string, unknown>) => api.post('/calendar', data),
+  delete: (id: string) => api.delete(`/calendar/${id}`),
+};
 
 export default api;

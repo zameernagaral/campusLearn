@@ -82,7 +82,7 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/hod', require('./routes/hod'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/live-classes', require('./routes/liveClasses'));
-
+app.use('/api/calendar', require('./routes/calendar'));
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({

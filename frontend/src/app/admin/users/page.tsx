@@ -25,7 +25,7 @@ export default function AdminUsersPage() {
   const [isUploading, setIsUploading] = useState(false);
 
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'student', department: '' });
+  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'student', department: '', semester: '' });
   const [isAddingUser, setIsAddingUser] = useState(false);
 
   const LIMIT = 15;
@@ -80,6 +80,16 @@ export default function AdminUsersPage() {
       fetchUsers();
     } catch (err) {
       toast.error('Failed to update department');
+    }
+  };
+
+  const handleUpdateSemester = async (id: string, semester: string) => {
+    try {
+      await adminAPI.updateUser(id, { semester: semester === 'none' ? null : parseInt(semester) });
+      toast.success('Semester updated');
+      fetchUsers();
+    } catch (err) {
+      toast.error('Failed to update semester');
     }
   };
 
@@ -149,14 +159,21 @@ export default function AdminUsersPage() {
 
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newUser.name || !newUser.email) return toast.error('Name and email are required.');
+    if (!newUser.name || !newUser.email || !newUser.department || !newUser.semester) {
+      return toast.error('Name, email, department, and semester are required.');
+    }
+
+    const userPayload: any = { ...newUser };
+    if (!userPayload.semester) delete userPayload.semester;
+    else userPayload.semester = parseInt(userPayload.semester);
+    if (!userPayload.department) delete userPayload.department;
 
     setIsAddingUser(true);
     try {
-      const { data } = await adminAPI.bulkCreateUsers([newUser]);
+      const { data } = await adminAPI.bulkCreateUsers([userPayload]);
       toast.success(data.message || 'User created successfully!');
       setShowAddUserModal(false);
-      setNewUser({ name: '', email: '', role: 'student', department: '' });
+      setNewUser({ name: '', email: '', role: 'student', department: '', semester: '' });
       fetchUsers();
     } catch (error: any) {
       toast.error(error.message || 'Failed to create user.');
@@ -218,6 +235,7 @@ export default function AdminUsersPage() {
                 <th>User</th>
                 <th>Role</th>
                 <th>Department</th>
+                <th>Semester</th>
                 <th>Status</th>
                 <th>Joined</th>
                 <th>Actions</th>
@@ -227,7 +245,7 @@ export default function AdminUsersPage() {
               {isLoading ? (
                 Array(8).fill(null).map((_, i) => (
                   <tr key={i}>
-                    {Array(6).fill(null).map((_, j) => (
+                    {Array(7).fill(null).map((_, j) => (
                       <td key={j}><div className="skeleton h-4 rounded" /></td>
                     ))}
                   </tr>
@@ -272,6 +290,18 @@ export default function AdminUsersPage() {
                       <option value="none">No Department</option>
                       {departments.map(d => (
                         <option key={d._id} value={d._id}>{d.name}</option>
+                      ))}
+                    </select>
+                  </td>
+                  <td>
+                    <select
+                      value={user.semester || 'none'}
+                      onChange={e => handleUpdateSemester(user._id, e.target.value)}
+                      className="badge text-xs capitalize border-0 cursor-pointer bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    >
+                      <option value="none">N/A</option>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map(s => (
+                        <option key={s} value={s}>Sem {s}</option>
                       ))}
                     </select>
                   </td>
@@ -381,7 +411,7 @@ export default function AdminUsersPage() {
 
               <div className="p-3 rounded-lg bg-orange-50 dark:bg-orange-500/10 border border-orange-500/20">
                 <p className="text-xs font-medium text-orange-800 dark:text-orange-300">
-                  <span className="font-bold">Info:</span> All newly created users will have their password set to <code className="bg-orange-200 dark:bg-orange-900/50 px-1 rounded text-orange-900 dark:text-orange-200">CampusLearn@123</code>.
+                  <span className="font-bold">Info:</span> All newly created users will have their password set to <code className="bg-orange-200 dark:bg-orange-900/50 px-1 rounded text-orange-900 dark:text-orange-200">password123</code>.
                 </p>
               </div>
 
@@ -463,22 +493,38 @@ export default function AdminUsersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold mb-2">Department (Optional)</label>
+                <label className="block text-sm font-semibold mb-2">Department</label>
                 <select
+                  required
                   value={newUser.department}
                   onChange={e => setNewUser({ ...newUser, department: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
                 >
-                  <option value="">No Department</option>
+                  <option value="" disabled>Select Department</option>
                   {departments.map(d => (
                     <option key={d._id} value={d._id}>{d.name}</option>
                   ))}
                 </select>
               </div>
 
+              <div>
+                <label className="block text-sm font-semibold mb-2">Semester</label>
+                <select
+                  required
+                  value={newUser.semester}
+                  onChange={e => setNewUser({ ...newUser, semester: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
+                >
+                  <option value="" disabled>Select Semester</option>
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(s => (
+                    <option key={s} value={s}>Semester {s}</option>
+                  ))}
+                </select>
+              </div>
+
               <div className="p-3 rounded-lg bg-orange-50 dark:bg-orange-500/10 border border-orange-500/20">
                 <p className="text-xs font-medium text-orange-800 dark:text-orange-300">
-                  <span className="font-bold">Info:</span> The default password will be <code className="bg-orange-200 dark:bg-orange-900/50 px-1 rounded text-orange-900 dark:text-orange-200">CampusLearn@123</code>.
+                  <span className="font-bold">Info:</span> The default password will be <code className="bg-orange-200 dark:bg-orange-900/50 px-1 rounded text-orange-900 dark:text-orange-200">password123</code>.
                 </p>
               </div>
 

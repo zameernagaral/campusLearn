@@ -1,19 +1,48 @@
 'use client';
 import toast from 'react-hot-toast';
 
+import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { calendarAPI } from '@/lib/api';
 
 export default function CalendarPage() {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const dates = Array.from({ length: 35 }, (_, i) => i - 2); // Simple mock calendar grid
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [events, setEvents] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchEvents = async () => {
+    setIsLoading(true);
+    try {
+      const res = await calendarAPI.getAll();
+      setEvents(res.data?.data || res.data || []);
+    } catch (error) {
+      toast.error('Failed to load events');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  // Calendar logic
+  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
   
-  const events = [
-    { id: 1, title: 'Machine Learning Midterm', type: 'exam', time: '10:00 AM - 12:00 PM', location: 'Hall A', date: 15 },
-    { id: 2, title: 'Data Structures Lab', type: 'class', time: '2:00 PM - 4:00 PM', location: 'Lab 3', date: 15 },
-    { id: 3, title: 'Project Submission', type: 'deadline', time: '11:59 PM', location: 'Online', date: 18 },
-  ];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dates = Array.from({ length: 42 }, (_, i) => {
+    const date = i - firstDayOfMonth + 1;
+    return date;
+  });
+
+  const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  const goToday = () => setCurrentDate(new Date());
+
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   return (
     <DashboardLayout requiredRole="student">
@@ -22,9 +51,6 @@ export default function CalendarPage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Academic Calendar</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Manage your classes, exams, and deadlines</p>
         </div>
-        <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="btn btn-primary flex items-center gap-2 text-sm bg-orange-500 hover:bg-orange-600 border-0 text-white shadow-lg shadow-orange-500/20">
-          <Plus size={16} /> Add Event
-        </button>
       </div>
 
       <div className="grid lg:grid-cols-4 gap-8">
@@ -34,16 +60,17 @@ export default function CalendarPage() {
             {/* Calendar Header */}
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                <CalendarIcon size={20} className="text-orange-500" /> August 2026
+                <CalendarIcon size={20} className="text-orange-500" /> 
+                {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
               </h2>
               <div className="flex items-center gap-2">
-                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
+                <button onClick={prevMonth} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
                   <ChevronLeft size={20} />
                 </button>
-                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                <button onClick={goToday} className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-sm font-semibold text-zinc-700 dark:text-zinc-300">
                   Today
                 </button>
-                <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
+                <button onClick={nextMonth} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500">
                   <ChevronRight size={20} />
                 </button>
               </div>
@@ -60,21 +87,27 @@ export default function CalendarPage() {
               
               {/* Dates */}
               {dates.map((date, i) => {
-                const isCurrentMonth = date > 0 && date <= 31;
-                const isToday = date === 15;
-                const dayEvents = events.filter(e => e.date === date);
+                const isCurrentMonth = date > 0 && date <= daysInMonth;
+                const cellDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), date);
+                const isToday = isCurrentMonth && cellDate.toDateString() === new Date().toDateString();
+                
+                const dayEvents = events.filter(e => {
+                  if (!isCurrentMonth) return false;
+                  const eDate = new Date(e.startTime);
+                  return eDate.toDateString() === cellDate.toDateString();
+                });
 
                 return (
                   <div key={i} className={`bg-white dark:bg-zinc-900 min-h-[100px] p-2 ${!isCurrentMonth ? 'opacity-30 bg-zinc-50/50 dark:bg-zinc-900/50' : ''}`}>
                     <div className="flex items-center justify-between mb-2">
                       <span className={`w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium ${isToday ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20' : 'text-zinc-700 dark:text-zinc-300'}`}>
-                        {date > 0 ? (date <= 31 ? date : date - 31) : date + 31}
+                        {isCurrentMonth ? date : (date <= 0 ? new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate() + date : date - daysInMonth)}
                       </span>
                     </div>
                     
                     <div className="space-y-1">
                       {dayEvents.map(event => (
-                        <div key={event.id} className={`text-[10px] p-1.5 rounded-lg truncate font-medium border ${
+                        <div key={event._id} className={`text-[10px] p-1.5 rounded-lg truncate font-medium border ${
                           event.type === 'exam' ? 'bg-red-50 text-red-600 border-red-100 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20' :
                           event.type === 'class' ? 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20' :
                           'bg-orange-50 text-orange-600 border-orange-100 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20'
@@ -96,9 +129,15 @@ export default function CalendarPage() {
             <h3 className="font-bold text-zinc-900 dark:text-white mb-6">Upcoming Events</h3>
             
             <div className="space-y-4">
-              {events.map((event, i) => (
+              {isLoading ? (
+                <div className="flex justify-center py-8">
+                  <span className="w-6 h-6 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+                </div>
+              ) : events.length === 0 ? (
+                <p className="text-zinc-500 text-sm text-center py-4">No upcoming events.</p>
+              ) : events.filter(e => new Date(e.startTime) >= new Date()).slice(0, 5).map((event, i) => (
                 <motion.div 
-                  key={event.id}
+                  key={event._id}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
@@ -116,11 +155,14 @@ export default function CalendarPage() {
                   
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs text-zinc-500">
-                      <Clock size={14} /> {event.time}
+                      <Clock size={14} /> 
+                      {new Date(event.startTime).toLocaleDateString()} {new Date(event.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                      <MapPin size={14} /> {event.location}
-                    </div>
+                    {event.location && (
+                      <div className="flex items-center gap-2 text-xs text-zinc-500">
+                        <MapPin size={14} /> {event.location}
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               ))}

@@ -5,38 +5,27 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { courseAPI } from '@/lib/api';
+import { useAuthStore } from '@/store/authStore';
 
-export default function AdminCoursesPage() {
+export default function HODCoursesPage() {
   const [courses, setCourses] = useState<any[]>([]);
-  const [departments, setDepartments] = useState<any[]>([]);
   const [semesterFilter, setSemesterFilter] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuthStore();
 
   useEffect(() => {
-    fetchDepartments();
-  }, []);
-
-  useEffect(() => {
-    fetchCourses();
-  }, [semesterFilter, departmentFilter]);
-
-  const fetchDepartments = async () => {
-    try {
-      const { adminAPI } = await import('@/lib/api');
-      const res = await adminAPI.getDepartments();
-      setDepartments(res.data?.data || []);
-    } catch (err) {
-      console.error('Failed to load departments');
+    if (user?.department) {
+      fetchCourses();
     }
-  };
+  }, [semesterFilter, user?.department]);
 
   const fetchCourses = async () => {
     setIsLoading(true);
     try {
+      const deptId = typeof user?.department === 'object' ? (user.department as any)._id : user?.department;
       const res = await courseAPI.getAll({
         semester: semesterFilter || undefined,
-        department: departmentFilter || undefined,
+        department: deptId || undefined,
       });
       setCourses(res.data?.data || []);
     } catch (err) {
@@ -48,8 +37,6 @@ export default function AdminCoursesPage() {
 
   const handleTogglePublish = async (courseId: string, currentStatus: boolean) => {
     try {
-      // Create FormData as courseAPI.update expects FormData or Record but backend expects it via multer or JSON.
-      // Wait, backend courseController update handles req.body fine.
       await courseAPI.update(courseId, { isPublished: !currentStatus });
       toast.success(currentStatus ? 'Course moved to Draft' : 'Course Published');
       fetchCourses();
@@ -59,27 +46,16 @@ export default function AdminCoursesPage() {
   };
 
   return (
-    <DashboardLayout requiredRole="admin">
+    <DashboardLayout requiredRole="hod">
       <div className="flex items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">University Courses</h1>
-          <p className="text-sm mt-0.5 text-zinc-500">Monitor all courses across departments</p>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Department Courses</h1>
+          <p className="text-sm mt-0.5 text-zinc-500">Monitor all courses in your department</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="card p-4 mb-5 flex flex-wrap gap-3 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-950">
-        <select
-          value={departmentFilter}
-          onChange={e => setDepartmentFilter(e.target.value)}
-          className="px-4 py-2 rounded-xl text-sm outline-none bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all min-w-[200px]"
-        >
-          <option value="">All Departments</option>
-          {departments.map(d => (
-             <option key={d._id} value={d._id}>{d.name}</option>
-          ))}
-        </select>
-        
         <select
           value={semesterFilter}
           onChange={e => setSemesterFilter(e.target.value)}
@@ -139,9 +115,9 @@ export default function AdminCoursesPage() {
                     e.preventDefault();
                     handleTogglePublish(course._id, course.isPublished);
                   }}
-                  className="px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold rounded-lg transition-colors text-xs border border-zinc-200 dark:border-zinc-800"
+                  className="px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold rounded-lg transition-colors text-xs border border-zinc-200 dark:border-zinc-800 z-10"
                 >
-                  {course.isPublished ? 'Move to Draft' : 'Publish Course'}
+                  {course.isPublished ? 'Move to Draft' : 'Publish'}
                 </button>
               </div>
             </motion.div>
@@ -149,7 +125,7 @@ export default function AdminCoursesPage() {
           ))
         ) : (
           <div className="col-span-full border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-12 text-center bg-zinc-50 dark:bg-zinc-900/20">
-            <p className="text-zinc-500 font-medium">No courses found.</p>
+            <p className="text-zinc-500 font-medium">No courses found in your department.</p>
           </div>
         )}
       </div>

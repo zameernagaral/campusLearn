@@ -30,8 +30,34 @@ router.get('/stats', ...hodOrAdmin, async (req, res, next) => {
       ? Math.round((deptAttendance.reduce((s, a) => s + (a.totalPresent / (a.records.length || 1)), 0) / deptAttendance.length) * 100)
       : 0;
 
+    // Semester Enrollment
+    const semesterData = await User.aggregate([
+      { $match: { role: 'student', department: deptId } },
+      { $group: { _id: '$semester', count: { $sum: 1 } } }
+    ]);
+    const semesterEnrollmentData = [1,2,3,4,5,6,7,8].map(sem => {
+      const found = semesterData.find(s => s._id === sem);
+      return found ? found.count : 0;
+    });
+
+    // Grade Distribution
+    const studentsInDept = await User.find({ role: 'student', department: deptId }).select('_id');
+    const studentIds = studentsInDept.map(s => s._id);
+
+    const gradeData = await Result.aggregate([
+      { $match: { student: { $in: studentIds } } },
+      { $group: { _id: '$grade', count: { $sum: 1 } } }
+    ]);
+
+    const gradeOrder = ['O', 'A+', 'A', 'B+', 'B', 'C', 'F'];
+    const gradeDistributionData = gradeOrder.map(grade => {
+      const found = gradeData.find(g => g._id === grade);
+      return found ? found.count : 0;
+    });
+
     successResponse(res, 200, 'HOD stats fetched.', {
       faculty, students, courses, avgAttendance,
+      semesterEnrollmentData, gradeDistributionData
     });
   } catch (error) { next(error); }
 });

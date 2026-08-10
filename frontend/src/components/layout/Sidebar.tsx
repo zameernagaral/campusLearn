@@ -45,6 +45,7 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
     { label: 'Quizzes', href: '/faculty/quiz', icon: <FileText size={18} /> },
     { label: 'Live Classes', href: '/faculty/live', icon: <Video size={18} /> },
     { label: 'Analytics', href: '/faculty/analytics', icon: <PieChart size={18} /> },
+    { label: 'Calendar', href: '/faculty/calendar', icon: <Calendar size={18} /> },
   ],
   hod: [
     { label: 'Dashboard', href: '/hod/dashboard', icon: <LayoutDashboard size={18} /> },

@@ -14,6 +14,7 @@ export default function CreateCoursePage() {
     title: '',
     subjectCode: '',
     credits: '',
+    semester: '1',
     description: '',
   });
 
@@ -25,6 +26,7 @@ export default function CreateCoursePage() {
       formDataToSend.append('title', formData.title);
       formDataToSend.append('subjectCode', formData.subjectCode);
       formDataToSend.append('credits', formData.credits);
+      formDataToSend.append('semester', formData.semester);
       formDataToSend.append('description', formData.description);
 
       await courseAPI.create(formDataToSend);
@@ -96,6 +98,20 @@ export default function CreateCoursePage() {
                   className="w-full p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm font-medium"
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Semester</label>
+              <select
+                required
+                value={formData.semester}
+                onChange={e => setFormData({ ...formData, semester: e.target.value })}
+                className="w-full p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all text-sm font-medium"
+              >
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(s => (
+                  <option key={s} value={s}>Semester {s}</option>
+                ))}
+              </select>
             </div>
 
             <div className="space-y-2">

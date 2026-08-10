@@ -67,12 +67,13 @@ exports.getDashboardStats = async (req, res, next) => {
 // ─── @access  Private (Admin)
 exports.getUsers = async (req, res, next) => {
   try {
-    const { role, department, search, page = 1, limit = 20, isActive } = req.query;
+    const { role, department, search, page = 1, limit = 20, isActive, semester } = req.query;
     const query = {};
 
     if (role) query.role = role;
     if (department) query.department = department;
     if (isActive !== undefined) query.isActive = isActive === 'true';
+    if (semester) query.semester = parseInt(semester);
     if (search) query.$or = [
       { name: { $regex: search, $options: 'i' } },
       { email: { $regex: search, $options: 'i' } },
@@ -137,7 +138,7 @@ exports.bulkCreateUsers = async (req, res, next) => {
 
     const bcrypt = require('bcryptjs');
     const salt = await bcrypt.genSalt(12);
-    const defaultPasswordHash = await bcrypt.hash('CampusLearn@123', salt);
+    const defaultPasswordHash = await bcrypt.hash('password123', salt);
 
     const processedUsers = users.map(user => ({
       ...user,
@@ -170,17 +171,32 @@ exports.createDepartment = async (req, res, next) => {
 
 exports.getDepartments = async (req, res, next) => {
   try {
-    const departments = await Department.find()
-      .populate('hod', 'name email avatar');
-    successResponse(res, 200, 'Departments fetched.', departments);
+    const departments = await Department.find().populate('hod', 'name email avatar').lean();
+    
+    // Compute total faculty and students dynamically for each department
+    const formattedDepartments = await Promise.all(departments.map(async (dept) => {
+      const totalFaculty = await User.countDocuments({ department: dept._id, role: 'faculty' });
+      const totalStudents = await User.countDocuments({ department: dept._id, role: 'student' });
+      return {
+        ...dept,
+        totalFaculty,
+        totalStudents
+      };
+    }));
+    
+    successResponse(res, 200, 'Departments fetched.', formattedDepartments);
   } catch (error) { next(error); }
 };
 
 exports.getDepartmentById = async (req, res, next) => {
   try {
     const department = await Department.findById(req.params.id)
-      .populate('hod', 'name email avatar');
+      .populate('hod', 'name email avatar').lean();
     if (!department) return errorResponse(res, 404, 'Department not found.');
+    
+    department.totalFaculty = await User.countDocuments({ department: department._id, role: 'faculty' });
+    department.totalStudents = await User.countDocuments({ department: department._id, role: 'student' });
+    
     successResponse(res, 200, 'Department fetched.', department);
   } catch (error) { next(error); }
 };

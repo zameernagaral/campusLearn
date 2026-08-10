@@ -1,6 +1,7 @@
 const Assignment = require('../models/Assignment');
 const Submission = require('../models/Submission');
 const Notification = require('../models/Notification');
+const User = require('../models/User');
 const { successResponse, errorResponse, paginatedResponse } = require('../utils/response');
 
 // ─── @desc    Get assignments (for course or user)
@@ -10,7 +11,13 @@ exports.getAssignments = async (req, res, next) => {
   try {
     const { course, page = 1, limit = 10 } = req.query;
     const query = {};
-    if (course) query.course = course;
+    if (course) {
+      query.course = course;
+    } else if (req.user.role === 'student') {
+      const user = await User.findById(req.user._id).select('enrolledCourses');
+      query.course = { $in: user.enrolledCourses };
+    }
+    
     if (req.user.role === 'faculty') query.faculty = req.user._id;
 
     const skip = (page - 1) * limit;

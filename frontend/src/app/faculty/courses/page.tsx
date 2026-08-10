@@ -67,7 +67,7 @@ export default function FacultyCoursesPage() {
               
               <div className="flex justify-between items-center mb-6">
                 <span className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-widest rounded-lg">
-                  {course.subjectCode || 'CS601'}
+                  {course.subjectCode || 'CS601'} • Sem {course.semester || 'N/A'}
                 </span>
                 <span className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border ${
                   course.isPublished 
