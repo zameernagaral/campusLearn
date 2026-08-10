@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
@@ -113,11 +114,11 @@ export default function FacultySettingsPage() {
                    item.value ? (
                     <span className="text-zinc-500 text-sm font-medium">{item.value}</span>
                   ) : item.action ? (
-                    <button className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors">
                       EDIT
                     </button>
                   ) : item.toggle !== undefined ? (
-                    <button className={`w-12 h-6 rounded-full p-1 transition-colors ${item.toggle ? 'bg-blue-500' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
+                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className={`w-12 h-6 rounded-full p-1 transition-colors ${item.toggle ? 'bg-blue-500' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
                       <div className={`w-4 h-4 rounded-full bg-white transition-transform ${item.toggle ? 'translate-x-6' : 'translate-x-0'}`} />
                     </button>
                   ) : null}

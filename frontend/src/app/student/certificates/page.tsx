@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Award, Download, ExternalLink, ShieldCheck } from 'lucide-react';
@@ -54,10 +55,10 @@ export default function CertificatesPage() {
             </div>
 
             <div className="flex items-center gap-2 mt-auto">
-              <button className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-colors text-sm">
+              <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-colors text-sm">
                 <Download size={16} /> Download PDF
               </button>
-              <button className="w-10 h-10 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-900 dark:hover:text-white rounded-xl flex items-center justify-center transition-colors">
+              <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-10 h-10 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-900 dark:hover:text-white rounded-xl flex items-center justify-center transition-colors">
                 <ExternalLink size={16} />
               </button>
             </div>

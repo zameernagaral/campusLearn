@@ -4,9 +4,12 @@ import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { courseAPI } from '@/lib/api';
+import toast from 'react-hot-toast';
 
 export default function CreateCoursePage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     subjectCode: '',
@@ -14,10 +17,24 @@ export default function CreateCoursePage() {
     description: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate save and redirect
-    router.push('/faculty/courses');
+    setIsLoading(true);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('subjectCode', formData.subjectCode);
+      formDataToSend.append('credits', formData.credits);
+      formDataToSend.append('description', formData.description);
+
+      await courseAPI.create(formDataToSend);
+      toast.success('Course created successfully!');
+      router.push('/faculty/courses');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to create course');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -103,9 +120,10 @@ export default function CreateCoursePage() {
               </button>
               <button 
                 type="submit"
-                className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20"
+                disabled={isLoading}
+                className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Publish Course
+                {isLoading ? 'Publishing...' : 'Publish Course'}
               </button>
             </div>
           </form>

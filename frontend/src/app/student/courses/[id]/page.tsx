@@ -129,7 +129,7 @@ export default function CourseDetailsPage() {
                         <p className="text-sm text-zinc-500">{module.lessons?.length || 0} Lessons • {module.duration || 0} mins</p>
                       </div>
                     </div>
-                    <button className="text-sm font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="text-sm font-semibold text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity">
                       Start
                     </button>
                   </div>
@@ -171,7 +171,7 @@ export default function CourseDetailsPage() {
                         <Download size={16} /> Download
                       </a>
                     ) : (
-                      <button disabled className="flex items-center gap-2 text-sm font-semibold text-zinc-400 bg-zinc-50 dark:bg-zinc-800 px-4 py-2 rounded-lg opacity-50 cursor-not-allowed transition-all">
+                      <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  disabled className="flex items-center gap-2 text-sm font-semibold text-zinc-400 bg-zinc-50 dark:bg-zinc-800 px-4 py-2 rounded-lg opacity-50 cursor-not-allowed transition-all">
                         <Download size={16} /> Unavailable
                       </button>
                     )}
@@ -208,7 +208,7 @@ export default function CourseDetailsPage() {
               </div>
             </div>
 
-            <button className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/25 active:scale-[0.98]">
+            <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/25 active:scale-[0.98]">
               Resume Course
             </button>
           </div>

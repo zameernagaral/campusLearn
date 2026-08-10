@@ -136,7 +136,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
               </h1>
             </div>
             
-            <button className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
+            <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
               Edit Course
             </button>
           </div>
@@ -203,7 +203,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
                   >
                     <FileText size={16} /> Upload Notes
                   </button>
-                  <button className="text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
+                  <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="text-sm font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors border border-zinc-200 dark:border-zinc-800 px-4 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-900">
                     Manage
                   </button>
                 </div>

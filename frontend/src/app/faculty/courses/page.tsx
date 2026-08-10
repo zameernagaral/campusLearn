@@ -33,9 +33,9 @@ export default function FacultyCoursesPage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">My Courses</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Manage and update the courses you are teaching</p>
         </div>
-        <button className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
+        <Link href="/faculty/courses/create" className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap inline-flex items-center justify-center">
           Create New Course
-        </button>
+        </Link>
       </div>
 
       {isLoading ? (
@@ -48,9 +48,9 @@ export default function FacultyCoursesPage() {
         <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-12 text-center bg-zinc-50 dark:bg-zinc-900/20">
           <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-2">No Courses Found</h3>
           <p className="text-zinc-500 mb-6">You are not teaching any active courses this semester.</p>
-          <button className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm">
+          <Link href="/faculty/courses/create" className="inline-flex items-center justify-center px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm">
             Create Your First Course
-          </button>
+          </Link>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

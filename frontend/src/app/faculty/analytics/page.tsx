@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
@@ -83,10 +84,10 @@ export default function FacultyAnalyticsPage() {
           <p className="text-sm mt-0.5 text-zinc-500">Track student performance and course engagement</p>
         </div>
         <div className="flex bg-zinc-100 dark:bg-zinc-900/50 p-1 rounded-xl w-fit">
-          <button className="px-4 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm transition-colors">
+          <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm transition-colors">
             Overview
           </button>
-          <button className="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
+          <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
             Detailed Reports
           </button>
         </div>
@@ -158,7 +159,7 @@ export default function FacultyAnalyticsPage() {
               ))}
             </div>
 
-            <button className="w-full mt-4 py-3 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm">
+            <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-full mt-4 py-3 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm">
               View All Students
             </button>
           </div>

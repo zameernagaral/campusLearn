@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
@@ -23,7 +24,7 @@ export default function AdminProfilePage() {
             <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Admin Profile</h1>
             <p className="text-sm mt-0.5 text-zinc-500">View and manage your administrative profile</p>
           </div>
-          <button className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
+          <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
             Edit Profile
           </button>
         </div>

@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -22,7 +23,7 @@ export default function FacultyLivePage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Live Classes</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Schedule and manage your live video sessions</p>
         </div>
-        <button className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
+        <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20 whitespace-nowrap">
           Schedule Live Class
         </button>
       </div>
@@ -72,15 +73,15 @@ export default function FacultyLivePage() {
             <div className="flex items-center gap-4 border-t md:border-t-0 md:border-l border-zinc-100 dark:border-zinc-800/60 pt-4 md:pt-0 md:pl-8">
               {activeTab === 'upcoming' ? (
                 <>
-                  <button className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
+                  <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
                     Edit
                   </button>
-                  <button className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20">
+                  <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-colors text-sm shadow-lg shadow-orange-500/20">
                     Start Class
                   </button>
                 </>
               ) : (
-                <button className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
+                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800">
                   View Recording
                 </button>
               )}

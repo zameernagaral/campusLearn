@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
@@ -53,7 +54,7 @@ export default function FacultyAttendancePage() {
                   <p className="text-sm font-medium text-zinc-500">{course.time} • {course.students} Students</p>
                 </div>
                 
-                <button 
+                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  
                   className={`px-8 py-3.5 font-bold rounded-xl transition-all text-sm whitespace-nowrap ${
                     course.marked 
                       ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800' 
@@ -104,7 +105,7 @@ export default function FacultyAttendancePage() {
                 ))}
               </div>
             </div>
-            <button className="w-full py-4 bg-zinc-50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-widest transition-colors border-t border-zinc-100 dark:border-zinc-800">
+            <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-full py-4 bg-zinc-50 dark:bg-zinc-900/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-widest transition-colors border-t border-zinc-100 dark:border-zinc-800">
               View Full History
             </button>
           </div>

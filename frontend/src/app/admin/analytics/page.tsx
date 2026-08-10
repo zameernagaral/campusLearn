@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
@@ -96,13 +97,13 @@ export default function AdminAnalyticsPage() {
           <p className="text-sm mt-0.5 text-zinc-500">Comprehensive overview of university metrics</p>
         </div>
         <div className="flex bg-zinc-100 dark:bg-zinc-900/50 p-1 rounded-xl w-fit">
-          <button className="px-4 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm transition-colors">
+          <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm transition-colors">
             Overview
           </button>
-          <button className="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
+          <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
             Financials
           </button>
-          <button className="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
+          <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="px-4 py-1.5 rounded-lg text-xs font-bold text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">
             Export
           </button>
         </div>
@@ -148,7 +149,7 @@ export default function AdminAnalyticsPage() {
         <div className="bg-white dark:bg-zinc-950 p-6 lg:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-[400px] flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Students by Department</h3>
-            <button className="text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors uppercase tracking-widest">
+            <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors uppercase tracking-widest">
               View All
             </button>
           </div>

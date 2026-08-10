@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { useAuthStore } from '@/store/authStore';
 import { ArrowLeft } from 'lucide-react';
@@ -56,7 +57,7 @@ export default function FacultyProfilePage() {
               <p className="text-zinc-500 font-medium mb-6">Faculty Member</p>
 
               <div className="flex justify-center gap-3 mb-8">
-                <button className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
+                <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
                   Edit Profile
                 </button>
               </div>

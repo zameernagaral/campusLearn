@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { User, Bell, Shield, Paintbrush, ChevronRight, LogOut, Moon, Sun } from 'lucide-react';
@@ -122,11 +123,11 @@ export default function SettingsPage() {
                    item.value ? (
                     <span className="text-zinc-500 text-sm">{item.value}</span>
                   ) : item.action ? (
-                    <button className="w-8 h-8 rounded-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-8 h-8 rounded-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors">
                       <ChevronRight size={16} />
                     </button>
                   ) : item.toggle !== undefined ? (
-                    <button className={`w-12 h-6 rounded-full p-1 transition-colors ${item.toggle ? 'bg-orange-500' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
+                    <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className={`w-12 h-6 rounded-full p-1 transition-colors ${item.toggle ? 'bg-orange-500' : 'bg-zinc-200 dark:bg-zinc-700'}`}>
                       <div className={`w-4 h-4 rounded-full bg-white transition-transform ${item.toggle ? 'translate-x-6' : 'translate-x-0'}`} />
                     </button>
                   ) : null}

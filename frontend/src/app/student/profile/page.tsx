@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { useAuthStore } from '@/store/authStore';
 import { User, Mail, GraduationCap, MapPin, Calendar, Clock, Edit2, LogOut, ArrowLeft } from 'lucide-react';
@@ -63,7 +64,7 @@ export default function ProfilePage() {
                 {user.email}
               </p>
 
-              <button className="w-full py-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors">
+              <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="w-full py-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors">
                 <Edit2 size={16} /> Edit Profile
               </button>
             </div>

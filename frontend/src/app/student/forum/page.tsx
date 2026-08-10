@@ -1,4 +1,5 @@
 'use client';
+import toast from 'react-hot-toast';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { MessageSquare, Users, TrendingUp, Search, Plus } from 'lucide-react';
@@ -18,7 +19,7 @@ export default function ForumPage() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Discussion Forum</h1>
           <p className="text-sm mt-0.5 text-zinc-500">Connect with peers and discuss course topics</p>
         </div>
-        <button className="btn btn-primary flex items-center gap-2 text-sm bg-orange-500 hover:bg-orange-600 border-0 text-white shadow-lg shadow-orange-500/20">
+        <button onClick={() => toast("Feature coming soon!", { icon: "🚧" })}  className="btn btn-primary flex items-center gap-2 text-sm bg-orange-500 hover:bg-orange-600 border-0 text-white shadow-lg shadow-orange-500/20">
           <Plus size={16} /> New Discussion
         </button>
       </div>

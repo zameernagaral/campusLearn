@@ -77,7 +77,7 @@ exports.createCourse = async (req, res, next) => {
     } = req.body;
 
     const course = await Course.create({
-      title, description, shortDescription, department, semester, credits,
+      title, description, shortDescription, department: department || req.user.department, semester, credits,
       year, subjectCode, tags, level, learningOutcomes, prerequisites, language, isPublished,
       faculty: req.user._id,
       thumbnail: req.file?.path || '',
