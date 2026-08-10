@@ -35,6 +35,7 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
     { label: 'Discussion', href: '/student/forum', icon: <MessageSquare size={18} /> },
     { label: 'AI Assistant', href: '/student/ai-assistant', icon: <Bot size={18} /> },
     { label: 'Calendar', href: '/student/calendar', icon: <Calendar size={18} /> },
+    { label: 'Live Classes', href: '/student/live', icon: <Video size={18} /> },
   ],
   faculty: [
     { label: 'Dashboard', href: '/faculty/dashboard', icon: <LayoutDashboard size={18} /> },

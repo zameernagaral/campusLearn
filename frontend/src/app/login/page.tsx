@@ -70,8 +70,8 @@ export default function LoginPage() {
             <div className="space-y-3">
               {[
                 { role: 'Admin', email: 'admin@campuslearn.com', pass: 'Admin@123' },
-                { role: 'Faculty', email: 'priya@campuslearn.com', pass: 'Faculty@123' },
-                { role: 'Student', email: 'arjun@campuslearn.com', pass: 'Student@123' },
+                { role: 'Faculty', email: 'prof.cse92@rajeshwari.ac.in', pass: 'Faculty@123' },
+                { role: 'Student', email: 'arjun.cse20@rajeshwari.ac.in', pass: 'Student@123' },
               ].map(d => (
                 <div key={d.role} className="flex justify-between items-center pb-3 border-b border-zinc-800 last:border-0 last:pb-0">
                   <span className="font-semibold text-sm text-zinc-300">{d.role}</span>

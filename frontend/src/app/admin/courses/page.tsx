@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { courseAPI } from '@/lib/api';
 
 export default function AdminCoursesPage() {
@@ -52,13 +53,13 @@ export default function AdminCoursesPage() {
           ))
         ) : courses.length > 0 ? (
           courses.map((course, i) => (
-            <motion.div 
-              key={course._id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col group hover:shadow-2xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all relative overflow-hidden"
-            >
+            <Link key={course._id} href={`/admin/courses/${course._id}`} className="block">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col group hover:shadow-2xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all relative overflow-hidden h-full cursor-pointer"
+              >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
               <div className="flex justify-between items-start mb-6">
@@ -88,13 +89,17 @@ export default function AdminCoursesPage() {
                 </div>
                 
                 <button
-                  onClick={() => handleTogglePublish(course._id, course.isPublished)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleTogglePublish(course._id, course.isPublished);
+                  }}
                   className="px-4 py-2 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold rounded-lg transition-colors text-xs border border-zinc-200 dark:border-zinc-800"
                 >
                   {course.isPublished ? 'Move to Draft' : 'Publish Course'}
                 </button>
               </div>
             </motion.div>
+          </Link>
           ))
         ) : (
           <div className="col-span-full border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl p-12 text-center bg-zinc-50 dark:bg-zinc-900/20">

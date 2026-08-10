@@ -11,7 +11,18 @@ exports.getLiveClasses = async (req, res, next) => {
     const query = {};
     if (course) query.course = course;
     if (status) query.status = status;
-    if (req.user.role === 'faculty') query.faculty = req.user._id;
+    
+    if (req.user.role === 'faculty') {
+      query.faculty = req.user._id;
+    } else if (req.user.role === 'student') {
+      if (course) {
+        if (!req.user.enrolledCourses.includes(course)) {
+          return successResponse(res, 200, 'Live classes fetched.', []);
+        }
+      } else {
+        query.course = { $in: req.user.enrolledCourses || [] };
+      }
+    }
 
     const classes = await LiveClass.find(query)
       .populate('course', 'title subjectCode')

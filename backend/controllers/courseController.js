@@ -48,8 +48,9 @@ exports.getCourses = async (req, res, next) => {
 exports.getCourse = async (req, res, next) => {
   try {
     const course = await Course.findById(req.params.id)
-      .populate('faculty', 'name avatar designation bio')
+      .populate('faculty', 'name email avatar designation bio')
       .populate('department', 'name code')
+      .populate('enrolledStudents', 'name email avatar role')
       .populate({
         path: 'modules',
         populate: { path: 'lessons', select: 'title type duration isFree isPublished order documentUrl documentName videoUrl' },
