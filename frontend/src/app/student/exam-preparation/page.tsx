@@ -8,8 +8,25 @@ import toast from 'react-hot-toast';
 export default function ExamPreparationPage() {
   const [isStudying, setIsStudying] = useState<string | null>(null);
   const [timerActive, setTimerActive] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
   const [videoGenerated, setVideoGenerated] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timerActive && isStudying && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, isStudying, timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
 
   const handleGenerateVideo = () => {
     setIsGenerating(true);
@@ -80,7 +97,9 @@ export default function ExamPreparationPage() {
             <div className="space-y-4">
               <div className="card p-4 bg-indigo-600 text-white border-0">
                 <h3 className="font-bold mb-2">Pomodoro Timer</h3>
-                <div className={`text-4xl font-black text-center mb-4 ${!timerActive && 'opacity-50'}`}>24:59</div>
+                <div className={`text-4xl font-black text-center mb-4 ${!timerActive && 'opacity-50'}`}>
+                  {formatTime(timeLeft)}
+                </div>
                 <div className="flex justify-center gap-2">
                   <button onClick={() => setTimerActive(!timerActive)} className="btn bg-white text-indigo-600 hover:bg-gray-100 px-4 py-1 rounded flex items-center gap-1">
                     {timerActive ? <><Pause size={14} /> Pause</> : <><Play size={14} /> Resume</>}
@@ -149,7 +168,7 @@ export default function ExamPreparationPage() {
               <p className="font-bold text-sm">1. Transaction Management</p>
               <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">Predicted weightage: 15 Marks</p>
               <div className="mt-3 flex gap-2">
-                <button onClick={() => setIsStudying('Transaction Management')} className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-xs w-full py-2">Enter Focus Mode</button>
+                <button onClick={() => { setIsStudying('Transaction Management'); setTimeLeft(25 * 60); setTimerActive(true); }} className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-xs w-full py-2">Enter Focus Mode</button>
               </div>
             </div>
             <div className="p-3 bg-surface-2 rounded-xl border border-border">
@@ -189,7 +208,7 @@ export default function ExamPreparationPage() {
                        <span className="badge bg-gray-100 text-gray-600">Not Started</span>}
                     </td>
                     <td>
-                      <button onClick={() => setIsStudying(t.name)} className="text-xs text-indigo-600 font-bold hover:underline bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded">Study →</button>
+                      <button onClick={() => { setIsStudying(t.name); setTimeLeft(25 * 60); setTimerActive(true); }} className="text-xs text-indigo-600 font-bold hover:underline bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded">Study →</button>
                     </td>
                   </tr>
                 ))}
