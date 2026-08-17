@@ -6,7 +6,7 @@ import {
   LayoutDashboard, BookOpen, FileText, ClipboardList, BarChart2, Users,
   Calendar, Bell, MessageSquare, Bot, Trophy, Award, Settings, LogOut,
   GraduationCap, Building, UserCog, Database, ChevronRight, Home,
-  Video, Clipboard, PieChart, UserCheck, X
+  Video, Clipboard, PieChart, UserCheck, X, Map, Clock, Briefcase, Target, Layers
 } from 'lucide-react';
 import { cn, getInitials } from '@/lib/utils';
 import type { Role } from '@/types';
@@ -26,6 +26,10 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
   student: [
     { label: 'Dashboard', href: '/student/dashboard', icon: <LayoutDashboard size={18} /> },
     { label: 'My Courses', href: '/student/courses', icon: <BookOpen size={18} /> },
+    { label: 'Career Roadmap', href: '/student/career-roadmap', icon: <Map size={18} /> },
+    { label: 'Timetable', href: '/student/timetable', icon: <Clock size={18} /> },
+    { label: 'Exam Prep', href: '/student/exam-preparation', icon: <Target size={18} /> },
+    { label: 'Placement', href: '/student/placement-preparation', icon: <Briefcase size={18} /> },
     { label: 'Assignments', href: '/student/assignments', icon: <ClipboardList size={18} /> },
     { label: 'Attendance', href: '/student/attendance', icon: <UserCheck size={18} /> },
     { label: 'Quiz', href: '/student/quiz', icon: <FileText size={18} /> },
@@ -39,23 +43,35 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
   ],
   faculty: [
     { label: 'Dashboard', href: '/faculty/dashboard', icon: <LayoutDashboard size={18} /> },
+    { label: 'Timetable', href: '/faculty/timetable', icon: <Clock size={18} /> },
+    { label: 'Exam Portions', href: '/faculty/exam-preparation', icon: <Layers size={18} /> },
     { label: 'My Courses', href: '/faculty/courses', icon: <BookOpen size={18} /> },
     { label: 'Assignments', href: '/faculty/assignments', icon: <ClipboardList size={18} /> },
     { label: 'Attendance', href: '/faculty/attendance', icon: <UserCheck size={18} /> },
     { label: 'Quizzes', href: '/faculty/quiz', icon: <FileText size={18} /> },
     { label: 'Live Classes', href: '/faculty/live', icon: <Video size={18} /> },
+    { label: 'Career Progress', href: '/faculty/career-analytics', icon: <Target size={18} /> },
     { label: 'Analytics', href: '/faculty/analytics', icon: <PieChart size={18} /> },
     { label: 'Calendar', href: '/faculty/calendar', icon: <Calendar size={18} /> },
   ],
   hod: [
     { label: 'Dashboard', href: '/hod/dashboard', icon: <LayoutDashboard size={18} /> },
+    { label: 'Timetable', href: '/hod/timetable', icon: <Clock size={18} /> },
     { label: 'Faculty', href: '/hod/faculty', icon: <Users size={18} /> },
     { label: 'Students', href: '/hod/students', icon: <GraduationCap size={18} /> },
     { label: 'Courses', href: '/hod/courses', icon: <BookOpen size={18} /> },
+    { label: 'Exam Analytics', href: '/hod/exam-analytics', icon: <Target size={18} /> },
+    { label: 'Career Analytics', href: '/hod/career-analytics', icon: <Map size={18} /> },
+    { label: 'Placement Analytics', href: '/hod/placement-analytics', icon: <Briefcase size={18} /> },
     { label: 'Reports', href: '/hod/reports', icon: <BarChart2 size={18} /> },
   ],
   admin: [
     { label: 'Dashboard', href: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
+    { label: 'Timetable', href: '/admin/timetable', icon: <Clock size={18} /> },
+    { label: 'Career Mgmt', href: '/admin/career', icon: <Map size={18} /> },
+    { label: 'Exam Prep Mgmt', href: '/admin/exam-preparation', icon: <Target size={18} /> },
+    { label: 'Placement Mgmt', href: '/admin/placement', icon: <Briefcase size={18} /> },
+    { label: 'Companies', href: '/admin/companies', icon: <Building size={18} /> },
     { label: 'Users', href: '/admin/users', icon: <Users size={18} /> },
     { label: 'Departments', href: '/admin/departments', icon: <Building size={18} /> },
     { label: 'Courses', href: '/admin/courses', icon: <BookOpen size={18} /> },

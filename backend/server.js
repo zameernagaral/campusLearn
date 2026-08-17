@@ -83,6 +83,11 @@ app.use('/api/hod', require('./routes/hod'));
 app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/live-classes', require('./routes/liveClasses'));
 app.use('/api/calendar', require('./routes/calendar'));
+app.use('/api/career', require('./routes/career'));
+app.use('/api/timetable', require('./routes/timetable'));
+app.use('/api/exams', require('./routes/exams'));
+app.use('/api/attendance-extra', require('./routes/attendanceIntelligence'));
+app.use('/api/placement', require('./routes/placement'));
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({
