@@ -256,11 +256,13 @@ function HowItWorksSection() {
 // ─── FAQ Section ──────────────────────────────────────────────────────────────
 function FAQSection() {
  const [openIndex, setOpenIndex] = useState<number | null>(null);
- const faqs = [
- { q: 'Is CampusLearn free to use?', a: 'Yes. CampusLearn is completely free for students. Colleges require an institutional license to deploy the platform.' },
- { q: 'What features are included?', a: 'CampusLearn provides comprehensive attendance management, course delivery, assignment tracking, an AI assistant, and a leaderboard.' },
- { q: 'Is my data secure?', a: 'We use industry-standard security and encryption protocols.' },
- ];
+  const faqs = [
+    { q: 'Is CampusLearn free to use?', a: 'Yes. CampusLearn is completely free for students. Colleges require an institutional license to deploy the platform.' },
+    { q: 'What features are included?', a: 'CampusLearn provides comprehensive attendance management, course delivery, assignment tracking, an AI assistant, and a leaderboard.' },
+    { q: 'Is my data secure?', a: 'We use industry-standard security and encryption protocols. Your data is never sold or shared with third parties.' },
+    { q: 'Can faculty track student performance?', a: 'Absolutely. Faculty dashboards provide deep analytics on student attendance, grades, and overall participation.' },
+    { q: 'How long does deployment take?', a: 'Our standard deployment for a single institution typically takes less than 48 hours.' }
+  ];
 
  return (
  <section id="faq" className="py-24 bg-zinc-50 dark:bg-zinc-900">
@@ -296,6 +298,15 @@ function FAQSection() {
  )}
  </motion.div>
  ))}
+ </div>
+ 
+ <div className="mt-12 text-center bg-white dark:bg-zinc-950 p-6 border border-zinc-200 dark:border-zinc-800">
+ <p className="text-zinc-600 dark:text-zinc-400 mb-2">
+ Still have questions? Reach out to our support team.
+ </p>
+ <p className="text-base font-bold text-zinc-900 dark:text-white">
+ Our Promise: We will respond to all inquiries within 24 hours.
+ </p>
  </div>
  </div>
  </section>
@@ -382,6 +393,11 @@ export default function LandingPage() {
  <FAQSection />
  <CTASection />
  <Footer />
+ <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 z-50">
+ <Link href="/login" className="btn btn-primary w-full py-3 text-base flex items-center justify-center">
+ Start Free Today
+ </Link>
+ </div>
  </main>
  );
 }
