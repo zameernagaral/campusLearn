@@ -4,6 +4,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Target, Users, Map, TrendingUp, BarChart2, Star, PieChart, Activity, Briefcase, Building, CheckCircle, RefreshCw, X, ChevronRight } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
+import { Skeleton, ListSkeleton } from '@/components/shared/Skeleton';
 
 export default function AdminPlacementAnalyticsPage() {
  const [isSyncing, setIsSyncing] = useState(false);
@@ -31,12 +32,10 @@ export default function AdminPlacementAnalyticsPage() {
 
  {isSyncing && (
  <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
- <div className="bg-surface p-8 rounded-3xl w-full max-w-sm border border-border shadow-2xl relative text-center">
- <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
- <RefreshCw size={32} className="text-orange-500 animate-spin" />
- </div>
- <h2 className="text-2xl font-bold mb-2">Syncing TPO Data</h2>
- <p className="text-muted text-sm">Fetching latest placement scores, eligible student counts, and newly onboarded companies from the centralized database...</p>
+ <div className="bg-surface p-8 rounded-3xl w-full max-w-sm border border-border shadow-2xl relative">
+ <Skeleton className="h-8 w-48 mx-auto mb-4" />
+ <Skeleton className="h-4 w-full mb-6" />
+ <ListSkeleton count={3} height="h-12" />
  </div>
  </div>
  )}

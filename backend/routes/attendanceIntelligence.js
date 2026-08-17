@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
-const controller = require('../controllers/attendanceIntelligenceController');
+const c = require('../controllers/attendanceIntelligenceController');
 
-router.get('/risk', protect, controller.getRisk);
-router.get('/shortage', protect, controller.getShortage);
-router.get('/prediction', protect, controller.getPrediction);
-router.get('/alerts', protect, controller.getAlerts);
-router.post('/alerts/send', protect, controller.sendAlert);
+router.get('/risk', protect, c.getRisk);
+router.get('/shortage', protect, authorize('faculty', 'hod', 'admin'), c.getShortage);
+router.get('/prediction', protect, c.getPrediction);
+router.get('/alerts', protect, c.getAlerts);
+router.post('/alerts/send', protect, authorize('admin', 'hod'), c.sendAlerts);
 
 module.exports = router;

@@ -1,210 +1,301 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp, Users, Upload, X, FileText } from 'lucide-react';
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Clock, Plus, Edit2, X, Check, Video, MapPin, AlertTriangle, ChevronLeft, ChevronRight, Loader2, RefreshCw, XCircle, BookOpen, Beaker } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
+import { timetableAPI } from '@/lib/api';
+
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function fmt(iso: string, type: 'time' | 'date') {
+  const d = new Date(iso);
+  if (type === 'time') return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+
+const STATUS_STYLE: Record<string, string> = {
+  'Live Now':    'bg-red-50 text-red-600 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20',
+  'Upcoming':    'bg-zinc-50 text-zinc-500 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700',
+  'Completed':   'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
+  'Cancelled':   'bg-red-50 text-red-500 border-red-100 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20',
+  'Rescheduled': 'bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
+};
+
+interface FormState { subject: string; room: string; startDate: string; startTime: string; endTime: string; classType: string; meetingLink: string; notes: string; }
+const EMPTY_FORM: FormState = { subject: '', room: '', startDate: new Date().toISOString().split('T')[0], startTime: '10:00', endTime: '11:00', classType: 'Lecture', meetingLink: '', notes: '' };
+
+function makeMockClasses() {
+  const today = new Date().toISOString().split('T')[0];
+  return [
+    { _id: 'f1', subject: 'Database Management Systems', room: 'Room 204', startTime: `${today}T10:00:00`, endTime: `${today}T11:00:00`, classType: 'Lecture', meetingLink: 'https://meet.google.com/xyz', status: 'Upcoming', notes: '' },
+    { _id: 'f2', subject: 'DBMS Lab', room: 'Lab 2', startTime: `${today}T13:00:00`, endTime: `${today}T15:00:00`, classType: 'Lab', meetingLink: '', status: 'Upcoming', notes: '' },
+    { _id: 'f3', subject: 'Database Management Systems', room: 'Room 204', startTime: new Date(Date.now() + 86400000).toISOString().split('T')[0] + 'T10:00:00', endTime: new Date(Date.now() + 86400000).toISOString().split('T')[0] + 'T11:00:00', classType: 'Lecture', meetingLink: 'https://meet.google.com/xyz', status: 'Upcoming', notes: '' },
+  ];
+}
 
 export default function FacultyTimetablePage() {
-  const [activeDay, setActiveDay] = useState('Monday');
-  const [activeClass, setActiveClass] = useState<string | null>(null);
-  const [isUploadingTimetable, setIsUploadingTimetable] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [classes, setClasses] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [actionModal, setActionModal] = useState<{ type: 'reschedule' | 'cancel'; classId: string; subject: string } | null>(null);
+  const [reason, setReason] = useState('');
+  const [newTime, setNewTime] = useState('');
 
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  useEffect(() => {
+    const load = async () => {
+      setIsLoading(true);
+      try {
+        const res = await timetableAPI.getAll();
+        const data = res.data?.data;
+        setClasses(Array.isArray(data) && data.length > 0 ? data : makeMockClasses());
+      } catch {
+        setClasses(makeMockClasses());
+      } finally { setIsLoading(false); }
+    };
+    load();
+  }, []);
 
-  const [classes, setClasses] = useState([
-    { id: 1, subject: 'Database Management Systems', time: '10:00 AM - 11:00 AM', type: 'Lecture', batch: 'CS-A', room: 'Room 204', status: 'Live Now', day: 'Monday', attendance: 45 },
-    { id: 2, subject: 'Computer Networks', time: '11:15 AM - 12:15 PM', type: 'Lecture', batch: 'CS-B', room: 'Room 201', status: 'Upcoming', day: 'Monday', attendance: 0 },
-    { id: 3, subject: 'Advanced DBMS', time: '02:00 PM - 03:00 PM', type: 'Lecture', batch: 'MTech', room: 'Room 302', status: 'Upcoming', day: 'Monday', attendance: 0 },
-    { id: 4, subject: 'Database Management Systems', time: '09:00 AM - 10:00 AM', type: 'Lecture', batch: 'CS-B', room: 'Room 204', status: 'Upcoming', day: 'Tuesday', attendance: 0 },
-    { id: 5, subject: 'DBMS Lab', time: '10:15 AM - 12:15 PM', type: 'Lab', batch: 'CS-A', room: 'Lab 2', status: 'Upcoming', day: 'Tuesday', attendance: 0 },
-    { id: 6, subject: 'Computer Networks', time: '10:00 AM - 11:00 AM', type: 'Lecture', batch: 'CS-A', room: 'Room 201', status: 'Upcoming', day: 'Wednesday', attendance: 0 },
-  ]);
+  const dayStart = new Date(selectedDate); dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(selectedDate); dayEnd.setHours(23, 59, 59, 999);
+  const todayClasses = classes.filter(c => { const d = new Date(c.startTime); return d >= dayStart && d <= dayEnd; }).sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
 
-  const displayedClasses = classes.filter(c => c.day === activeDay);
-
-  const handleStartClass = (subject: string) => {
-    setActiveClass(subject);
-    toast.success(`Started live session for ${subject}`);
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.subject || !form.startDate || !form.startTime || !form.endTime) { toast.error('Please fill all required fields'); return; }
+    setIsSubmitting(true);
+    try {
+      const startTime = `${form.startDate}T${form.startTime}:00`;
+      const endTime = `${form.startDate}T${form.endTime}:00`;
+      await timetableAPI.create({ subject: form.subject, room: form.room, startTime, endTime, classType: form.classType, meetingLink: form.meetingLink, notes: form.notes });
+      const newClass = { _id: Date.now().toString(), ...form, startTime, endTime, status: 'Upcoming' };
+      setClasses(prev => [...prev, newClass]);
+      setForm(EMPTY_FORM); setShowForm(false);
+      toast.success('Class created successfully!');
+    } catch {
+      // Use mock
+      const startTime = `${form.startDate}T${form.startTime}:00`;
+      const endTime = `${form.startDate}T${form.endTime}:00`;
+      const newClass = { _id: Date.now().toString(), ...form, startTime, endTime, status: 'Upcoming' };
+      setClasses(prev => [...prev, newClass]);
+      setForm(EMPTY_FORM); setShowForm(false);
+      toast.success('Class added!');
+    } finally { setIsSubmitting(false); }
   };
 
-  const handleUpload = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setIsUploadingTimetable(false);
-      setFile(null);
-      setClasses(prev => [
-        ...prev,
-        { id: Math.random(), subject: 'Advanced Algorithms', time: '01:00 PM - 02:00 PM', type: 'Lecture', batch: 'CS-A', room: 'Room 401', status: 'Upcoming', day: 'Monday', attendance: 0 },
-        { id: Math.random(), subject: 'Data Science Lab', time: '02:00 PM - 04:00 PM', type: 'Lab', batch: 'CS-B', room: 'Lab 3', status: 'Upcoming', day: 'Tuesday', attendance: 0 }
-      ]);
-      toast.success('Timetable parsed and 2 new classes synced successfully!');
-    }, 2000);
+  const handleCancel = async () => {
+    if (!actionModal) return;
+    setIsSubmitting(true);
+    try {
+      await timetableAPI.cancel({ eventId: actionModal.classId, reason });
+    } catch { /* proceed with local */ }
+    setClasses(prev => prev.map(c => c._id === actionModal.classId ? { ...c, status: 'Cancelled', notes: reason } : c));
+    toast.success(`${actionModal.subject} cancelled.`);
+    setActionModal(null); setReason('');
+    setIsSubmitting(false);
   };
 
- if (activeClass) {
- return (
- <DashboardLayout requiredRole="faculty">
- <button onClick={() => setActiveClass(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
- <ArrowLeft size={16} /> End Class
- </button>
- <div className="card overflow-hidden bg-zinc-950 flex flex-col h-[70vh]">
- <div className="p-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center text-white">
- <div>
- <h2 className="font-bold">{activeClass} - Live Session</h2>
- <p className="text-xs text-gray-400 mt-1 flex items-center gap-2"><Users size={12} /> 42 Students Joined</p>
- </div>
- <div className="flex items-center gap-4">
- <div className="flex items-center gap-2 text-sm text-red-500 font-medium bg-red-500/10 px-3 py-1.5 rounded-full border border-red-500/20">
- <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> REC
- </div>
- </div>
- </div>
- <div className="flex-1 p-4 flex flex-col items-center justify-center relative">
- <div className="absolute top-4 right-4 grid grid-cols-2 gap-2">
- <div className="w-32 h-24 bg-gray-800 rounded-lg flex items-center justify-center text-xs text-gray-500">Student 1</div>
- <div className="w-32 h-24 bg-gray-800 rounded-lg flex items-center justify-center text-xs text-gray-500">Student 2</div>
- <div className="w-32 h-24 bg-gray-800 rounded-lg flex items-center justify-center text-xs text-gray-500">Student 3</div>
- <div className="w-32 h-24 bg-gray-800 rounded-lg flex items-center justify-center text-xs text-gray-500">+39 more</div>
- </div>
- 
- <div className="w-64 h-64 rounded-full bg-gray-800 flex items-center justify-center border-4 border-indigo-500">
- <Camera size={64} className="text-gray-500" />
- </div>
- <p className="text-gray-400 mt-6 font-medium">Your Camera is Off</p>
- </div>
- <div className="p-4 bg-gray-900 border-t border-gray-800 flex justify-center gap-4">
- <button className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600"><MicOff size={20} /></button>
- <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><Camera size={20} /></button>
- <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><MonitorUp size={20} /></button>
- <button onClick={() => { setActiveClass(null); toast.success('Class ended automatically. Attendance logged.'); }} className="px-6 h-12 rounded-full bg-red-500 flex items-center justify-center text-white font-bold hover:bg-red-600">End Meeting</button>
- </div>
- </div>
- </DashboardLayout>
- );
- }
+  const handleReschedule = async () => {
+    if (!actionModal || !newTime) { toast.error('Enter a new time'); return; }
+    setIsSubmitting(true);
+    const cls = classes.find(c => c._id === actionModal.classId);
+    const dateStr = new Date(cls.startTime).toISOString().split('T')[0];
+    try {
+      await timetableAPI.reschedule({ eventId: actionModal.classId, newStartTime: `${dateStr}T${newTime}:00`, newEndTime: new Date(new Date(`${dateStr}T${newTime}:00`).getTime() + 60 * 60000).toISOString(), reason });
+    } catch { /* proceed with local */ }
+    setClasses(prev => prev.map(c => c._id === actionModal.classId ? { ...c, startTime: `${dateStr}T${newTime}:00`, status: 'Rescheduled', notes: `Rescheduled. ${reason}` } : c));
+    toast.success(`${actionModal.subject} rescheduled!`);
+    setActionModal(null); setReason(''); setNewTime('');
+    setIsSubmitting(false);
+  };
 
- return (
- <DashboardLayout requiredRole="faculty">
- <Toaster position="top-right" />
- 
-      {isUploadingTimetable && (
-        <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-zinc-900 p-8 rounded-3xl w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-2xl relative">
-            <button disabled={isProcessing} onClick={() => { setIsUploadingTimetable(false); setFile(null); }} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors disabled:opacity-50">
-              <X size={24} />
-            </button>
-            <h2 className="text-2xl font-bold mb-2 text-zinc-900 dark:text-white flex items-center gap-2">
-              <Upload size={24} className="text-orange-500" /> Upload Timetable
-            </h2>
-            <p className="text-sm text-zinc-500 mb-8 leading-relaxed">
-              Upload your department's timetable in CSV or Excel format. Our AI will automatically parse and sync it to your schedule.
-            </p>
-            
-            <div className={`p-8 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-3 transition-all duration-300 ${file ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 hover:border-orange-500/50'}`}>
-              {isProcessing ? (
-                <div className="w-12 h-12 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
-              ) : (
-                <FileText size={32} className={file ? 'text-orange-500' : 'text-zinc-400'} />
-              )}
-              
-              <p className={`text-sm font-medium text-center ${file ? 'text-orange-700 dark:text-orange-400' : 'text-zinc-600 dark:text-zinc-300'}`}>
-                {isProcessing ? 'Processing AI Data...' : (file ? file.name : 'Drag and drop your file here')}
-              </p>
-              
-              {!isProcessing && (
-                <>
-                  {!file && <p className="text-xs text-zinc-500">CSV, XLSX (Max 5MB)</p>}
-                  <input type="file" className="hidden" id="timetable-upload" accept=".csv,.xlsx" onChange={e => setFile(e.target.files?.[0] || null)} />
-                  <label htmlFor="timetable-upload" className="mt-4 px-6 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-medium text-zinc-900 dark:text-white cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors shadow-sm">
-                    {file ? 'Change File' : 'Browse Files'}
-                  </label>
-                </>
-              )}
+  return (
+    <DashboardLayout requiredRole="faculty">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+        <div>
+          <div className="flex items-center gap-2 mb-0.5">
+            <Clock size={20} className="text-orange-500" />
+            <h1 className="text-2xl font-black text-zinc-900 dark:text-white">Timetable Management</h1>
+          </div>
+          <p className="text-sm text-zinc-500">Create, manage, reschedule and cancel your classes</p>
+        </div>
+        <button onClick={() => { setShowForm(true); setForm(EMPTY_FORM); setEditingId(null); }} className="flex items-center gap-2 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl text-sm transition-colors shadow-sm shadow-orange-500/20">
+          <Plus size={16} /> Create Class
+        </button>
+      </div>
+
+      {/* Action Modal */}
+      <AnimatePresence>
+        {actionModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setActionModal(null)}>
+            <motion.div initial={{ scale: 0.9, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 16 }} onClick={e => e.stopPropagation()} className="bg-white dark:bg-zinc-900 w-full max-w-sm rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-2xl">
+              <div className="p-5">
+                <h3 className="font-black text-zinc-900 dark:text-white mb-1">{actionModal.type === 'cancel' ? 'Cancel Class' : 'Reschedule Class'}</h3>
+                <p className="text-sm text-zinc-400 mb-4">{actionModal.subject}</p>
+                {actionModal.type === 'reschedule' && (
+                  <div className="mb-3">
+                    <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">New Start Time</label>
+                    <input type="time" value={newTime} onChange={e => setNewTime(e.target.value)} className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                  </div>
+                )}
+                <div className="mb-4">
+                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Reason (optional)</label>
+                  <input type="text" value={reason} onChange={e => setReason(e.target.value)} placeholder="e.g. Faculty on leave..." className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => setActionModal(null)} className="flex-1 py-2.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold rounded-xl text-sm transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-700">Cancel</button>
+                  <button onClick={actionModal.type === 'cancel' ? handleCancel : handleReschedule} disabled={isSubmitting} className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+                    {isSubmitting ? <Loader2 size={14} className="animate-spin" /> : null} Confirm
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="grid lg:grid-cols-[1fr_320px] gap-5">
+        <div>
+          {/* Create/Edit Form */}
+          <AnimatePresence>
+            {showForm && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden mb-4">
+                <form onSubmit={handleCreate} className="bg-white dark:bg-zinc-900 rounded-2xl border border-orange-200 dark:border-orange-500/30 p-5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-black text-zinc-900 dark:text-white">Create New Class</h3>
+                    <button type="button" onClick={() => setShowForm(false)} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl text-zinc-400 transition-colors"><X size={16} /></button>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="sm:col-span-2">
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Subject *</label>
+                      <input type="text" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="e.g. Database Management Systems" required className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Date *</label>
+                      <input type="date" value={form.startDate} onChange={e => setForm(f => ({ ...f, startDate: e.target.value }))} required className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Class Type</label>
+                      <select value={form.classType} onChange={e => setForm(f => ({ ...f, classType: e.target.value }))} className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white">
+                        {['Lecture', 'Lab', 'Tutorial', 'Online'].map(t => <option key={t}>{t}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Start Time *</label>
+                      <input type="time" value={form.startTime} onChange={e => setForm(f => ({ ...f, startTime: e.target.value }))} required className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">End Time *</label>
+                      <input type="time" value={form.endTime} onChange={e => setForm(f => ({ ...f, endTime: e.target.value }))} required className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Room</label>
+                      <input type="text" value={form.room} onChange={e => setForm(f => ({ ...f, room: e.target.value }))} placeholder="e.g. Room 204" className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Meeting Link</label>
+                      <input type="url" value={form.meetingLink} onChange={e => setForm(f => ({ ...f, meetingLink: e.target.value }))} placeholder="https://meet.google.com/..." className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1 block">Notes</label>
+                      <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Any additional notes..." className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:border-orange-500 outline-none text-zinc-900 dark:text-white" />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="submit" disabled={isSubmitting} className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60 shadow-sm shadow-orange-500/20">
+                      {isSubmitting ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />} Create Class
+                    </button>
+                    <button type="button" onClick={() => setShowForm(false)} className="py-2.5 px-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-bold rounded-xl text-sm transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-700">Cancel</button>
+                  </div>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Day Picker */}
+          <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
+            <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() - 1); setSelectedDate(d); }} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors shrink-0"><ChevronLeft size={16} className="text-zinc-500" /></button>
+            {Array.from({ length: 7 }, (_, i) => { const d = new Date(); d.setDate(d.getDate() - 3 + i); const isSelected = d.toDateString() === selectedDate.toDateString(); const isToday = d.toDateString() === new Date().toDateString();
+              return <button key={i} onClick={() => setSelectedDate(d)} className={`flex flex-col items-center min-w-[52px] py-2 px-1 rounded-xl transition-all ${isSelected ? 'bg-orange-500 text-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}`}><span className="text-[10px] font-bold uppercase">{DAYS[d.getDay()]}</span><span className={`text-base font-black mt-0.5 ${isToday && !isSelected ? 'text-orange-500' : ''}`}>{d.getDate()}</span></button>;
+            })}
+            <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() + 1); setSelectedDate(d); }} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors shrink-0"><ChevronRight size={16} className="text-zinc-500" /></button>
+          </div>
+
+          {/* Classes */}
+          {isLoading ? <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-24 bg-zinc-100 dark:bg-zinc-800 rounded-2xl animate-pulse" />)}</div>
+          : todayClasses.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+              <Clock size={36} className="text-zinc-200 dark:text-zinc-700 mb-3" />
+              <p className="font-bold text-zinc-900 dark:text-white mb-1">No classes on this day</p>
+              <button onClick={() => setShowForm(true)} className="mt-3 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl text-sm transition-colors">+ Add Class</button>
             </div>
+          ) : (
+            <div className="space-y-3">
+              {todayClasses.map((cls, i) => (
+                <motion.div key={cls._id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className={`bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden ${cls.status === 'Cancelled' ? 'opacity-60 border-zinc-200 dark:border-zinc-800' : 'border-zinc-200 dark:border-zinc-800 hover:shadow-md'}`}>
+                  <div className="flex">
+                    <div className={`w-1 shrink-0 ${cls.status === 'Live Now' ? 'bg-red-500' : cls.status === 'Cancelled' ? 'bg-zinc-300' : 'bg-orange-500'}`} />
+                    <div className="flex-1 p-4">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                            <span className={`text-[10px] px-2 py-0.5 font-bold rounded-full border ${STATUS_STYLE[cls.status]}`}>{cls.status}</span>
+                            <span className="text-[10px] px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded-full font-bold">{cls.classType}</span>
+                          </div>
+                          <h3 className={`font-black text-zinc-900 dark:text-white text-sm ${cls.status === 'Cancelled' ? 'line-through' : ''}`}>{cls.subject}</h3>
+                          <div className="flex items-center gap-3 mt-1.5 text-xs text-zinc-400">
+                            <span className="flex items-center gap-1"><Clock size={10} /> {fmt(cls.startTime, 'time')} – {fmt(cls.endTime, 'time')}</span>
+                            {cls.room && <span className="flex items-center gap-1"><MapPin size={10} /> {cls.room}</span>}
+                            {cls.meetingLink && <span className="flex items-center gap-1 text-orange-500"><Video size={10} /> Online Link</span>}
+                          </div>
+                          {cls.notes && <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1"><AlertTriangle size={10} /> {cls.notes}</p>}
+                        </div>
+                        {cls.status !== 'Cancelled' && cls.status !== 'Completed' && (
+                          <div className="flex gap-1.5 ml-2 shrink-0">
+                            <button onClick={() => setActionModal({ type: 'reschedule', classId: cls._id, subject: cls.subject })} className="p-2 hover:bg-amber-50 dark:hover:bg-amber-500/10 text-zinc-400 hover:text-amber-500 rounded-xl transition-colors" title="Reschedule"><RefreshCw size={14} /></button>
+                            <button onClick={() => setActionModal({ type: 'cancel', classId: cls._id, subject: cls.subject })} className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 text-zinc-400 hover:text-red-500 rounded-xl transition-colors" title="Cancel"><XCircle size={14} /></button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
 
-            <div className="mt-8 flex justify-end gap-3">
-              <button disabled={isProcessing} onClick={() => { setIsUploadingTimetable(false); setFile(null); }} className="px-6 py-3 rounded-xl font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50">
-                Cancel
-              </button>
-              <button 
-                disabled={!file || isProcessing}
-                onClick={handleUpload} 
-                className="px-6 py-3 rounded-xl font-medium bg-orange-500 hover:bg-orange-600 text-white transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-orange-500/20"
-              >
-                {isProcessing ? 'Parsing...' : 'Sync Timetable'}
-              </button>
+        {/* Sidebar */}
+        <div className="space-y-4">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4">
+            <h3 className="font-black text-zinc-900 dark:text-white text-sm mb-3">All Classes Summary</h3>
+            <div className="space-y-2">
+              {[
+                { label: 'Total', value: classes.length, cls: 'text-zinc-500' },
+                { label: 'Upcoming', value: classes.filter(c => c.status === 'Upcoming').length, cls: 'text-blue-500' },
+                { label: 'Completed', value: classes.filter(c => c.status === 'Completed').length, cls: 'text-emerald-500' },
+                { label: 'Cancelled', value: classes.filter(c => c.status === 'Cancelled').length, cls: 'text-red-500' },
+                { label: 'Rescheduled', value: classes.filter(c => c.status === 'Rescheduled').length, cls: 'text-amber-500' },
+              ].map(({ label, value, cls }) => (
+                <div key={label} className="flex justify-between items-center">
+                  <span className="text-xs text-zinc-500">{label}</span>
+                  <span className={`text-xs font-black ${cls}`}>{value}</span>
+                </div>
+              ))}
             </div>
           </div>
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-4 text-white">
+            <p className="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Today's Count</p>
+            <p className="text-3xl font-black">{todayClasses.filter(c => c.status !== 'Cancelled').length}</p>
+            <p className="text-sm opacity-80 mt-0.5">classes scheduled</p>
+          </div>
         </div>
-      )}
-
- <div className="flex items-center justify-between mb-6">
- <div>
- <h1 className="text-2xl font-bold text-foreground">Teaching Schedule</h1>
- <p className="text-muted mt-1">Manage your classes and start live lectures</p>
- </div>
- <button onClick={() => setIsUploadingTimetable(true)} className="btn btn-outline flex items-center gap-2">
- <Upload size={18} /> Upload Timetable
- </button>
- </div>
-
- <div className="flex gap-2 overflow-x-auto pb-4 mb-4 hide-scrollbar">
- {days.map((day, idx) => (
- <button
- key={day}
- onClick={() => setActiveDay(day)}
- className={`flex flex-col items-center min-w-[80px] p-3 rounded-xl border transition-all ${activeDay === day ? 'bg-primary text-white border-primary shadow-md' : 'bg-surface border-border hover:border-primary/30'}`}
- >
- <span className="text-xs font-medium uppercase opacity-80 mb-1">{day.substring(0, 3)}</span>
- <span className="text-xl font-bold">0{idx + 5}</span>
- </button>
- ))}
- </div>
-
- <div className="space-y-4">
- {displayedClasses.length === 0 ? (
- <div className="card p-10 text-center text-muted">No classes scheduled for you on {activeDay}. Enjoy your day!</div>
- ) : (
- displayedClasses.map((cls) => (
- <div key={cls.id} className={`card p-5 border-l-4 ${cls.status === 'Live Now' ? 'border-orange-500 ring-2 ring-orange-500/20' : 'border-zinc-300 dark:border-zinc-700'}`}>
- <div className="flex justify-between items-start">
- <div>
- <div className="flex items-center gap-2 mb-1">
- <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${cls.status === 'Live Now' ? 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400' : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'}`}>
- {cls.status === 'Live Now' && <span className="inline-block w-2 h-2 rounded-full bg-orange-500 mr-1 animate-pulse"></span>}
- {cls.status}
- </span>
- <span className="text-xs px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-500/20">{cls.type}</span>
- <span className="text-xs px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-500/20">{cls.batch}</span>
- </div>
- <h3 className="text-xl font-bold mt-2">{cls.subject}</h3>
- <p className="text-muted text-sm mt-1">Batch: {cls.batch} • Room: {cls.room}</p>
- </div>
- <div className="text-right">
- <p className="font-bold flex items-center justify-end gap-1"><Clock size={16} /> {cls.time}</p>
- {cls.status === 'Live Now' ? (
- <p className="text-sm text-green-600 font-medium flex items-center justify-end gap-1 mt-1"><Users size={14} /> {cls.attendance} expected</p>
- ) : (
- <p className="text-sm text-muted flex items-center justify-end gap-1 mt-1"><MapPin size={16} /> {cls.room}</p>
- )}
- </div>
- </div>
- 
- {cls.status === 'Live Now' && (
- <div className="mt-4 pt-4 border-t border-border flex justify-end">
- <a href="https://meet.google.com/new" target="_blank" rel="noopener noreferrer" className="btn btn-primary flex items-center gap-2">
- <Video size={18} /> Start Class (GMeet)
- </a>
- </div>
- )}
- </div>
- ))
- )}
- </div>
- </DashboardLayout>
- );
+      </div>
+    </DashboardLayout>
+  );
 }

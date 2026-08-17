@@ -6,6 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
 import { liveClassAPI } from '@/lib/api';
 import { Video, ArrowLeft, Users, Camera, MicOff } from 'lucide-react';
+import { LiveClassCardSkeleton } from '@/components/shared/Skeleton';
 
 export default function StudentLivePage() {
  const [activeTab, setActiveTab] = useState<'upcoming' | 'recorded'>('upcoming');
@@ -113,9 +114,11 @@ export default function StudentLivePage() {
 
  <div className="space-y-4">
  {isLoading ? (
- <div className="flex justify-center py-12">
- <span className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
- </div>
+ <>
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ </>
  ) : filteredClasses.map((cls, i) => (
  <motion.div 
  key={cls.id}

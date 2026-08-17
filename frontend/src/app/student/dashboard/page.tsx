@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/authStore';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { StudentDashboardSkeleton } from '@/components/shared/Skeleton';
 
 export default function StudentDashboard() {
  const { user } = useAuthStore();
@@ -123,17 +124,7 @@ export default function StudentDashboard() {
  </div>
 
   {isLoading || !smartData ? (
-  <div className="grid lg:grid-cols-3 gap-6">
-  <div className="lg:col-span-2 space-y-6">
-  <div className="h-40 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
-  <div className="h-64 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
-  <div className="h-48 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
-  </div>
-  <div className="space-y-6">
-  <div className="h-32 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
-  <div className="h-80 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
-  </div>
-  </div>
+  <StudentDashboardSkeleton />
   ) : (
   <div className="grid lg:grid-cols-3 gap-6">
   {/* Main Column */}
@@ -141,9 +132,12 @@ export default function StudentDashboard() {
   
   {/* TODAY SECTION */}
   <section>
-  <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
-  <Clock size={20} className="text-orange-500" /> Today's Overview
-  </h2>
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-lg font-bold flex items-center gap-2 text-zinc-900 dark:text-white">
+    <Clock size={20} className="text-orange-500" /> Today's Overview
+    </h2>
+    <Link href="/student/timetable" className="text-sm text-orange-500 font-bold hover:underline">View Timetable</Link>
+  </div>
   <div className="grid sm:grid-cols-3 gap-4">
   <div className="bg-white dark:bg-zinc-900/40 p-5 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center backdrop-blur-sm group hover:border-orange-500/30 transition-all hover:-translate-y-1">
   <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Next Class</p>
@@ -169,6 +163,7 @@ export default function StudentDashboard() {
  <h2 className="text-lg font-bold" style={{ color: 'var(--foreground)' }}>
  Academic Progress
  </h2>
+ <Link href="/student/exam-preparation" className="text-sm text-orange-500 font-bold hover:underline">Exam Prep</Link>
  </div>
  <div className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm backdrop-blur-sm">
  <div className="space-y-6">

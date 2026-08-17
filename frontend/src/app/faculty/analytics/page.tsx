@@ -17,7 +17,7 @@ import {
  ArcElement,
 } from 'chart.js';
 import { courseAPI, attendanceAPI } from '@/lib/api';
-import { Loader2 } from 'lucide-react';
+import { FullPageSkeleton } from '@/components/shared/Skeleton';
 
 ChartJS.register(
  CategoryScale,
@@ -128,9 +128,7 @@ export default function FacultyAnalyticsPage() {
  if (isLoading || !stats) {
  return (
  <DashboardLayout requiredRole="faculty">
- <div className="flex items-center justify-center min-h-[50vh]">
- <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
- </div>
+ <FullPageSkeleton />
  </DashboardLayout>
  );
  }

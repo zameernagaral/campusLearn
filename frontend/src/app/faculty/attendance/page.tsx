@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { courseAPI, attendanceAPI } from '@/lib/api';
 import { Clock, Calendar, Check, X, FileText, Loader2, Search } from 'lucide-react';
 import type { Course, User } from '@/types';
+import { ListSkeleton } from '@/components/shared/Skeleton';
 
 export default function FacultyAttendancePage() {
  const [courses, setCourses] = useState<Course[]>([]);
@@ -283,9 +284,7 @@ export default function FacultyAttendancePage() {
  </div>
 
  {isStudentsLoading ? (
- <div className="flex items-center justify-center p-8">
- <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
- </div>
+ <ListSkeleton count={5} height="h-14" />
  ) : students.length === 0 ? (
  <div className="text-center p-8 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800">
  <p className="text-zinc-500 text-sm">No students enrolled in this course.</p>

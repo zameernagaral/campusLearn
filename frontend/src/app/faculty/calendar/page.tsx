@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Plu
 import { motion } from 'framer-motion';
 import { calendarAPI, courseAPI } from '@/lib/api';
 import type { Course } from '@/types';
+import { CalendarEventsSkeleton } from '@/components/shared/Skeleton';
 
 export default function FacultyCalendarPage() {
  const [currentDate, setCurrentDate] = useState(new Date());
@@ -193,9 +194,7 @@ export default function FacultyCalendarPage() {
  
  <div className="space-y-4">
  {isLoading ? (
- <div className="flex justify-center py-8">
- <span className="w-6 h-6 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
- </div>
+ <CalendarEventsSkeleton count={4} />
  ) : events.length === 0 ? (
  <p className="text-zinc-500 text-sm text-center py-4">No upcoming events.</p>
  ) : events.filter(e => new Date(e.startTime) >= new Date()).slice(0, 5).map((event, i) => (

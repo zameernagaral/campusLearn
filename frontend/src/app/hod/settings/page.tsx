@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import React, { useState, useEffect } from 'react';
+import { Skeleton } from '@/components/shared/Skeleton';
 
 type SettingsItem = {
  label: string;
@@ -53,8 +54,8 @@ export default function HODSettingsPage() {
  {
  title: 'Account Settings',
  items: [
- { label: 'Full Name', value: user?.name || 'Loading...' },
- { label: 'Email Address', value: user?.email || 'Loading...' },
+ { label: 'Full Name', custom: user?.name ? <span className="text-sm font-bold text-zinc-900 dark:text-white">{user.name}</span> : <Skeleton className="h-4 w-32" /> },
+ { label: 'Email Address', custom: user?.email ? <span className="text-sm font-bold text-zinc-900 dark:text-white">{user.email}</span> : <Skeleton className="h-4 w-48" /> },
  { label: 'Employee ID', value: user?.employeeId || user?.rollNumber || user?._id || 'N/A' },
  ]
  },

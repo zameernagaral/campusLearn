@@ -214,4 +214,61 @@ export const calendarAPI = {
  delete: (id: string) => api.delete(`/calendar/${id}`),
 };
 
+// ─── Career API ───────────────────────────────────────────────────────────────
+export const careerAPI = {
+  getRoadmap: () => api.get('/career/roadmap'),
+  createRoadmap: (data: Record<string, unknown>) => api.post('/career/roadmap', data),
+  updateRoadmap: (data: Record<string, unknown>) => api.put('/career/roadmap', data),
+  createGoal: (data: Record<string, unknown>) => api.post('/career/goals', data),
+  getRecommendations: () => api.get('/career/recommendations'),
+  addSkill: (data: Record<string, unknown>) => api.post('/career/skills', data),
+  updateSkill: (id: string, data: Record<string, unknown>) => api.put(`/career/skills/${id}`, data),
+};
+
+// ─── Timetable API ────────────────────────────────────────────────────────────
+export const timetableAPI = {
+  getAll: (params?: Record<string, unknown>) => api.get('/timetable', { params }),
+  create: (data: Record<string, unknown>) => api.post('/timetable', data),
+  update: (id: string, data: Record<string, unknown>) => api.put(`/timetable/${id}`, data),
+  delete: (id: string) => api.delete(`/timetable/${id}`),
+  checkConflict: (data: Record<string, unknown>) => api.post('/timetable/check-conflict', data),
+  reschedule: (data: Record<string, unknown>) => api.post('/timetable/reschedule', data),
+  cancel: (data: Record<string, unknown>) => api.post('/timetable/cancel', data),
+};
+
+// ─── Exam Preparation API ─────────────────────────────────────────────────────
+export const examAPI = {
+  getPortions: (params?: Record<string, unknown>) => api.get('/exams/portions', { params }),
+  createPortion: (data: Record<string, unknown>) => api.post('/exams/portions', data),
+  updatePortion: (id: string, data: Record<string, unknown>) => api.put(`/exams/portions/${id}`, data),
+  getTopics: (params?: Record<string, unknown>) => api.get('/exams/topics', { params }),
+  generateStudyPlan: (data: Record<string, unknown>) => api.post('/exams/study-plan', data),
+  getProgress: () => api.get('/exams/study-progress'),
+};
+
+// ─── Attendance Intelligence API ──────────────────────────────────────────────
+export const attendanceIntelAPI = {
+  getRisk: () => api.get('/attendance-extra/risk'),
+  getShortage: () => api.get('/attendance-extra/shortage'),
+  getPrediction: (courseId: string) => api.get('/attendance-extra/prediction', { params: { courseId } }),
+  getAlerts: () => api.get('/attendance-extra/alerts'),
+  sendAlerts: () => api.post('/attendance-extra/alerts/send', {}),
+};
+
+// ─── Placement API (Extended) ─────────────────────────────────────────────────
+export const placementAPI = {
+  getDashboard: () => api.get('/placement/dashboard'),
+  getAptitude: (params?: Record<string, unknown>) => api.get('/placement/aptitude', { params }),
+  submitAptitudeTest: (data: Record<string, unknown>) => api.post('/placement/aptitude/test', data),
+  getCodingQuestions: (params?: Record<string, unknown>) => api.get('/placement/coding', { params }),
+  submitMockTest: (data: Record<string, unknown>) => api.post('/placement/mock-test', data),
+  startInterview: (data: Record<string, unknown>) => api.post('/placement/interview/start', data),
+  submitAnswer: (data: Record<string, unknown>) => api.post('/placement/interview/answer', data),
+  completeInterview: (data: Record<string, unknown>) => api.post('/placement/interview/complete', data),
+  analyzeResume: (data: Record<string, unknown>) => api.post('/placement/resume/analyze', data),
+  getCompanies: (params?: Record<string, unknown>) => api.get('/placement/companies', { params }),
+  getCompany: (id: string) => api.get(`/placement/companies/${id}`),
+  getProgress: () => api.get('/placement/progress'),
+};
+
 export default api;

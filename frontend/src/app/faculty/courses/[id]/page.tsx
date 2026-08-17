@@ -8,6 +8,7 @@ import { Upload, X, FileText, File } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { moduleAPI, courseAPI } from '@/lib/api';
 import type { Course } from '@/types';
+import { CourseDetailSkeleton } from '@/components/shared/Skeleton';
 
 export default function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
  const router = useRouter();
@@ -114,9 +115,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
  if (isLoading) {
  return (
  <DashboardLayout requiredRole="faculty">
- <div className="flex items-center justify-center min-h-[50vh]">
- <div className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
- </div>
+ <CourseDetailSkeleton />
  </DashboardLayout>
  );
  }

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, BookOpen, Clock, Users, Award, PlayCircle, FileText, Download, CheckCircle, Video } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { CourseDetailSkeleton } from '@/components/shared/Skeleton';
 
 export default function CourseDetailsPage() {
  const params = useParams();
@@ -36,9 +37,7 @@ export default function CourseDetailsPage() {
  if (isLoading) {
  return (
  <DashboardLayout requiredRole="student">
- <div className="flex items-center justify-center min-h-[50vh]">
- <div className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
- </div>
+ <CourseDetailSkeleton />
  </DashboardLayout>
  );
  }

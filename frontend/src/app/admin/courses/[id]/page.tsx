@@ -6,6 +6,7 @@ import { courseAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
 import { Users as UsersIcon, UserCircle, BookOpen, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { CourseDetailSkeleton } from '@/components/shared/Skeleton';
 
 export default function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
  const unwrappedParams = use(params);
@@ -31,9 +32,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
  if (isLoading) {
  return (
  <DashboardLayout requiredRole="admin">
- <div className="flex items-center justify-center min-h-[50vh]">
- <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
- </div>
+ <CourseDetailSkeleton />
  </DashboardLayout>
  );
  }

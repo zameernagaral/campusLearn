@@ -116,6 +116,39 @@ export default function FacultyDashboard() {
  )}
  </div>
 
+ {/* Quick Access Modules */}
+ <div className="grid md:grid-cols-2 gap-4 mb-6">
+ <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-6 text-white shadow-lg shadow-orange-500/20 flex flex-col justify-between">
+ <div>
+ <h3 className="font-black text-xl mb-1">Today's Timetable</h3>
+ <p className="text-orange-100 text-sm mb-4">You have 2 classes scheduled today.</p>
+ <div className="bg-white/10 rounded-xl p-3 mb-2 flex justify-between items-center backdrop-blur-sm">
+ <div>
+ <p className="font-bold text-sm">DBMS Lecture</p>
+ <p className="text-xs text-orange-200">10:00 AM • Room 204</p>
+ </div>
+ <span className="text-[10px] font-bold bg-white text-orange-600 px-2 py-1 rounded-lg">Upcoming</span>
+ </div>
+ </div>
+ <Link href="/faculty/timetable" className="mt-4 px-4 py-2 bg-white text-orange-600 font-bold text-sm rounded-xl text-center hover:bg-orange-50 transition-colors">Manage Timetable</Link>
+ </div>
+
+ <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-3xl p-6 text-white shadow-lg shadow-indigo-500/20 flex flex-col justify-between">
+ <div>
+ <h3 className="font-black text-xl mb-1">Exam Portions</h3>
+ <p className="text-indigo-100 text-sm mb-4">Mid-Term exams are approaching.</p>
+ <div className="bg-white/10 rounded-xl p-3 mb-2 backdrop-blur-sm">
+ <div className="flex justify-between items-center mb-1">
+ <p className="font-bold text-sm">DBMS</p>
+ <p className="text-xs font-bold text-indigo-200">4 Topics Added</p>
+ </div>
+ <div className="w-full bg-white/20 rounded-full h-1.5"><div className="bg-white h-1.5 rounded-full w-3/4" /></div>
+ </div>
+ </div>
+ <Link href="/faculty/exam-preparation" className="mt-4 px-4 py-2 bg-white text-indigo-600 font-bold text-sm rounded-xl text-center hover:bg-indigo-50 transition-colors">Manage Exam Portions</Link>
+ </div>
+ </div>
+
  {/* Charts */}
  <div className="grid lg:grid-cols-1 gap-6 mb-6">
  <div className=" card p-5">

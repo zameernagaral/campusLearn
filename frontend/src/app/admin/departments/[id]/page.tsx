@@ -6,6 +6,7 @@ import { adminAPI } from '@/lib/api';
 import toast from 'react-hot-toast';
 import { Users as UsersIcon, UserCircle, BookOpen, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { FullPageSkeleton } from '@/components/shared/Skeleton';
 
 interface User {
  _id: string;
@@ -121,9 +122,7 @@ export default function DepartmentDetailsPage({ params }: { params: Promise<{ id
  if (isLoading) {
  return (
  <DashboardLayout requiredRole="admin">
- <div className="flex items-center justify-center min-h-[50vh]">
- <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
- </div>
+ <FullPageSkeleton />
  </DashboardLayout>
  );
  }

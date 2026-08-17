@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 import { Sidebar } from './Sidebar';
 import { DashboardNavbar } from './DashboardNavbar';
 import { getRoleDashboard } from '@/lib/utils';
+import { AuthLayoutSkeleton } from '@/components/shared/Skeleton';
 
 interface DashboardLayoutProps {
  children: React.ReactNode;
@@ -32,16 +33,7 @@ export function DashboardLayout({ children, requiredRole }: DashboardLayoutProps
  }, [isAuthenticated, isLoading, user, requiredRole, router]);
 
  if (isLoading) {
- return (
- <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background)' }}>
- <div className="flex flex-col items-center gap-4">
- <div className="w-12 h-12 rounded-2xl gradient-primary flex items-center justify-center animate-pulse">
- <span className="text-white text-2xl"></span>
- </div>
- <p style={{ color: 'var(--muted)' }} className="text-sm">Loading CampusLearn...</p>
- </div>
- </div>
- );
+ return <AuthLayoutSkeleton />;
  }
 
  if (!isAuthenticated || !user) return null;

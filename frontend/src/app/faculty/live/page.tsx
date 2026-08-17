@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { liveClassAPI, courseAPI } from '@/lib/api';
 import { X, Calendar, Clock, Video, Link as LinkIcon } from 'lucide-react';
 import type { Course } from '@/types';
+import { LiveClassCardSkeleton } from '@/components/shared/Skeleton';
 
 export default function FacultyLivePage() {
  const [activeTab, setActiveTab] = useState<'upcoming' | 'recorded'>('upcoming');
@@ -130,9 +131,14 @@ export default function FacultyLivePage() {
 
  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
  {isLoading ? (
- Array(6).fill(null).map((_, i) => (
- <div key={i} className="h-48 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
- ))
+ <>
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ <LiveClassCardSkeleton />
+ </>
  ) : filteredClasses.map((cls, i) => (
  <motion.div 
  key={cls.id}

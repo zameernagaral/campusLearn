@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
-const controller = require('../controllers/examsController');
+const c = require('../controllers/examsController');
 
-router.get('/portions', protect, controller.getPortions);
-router.post('/portions', protect, controller.createPortion);
-router.put('/portions/:id', protect, controller.updatePortion);
-router.get('/topics', protect, controller.getTopics);
-router.post('/study-plan', protect, controller.createStudyPlan);
-router.get('/study-progress', protect, controller.getStudyProgress);
+router.get('/portions', protect, c.getPortions);
+router.post('/portions', protect, authorize('faculty', 'admin'), c.createPortion);
+router.put('/portions/:id', protect, authorize('faculty', 'admin'), c.updatePortion);
+router.get('/topics', protect, c.getTopics);
+router.post('/study-plan', protect, c.generateStudyPlan);
+router.get('/study-progress', protect, c.getProgress);
 
 module.exports = router;

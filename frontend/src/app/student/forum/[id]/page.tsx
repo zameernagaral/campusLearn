@@ -6,6 +6,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { MessageSquare, ArrowLeft, Loader2, Send } from 'lucide-react';
 import { discussionAPI } from '@/lib/api';
 import { formatDistanceToNow } from 'date-fns';
+import { ListSkeleton } from '@/components/shared/Skeleton';
 
 export default function ForumPostPage() {
  const { id } = useParams();
@@ -54,9 +55,7 @@ export default function ForumPostPage() {
  if (isLoading) {
  return (
  <DashboardLayout requiredRole="student">
- <div className="flex items-center justify-center min-h-[50vh]">
- <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
- </div>
+ <ListSkeleton count={5} height="h-24" />
  </DashboardLayout>
  );
  }

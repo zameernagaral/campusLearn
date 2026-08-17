@@ -5,12 +5,13 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { motion } from 'framer-motion';
 
 import { useAuthStore } from '@/store/authStore';
+import { Skeleton } from '@/components/shared/Skeleton';
 
 export default function HODProfilePage() {
  const { user } = useAuthStore();
 
  const profile = {
- name: user?.name || 'Loading...',
+ name: user?.name,
  role: `Head of Department`,
  id: user?.employeeId || user?.rollNumber || user?._id || 'N/A',
  email: user?.email || 'N/A',
@@ -48,7 +49,7 @@ export default function HODProfilePage() {
  </div>
  
  <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-1 group-hover:text-orange-500 transition-colors">
- {profile.name}
+ {profile.name ? profile.name : <Skeleton className="h-7 w-40 mx-auto" />}
  </h2>
  <p className="text-sm font-bold text-orange-500 mb-6 uppercase tracking-widest">
  {profile.role}
