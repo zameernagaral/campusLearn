@@ -1,11 +1,25 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Target, Book, Clock, AlertCircle, FileText, CheckCircle, Brain, ArrowLeft, Lightbulb, PlayCircle } from 'lucide-react';
-import { useState } from 'react';
+import { Target, Book, Clock, AlertCircle, FileText, CheckCircle, Brain, ArrowLeft, Lightbulb, PlayCircle, Pause, Play, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export default function ExamPreparationPage() {
   const [isStudying, setIsStudying] = useState<string | null>(null);
+  const [timerActive, setTimerActive] = useState(true);
+  const [videoGenerated, setVideoGenerated] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleGenerateVideo = () => {
+    setIsGenerating(true);
+    toast('AI is assembling your video summary...', { icon: '🤖' });
+    setTimeout(() => {
+      setIsGenerating(false);
+      setVideoGenerated(true);
+      toast.success('AI Video Generated!');
+    }, 2000);
+  };
 
   const topics = [
     { name: 'Normalization (1NF, 2NF, 3NF, BCNF)', importance: '🔴 Very Important', status: 'Completed' },
@@ -44,17 +58,33 @@ export default function ExamPreparationPage() {
               </div>
               
               <div className="flex gap-4">
-                <button className="btn btn-primary flex-1 flex items-center justify-center gap-2"><PlayCircle size={18} /> Generate AI Video Summary</button>
-                <button className="btn btn-outline flex-1">Take Topic Quiz</button>
+                {videoGenerated ? (
+                  <div className="w-full bg-black rounded-xl aspect-video flex flex-col items-center justify-center text-white border-2 border-indigo-500 overflow-hidden relative">
+                    <PlayCircle size={48} className="text-white/80 hover:text-white hover:scale-110 cursor-pointer transition-all z-10" onClick={() => toast.success('Playing AI Generated Summary Video...')} />
+                    <p className="mt-4 font-bold z-10">AI Summary: {isStudying}</p>
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/50 to-purple-900/50"></div>
+                  </div>
+                ) : (
+                  <button 
+                    onClick={handleGenerateVideo} 
+                    disabled={isGenerating}
+                    className="btn btn-primary flex-1 flex items-center justify-center gap-2"
+                  >
+                    {isGenerating ? <><Loader2 size={18} className="animate-spin" /> Generating...</> : <><PlayCircle size={18} /> Generate AI Video Summary</>}
+                  </button>
+                )}
+                {!videoGenerated && <button onClick={() => toast.success('Opening interactive topic quiz...')} className="btn btn-outline flex-1">Take Topic Quiz</button>}
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="card p-4 bg-indigo-600 text-white border-0">
                 <h3 className="font-bold mb-2">Pomodoro Timer</h3>
-                <div className="text-4xl font-black text-center mb-4">24:59</div>
+                <div className={`text-4xl font-black text-center mb-4 ${!timerActive && 'opacity-50'}`}>24:59</div>
                 <div className="flex justify-center gap-2">
-                  <button className="btn bg-white text-indigo-600 hover:bg-gray-100 px-4 py-1 rounded">Pause</button>
+                  <button onClick={() => setTimerActive(!timerActive)} className="btn bg-white text-indigo-600 hover:bg-gray-100 px-4 py-1 rounded flex items-center gap-1">
+                    {timerActive ? <><Pause size={14} /> Pause</> : <><Play size={14} /> Resume</>}
+                  </button>
                 </div>
               </div>
 

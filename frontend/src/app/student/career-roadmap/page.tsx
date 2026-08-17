@@ -124,7 +124,7 @@ export default function CareerRoadmapPage() {
                   </div>
                   {step.status === 'Learning' && (
                     <div className="mt-4 flex gap-2">
-                      <a href="https://career.sh" target="_blank" rel="noreferrer" className="btn btn-primary text-xs py-1.5 px-3">Start Course on Career.sh</a>
+                      <a href="https://roadmap.sh" target="_blank" rel="noreferrer" className="btn btn-primary text-xs py-1.5 px-3">Start Course on roadmap.sh</a>
                       <button onClick={() => handleMarkComplete(step.id)} className="btn btn-outline text-xs py-1.5 px-3">Mark Complete</button>
                     </div>
                   )}
