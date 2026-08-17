@@ -9,6 +9,7 @@ import { CourseCard, CourseCardSkeleton } from '@/components/shared/CourseCard';
 import { useAuthStore } from '@/store/authStore';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function StudentDashboard() {
   const { user } = useAuthStore();
@@ -52,6 +53,21 @@ export default function StudentDashboard() {
         ]
       });
       setIsLoading(false);
+      
+      // Smart AI Low Shortage Notification
+      setTimeout(() => {
+        toast('⚠️ AI ATTENDANCE ALERT: Your DBMS attendance has fallen below the 75% threshold (currently 72%). Attend the next 2 classes to avoid debarment!', {
+          duration: 10000,
+          style: {
+            background: 'var(--toast-bg)',
+            color: '#ef4444',
+            border: '1px solid #ef4444',
+            fontWeight: 'bold',
+            padding: '16px'
+          },
+        });
+      }, 500);
+
     }, 1000);
   }, []);
 
