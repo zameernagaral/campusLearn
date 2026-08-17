@@ -1,11 +1,12 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp } from 'lucide-react';
+import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp, Users } from 'lucide-react';
 import { useState } from 'react';
 
 export default function TimetablePage() {
   const [activeDay, setActiveDay] = useState('Monday');
+  const [activeClass, setActiveClass] = useState<string | null>(null);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -19,6 +20,49 @@ export default function TimetablePage() {
   ];
 
   const displayedClasses = allClasses.filter(c => c.day === activeDay);
+
+  if (activeClass) {
+    return (
+      <DashboardLayout requiredRole="student">
+        <button onClick={() => setActiveClass(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
+          <ArrowLeft size={16} /> Leave Class
+        </button>
+        <div className="card overflow-hidden bg-black flex flex-col h-[70vh]">
+          <div className="p-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center text-white">
+            <div>
+              <h2 className="font-bold">{activeClass} - Live Session</h2>
+              <p className="text-xs text-gray-400 mt-1 flex items-center gap-2"><Users size={12} /> 43 Participants</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-red-500 font-medium bg-red-500/10 px-3 py-1.5 rounded-full border border-red-500/20">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> LIVE
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 p-4 flex flex-col items-center justify-center relative">
+            <div className="absolute inset-4 rounded-2xl bg-gray-800 overflow-hidden border border-gray-700 flex items-center justify-center">
+               <div className="text-center">
+                 <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-gray-600">
+                   <Video size={32} className="text-gray-400" />
+                 </div>
+                 <p className="text-white font-medium">Faculty Screen</p>
+                 <p className="text-sm text-gray-400 mt-1">Presentation Active</p>
+               </div>
+            </div>
+            <div className="absolute bottom-6 right-6 w-48 h-36 bg-gray-900 rounded-xl border-2 border-green-500 overflow-hidden flex items-center justify-center shadow-2xl">
+               <Camera size={24} className="text-gray-500" />
+               <p className="absolute bottom-2 left-2 text-[10px] text-white font-bold bg-black/50 px-2 py-0.5 rounded">You</p>
+            </div>
+          </div>
+          <div className="p-4 bg-gray-900 border-t border-gray-800 flex justify-center gap-4">
+            <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><MicOff size={20} /></button>
+            <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><Camera size={20} /></button>
+            <button onClick={() => setActiveClass(null)} className="px-6 h-12 rounded-full bg-red-500 flex items-center justify-center text-white font-bold hover:bg-red-600">Leave Meeting</button>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout requiredRole="student">
@@ -80,17 +124,13 @@ export default function TimetablePage() {
               {cls.status === 'Live Now' && (
                 <div className="mt-4 pt-4 border-t border-border flex justify-between items-center">
                   <div className="text-[10px] text-muted font-medium">
-                    <p>Phone: +1 513-536-8015</p>
-                    <p>PIN: 756 633 577#</p>
                   </div>
-                  <a 
-                    href="https://meet.google.com/sst-xvef-rvj" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <button 
+                    onClick={() => setActiveClass(cls.subject)}
                     className="btn btn-primary flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
                   >
-                    <Video size={18} /> Join Google Meet
-                  </a>
+                    <Video size={18} /> Join Class
+                  </button>
                 </div>
               )}
             </div>

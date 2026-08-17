@@ -75,7 +75,15 @@ export default function HODCoursesPage() {
           ))
         ) : courses.length > 0 ? (
           courses.map((course, i) => (
-            <Link key={course._id} href={`/admin/courses/${course._id}`} className="block">
+            <Link 
+              key={course._id} 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                toast('Course details view coming soon', { icon: '🚧' });
+              }}
+              className="block"
+            >
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}

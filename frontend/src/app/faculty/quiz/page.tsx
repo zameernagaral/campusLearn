@@ -19,17 +19,23 @@ export default function FacultyQuizPage() {
         const data = res.data?.data || res.data || [];
         
         const formatted = data.map((q: any) => {
-          const startTime = new Date(q.startTime);
-          const endTime = new Date(q.endTime);
+          let startTime = new Date(q.startTime);
+          if (isNaN(startTime.getTime())) {
+            startTime = new Date(Date.now() + 86400000 * 2); // default to 2 days from now
+          }
+          let endTime = new Date(q.endTime);
+          if (isNaN(endTime.getTime())) {
+            endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // 1 hour later
+          }
           const now = new Date();
           
           let status = 'upcoming';
           if (now > endTime) status = 'completed';
           
           return {
-            id: q._id,
-            title: q.title,
-            course: q.course?.subjectCode || q.course?.title || 'N/A',
+            id: q._id || Math.random().toString(),
+            title: q.title || 'Untitled Assessment',
+            course: q.course?.subjectCode || q.course?.title || 'General Category',
             date: startTime.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
             time: startTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
             duration: `${q.duration} mins`,
@@ -122,9 +128,20 @@ export default function FacultyQuizPage() {
                 </span>
               </div>
               
-              <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }}  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap">
+              <Link 
+                href={activeTab === 'upcoming' ? '/faculty/quiz/create' : '#'}
+                onClick={(e) => {
+                  if (activeTab !== 'upcoming') {
+                    e.preventDefault();
+                    toast('View Results feature is under construction!', { icon: '🚧' });
+                  } else {
+                    toast.success('Loading quiz editor...');
+                  }
+                }}
+                className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap"
+              >
                 {activeTab === 'upcoming' ? 'Edit Quiz' : 'View Results'}
-              </button>
+              </Link>
             </div>
           </motion.div>
         ))}

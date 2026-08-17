@@ -1,10 +1,21 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Target, Users, Map, TrendingUp, BarChart2, Star, PieChart, Activity } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { Target, Users, Map, TrendingUp, BarChart2, Star, PieChart, Activity, X, Download, FileText } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 
 export default function HodCareerAnalyticsPage() {
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [reportProgress, setReportProgress] = useState(0);
+  const [selectedDept, setSelectedDept] = useState<any>(null);
+
+  useEffect(() => {
+    if (isGeneratingReport && reportProgress < 100) {
+      const timer = setTimeout(() => setReportProgress(p => Math.min(p + 12, 100)), 150);
+      return () => clearTimeout(timer);
+    }
+  }, [isGeneratingReport, reportProgress]);
   const departmentStats = [
     { name: 'Computer Science', activeRoadmaps: 450, avgProgress: 68, topGoal: 'Software Engineer' },
     { name: 'Information Science', activeRoadmaps: 320, avgProgress: 62, topGoal: 'Data Scientist' },
@@ -13,12 +24,93 @@ export default function HodCareerAnalyticsPage() {
 
   return (
     <DashboardLayout requiredRole="hod">
+      <Toaster position="top-right" />
+
+      {isGeneratingReport && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-8 rounded-3xl w-full max-w-md border border-border shadow-2xl relative text-center">
+            {reportProgress < 100 ? (
+              <>
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <BarChart2 size={32} className="text-primary animate-pulse" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Compiling Career Report...</h2>
+                <p className="text-muted text-sm mb-8">Aggregating career roadmap progress and goals across the department.</p>
+                <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-3 mb-2 overflow-hidden">
+                  <div 
+                    className="h-3 rounded-full bg-primary transition-all duration-200" 
+                    style={{ width: `${reportProgress}%` }}
+                  ></div>
+                </div>
+                <p className="font-bold text-primary">{reportProgress}%</p>
+              </>
+            ) : (
+              <>
+                <button onClick={() => { setIsGeneratingReport(false); setReportProgress(0); }} className="absolute top-4 right-4 text-muted hover:text-foreground">
+                  <X size={20} />
+                </button>
+                <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <FileText size={32} className="text-green-500" />
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Report Ready</h2>
+                <p className="text-muted text-sm mb-8">Your comprehensive Department Career Analytics Report is complete and ready for download.</p>
+                <div className="flex flex-col gap-3">
+                  <button onClick={() => {
+                    toast.success('Report downloaded to your device!');
+                    setIsGeneratingReport(false);
+                  }} className="btn btn-primary w-full flex items-center justify-center gap-2 py-3 text-white bg-indigo-600 hover:bg-indigo-700">
+                    <Download size={18} /> Download Excel Report
+                  </button>
+                  <button onClick={() => setIsGeneratingReport(false)} className="btn btn-ghost w-full">Close</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {selectedDept && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-6 rounded-2xl w-full max-w-xl border border-border shadow-2xl relative">
+            <button onClick={() => setSelectedDept(null)} className="absolute top-4 right-4 text-muted hover:text-foreground">
+              <X size={20} />
+            </button>
+            <h2 className="text-2xl font-bold mb-2">{selectedDept.name} Analytics</h2>
+            <p className="text-muted text-sm mb-6">Detailed breakdown of career roadmap engagement.</p>
+            
+            <div className="space-y-4">
+              <div className="p-4 border border-border rounded-xl bg-surface-2 flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-muted">Active Roadmaps</p>
+                  <p className="text-xl font-bold">{selectedDept.activeRoadmaps} Students</p>
+                </div>
+                <Users size={24} className="text-indigo-500 opacity-50" />
+              </div>
+              <div className="p-4 border border-border rounded-xl bg-surface-2 flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-muted">Average Progress</p>
+                  <p className="text-xl font-bold text-green-500">{selectedDept.avgProgress}%</p>
+                </div>
+                <TrendingUp size={24} className="text-green-500 opacity-50" />
+              </div>
+              <div className="p-4 border border-border rounded-xl bg-surface-2 flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-muted">Most Popular Goal</p>
+                  <p className="text-xl font-bold text-purple-500">{selectedDept.topGoal}</p>
+                </div>
+                <Target size={24} className="text-purple-500 opacity-50" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Department Career Analytics</h1>
           <p className="text-muted mt-1">Aggregate overview of career roadmap progress across the department</p>
         </div>
-        <button onClick={() => toast.success('Exporting detailed career report...')} className="btn btn-outline flex items-center gap-2">
+        <button onClick={() => { setIsGeneratingReport(true); setReportProgress(0); }} className="btn btn-outline flex items-center gap-2">
           <BarChart2 size={18} /> Export Report
         </button>
       </div>
@@ -109,7 +201,7 @@ export default function HodCareerAnalyticsPage() {
                     <span className="text-xs px-2 py-1 rounded-full font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30">{dept.topGoal}</span>
                   </td>
                   <td className="p-4 text-right">
-                    <button onClick={() => toast.success(`Opening detailed view for ${dept.name}`)} className="btn btn-outline text-xs py-1.5 px-3">Drill Down</button>
+                    <button onClick={() => setSelectedDept(dept)} className="btn btn-outline text-xs py-1.5 px-3">Drill Down</button>
                   </td>
                 </tr>
               ))}

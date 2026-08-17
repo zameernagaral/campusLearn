@@ -18,6 +18,22 @@ export default function StudentDashboard() {
   // In a real application, these would be fetched from our new APIs
   // For now, we simulate the data to show the Smart Home Dashboard layout
   const [smartData, setSmartData] = useState<any>(null);
+  
+  const [isAskingAI, setIsAskingAI] = useState(false);
+  const [aiQuery, setAiQuery] = useState('');
+  const [isAILoading, setIsAILoading] = useState(false);
+
+  const handleAskAI = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!aiQuery.trim()) return;
+    setIsAILoading(true);
+    setTimeout(() => {
+      setIsAILoading(false);
+      toast.success('Campus AI: To prepare for DBMS, focus on Normalization and ACID properties. Would you like to enter Focus Mode?', { duration: 5000, icon: '🤖' });
+      setAiQuery('');
+      setIsAskingAI(false);
+    }, 1500);
+  };
 
   useEffect(() => {
     // Simulate fetching all smart data
@@ -213,16 +229,36 @@ export default function StudentDashboard() {
             
             {/* AI ASSISTANT */}
             <div className="card p-1 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-              <div className="bg-white dark:bg-gray-900 rounded-xl p-4 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
-                  <Bot size={20} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold mb-1">Campus AI</h3>
-                  <p className="text-sm mb-3" style={{ color: 'var(--muted)' }}>"How can I help you prepare for your DBMS exam today?"</p>
-                  <button className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors">
-                    Ask a question →
-                  </button>
+              <div className="bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col gap-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <Bot size={20} className="text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold mb-1">Campus AI</h3>
+                    <p className="text-sm mb-3" style={{ color: 'var(--muted)' }}>"How can I help you prepare for your exams today?"</p>
+                    
+                    {!isAskingAI ? (
+                      <button onClick={() => setIsAskingAI(true)} className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors">
+                        Ask a question →
+                      </button>
+                    ) : (
+                      <form onSubmit={handleAskAI} className="flex gap-2 w-full mt-2">
+                        <input 
+                          type="text" 
+                          value={aiQuery}
+                          onChange={(e) => setAiQuery(e.target.value)}
+                          placeholder="Type your question..." 
+                          className="input flex-1 py-1 px-2 text-xs"
+                          autoFocus
+                          disabled={isAILoading}
+                        />
+                        <button disabled={isAILoading} type="submit" className="btn btn-primary py-1 px-3 text-xs">
+                          {isAILoading ? '...' : 'Ask'}
+                        </button>
+                      </form>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

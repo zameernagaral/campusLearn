@@ -1,13 +1,15 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp, Users, Upload } from 'lucide-react';
+import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp, Users, Upload, X, FileText } from 'lucide-react';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function FacultyTimetablePage() {
   const [activeDay, setActiveDay] = useState('Monday');
   const [activeClass, setActiveClass] = useState<string | null>(null);
+  const [isUploadingTimetable, setIsUploadingTimetable] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -71,12 +73,54 @@ export default function FacultyTimetablePage() {
 
   return (
     <DashboardLayout requiredRole="faculty">
+      <Toaster position="top-right" />
+      
+      {isUploadingTimetable && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-6 rounded-2xl w-full max-w-md border border-border shadow-2xl relative">
+            <button onClick={() => { setIsUploadingTimetable(false); setFile(null); }} className="absolute top-4 right-4 text-muted hover:text-foreground">
+              <X size={20} />
+            </button>
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Upload size={20} className="text-primary"/> Upload Master Timetable</h2>
+            <div className="space-y-4">
+              <p className="text-sm text-muted">Upload the department timetable in CSV or Excel format. Our AI will automatically parse and sync it to your schedule.</p>
+              
+              <div className={`p-6 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-colors hover:border-primary/50 ${file ? 'border-primary bg-primary/5' : 'border-border bg-surface-2'}`}>
+                <FileText size={24} style={{ color: file ? 'var(--primary)' : 'var(--muted)' }} />
+                <p className="text-sm font-medium" style={{ color: file ? 'var(--primary)' : 'var(--foreground)' }}>
+                  {file ? file.name : 'Drag and drop your file here'}
+                </p>
+                {!file && <p className="text-xs text-muted">CSV, XLSX (Max 5MB)</p>}
+                <input type="file" className="hidden" id="timetable-upload" accept=".csv,.xlsx" onChange={e => setFile(e.target.files?.[0] || null)} />
+                <label htmlFor="timetable-upload" className="mt-2 btn btn-secondary text-xs px-3 py-1.5 cursor-pointer">
+                  {file ? 'Change File' : 'Browse Files'}
+                </label>
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-2">
+              <button onClick={() => { setIsUploadingTimetable(false); setFile(null); }} className="btn btn-ghost">Cancel</button>
+              <button 
+                disabled={!file}
+                onClick={() => {
+                  setIsUploadingTimetable(false);
+                  setFile(null);
+                  toast.success('Timetable uploaded and synced successfully!');
+                }} 
+                className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+              >
+                Sync Timetable
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Teaching Schedule</h1>
           <p className="text-muted mt-1">Manage your classes and start live lectures</p>
         </div>
-        <button onClick={() => toast.success('Timetable uploaded and synced successfully!')} className="btn btn-outline flex items-center gap-2">
+        <button onClick={() => setIsUploadingTimetable(true)} className="btn btn-outline flex items-center gap-2">
           <Upload size={18} /> Upload Timetable
         </button>
       </div>

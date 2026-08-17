@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { attendanceAPI } from '@/lib/api';
-import { UserCheck, AlertTriangle, CheckCircle, Clock, TrendingUp, Bell } from 'lucide-react';
+import { UserCheck, AlertTriangle, CheckCircle, Clock, TrendingUp, Bell, X } from 'lucide-react';
 import { getAttendanceColor } from '@/lib/utils';
+import toast, { Toaster } from 'react-hot-toast';
 import { BarChart, LineChart } from '@/components/charts/Charts';
 import { motion } from 'framer-motion';
 
@@ -22,6 +23,7 @@ export default function StudentAttendancePage() {
   const [attendance, setAttendance] = useState<AttendanceSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [overall, setOverall] = useState(0);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     attendanceAPI.getMine().then(res => {
@@ -50,9 +52,57 @@ export default function StudentAttendancePage() {
 
   return (
     <DashboardLayout requiredRole="student">
+      <Toaster position="top-right" />
+      
+      {isSettingsOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-6 rounded-2xl w-full max-w-md border border-border shadow-2xl relative">
+            <button onClick={() => setIsSettingsOpen(false)} className="absolute top-4 right-4 text-muted hover:text-foreground">
+              <X size={20} />
+            </button>
+            <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Bell size={20} className="text-primary"/> Notification Settings</h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 border border-border rounded-xl">
+                <div>
+                  <p className="font-bold text-sm">Attendance Alerts</p>
+                  <p className="text-xs text-muted">Get notified when attendance drops below 75%</p>
+                </div>
+                <input type="checkbox" defaultChecked className="w-5 h-5 accent-primary cursor-pointer" />
+              </div>
+              <div className="flex items-center justify-between p-3 border border-border rounded-xl">
+                <div>
+                  <p className="font-bold text-sm">Daily Summary</p>
+                  <p className="text-xs text-muted">Receive a daily email with your attendance status</p>
+                </div>
+                <input type="checkbox" className="w-5 h-5 accent-primary cursor-pointer" />
+              </div>
+              <div className="flex items-center justify-between p-3 border border-border rounded-xl">
+                <div>
+                  <p className="font-bold text-sm">SMS Alerts (Critical)</p>
+                  <p className="text-xs text-muted">Get SMS for severe shortage warnings</p>
+                </div>
+                <input type="checkbox" defaultChecked className="w-5 h-5 accent-primary cursor-pointer" />
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-2">
+              <button onClick={() => setIsSettingsOpen(false)} className="btn btn-ghost">Cancel</button>
+              <button 
+                onClick={() => {
+                  setIsSettingsOpen(false);
+                  toast.success('Notification preferences saved successfully!');
+                }} 
+                className="btn btn-primary"
+              >
+                Save Preferences
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>My Attendance</h1>
-        <button className="btn btn-outline flex items-center gap-2"><Bell size={16} /> Notification Settings</button>
+        <button onClick={() => setIsSettingsOpen(true)} className="btn btn-outline flex items-center gap-2"><Bell size={16} /> Notification Settings</button>
       </div>
 
       {/* Intelligent Shortage Detection */}

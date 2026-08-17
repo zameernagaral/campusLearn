@@ -76,7 +76,6 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
     { label: 'Departments', href: '/admin/departments', icon: <Building size={18} /> },
     { label: 'Courses', href: '/admin/courses', icon: <BookOpen size={18} /> },
     { label: 'Analytics', href: '/admin/analytics', icon: <PieChart size={18} /> },
-    { label: 'Settings', href: '/admin/settings', icon: <Settings size={18} /> },
   ],
 };
 

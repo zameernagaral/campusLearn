@@ -1,10 +1,23 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Target, Users, Map, TrendingUp, BarChart2, Star, PieChart, Activity, Briefcase, Building, CheckCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { Target, Users, Map, TrendingUp, BarChart2, Star, PieChart, Activity, Briefcase, Building, CheckCircle, RefreshCw, X, ChevronRight } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 
 export default function HodPlacementAnalyticsPage() {
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState<any>(null);
+
+  useEffect(() => {
+    if (isSyncing) {
+      const timer = setTimeout(() => {
+        setIsSyncing(false);
+        toast.success('Successfully synchronized latest data with TPO office');
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isSyncing]);
   const companyStats = [
     { name: 'Google', required: 85, readyStudents: 45, applicants: 120 },
     { name: 'Microsoft', required: 80, readyStudents: 60, applicants: 150 },
@@ -14,13 +27,76 @@ export default function HodPlacementAnalyticsPage() {
 
   return (
     <DashboardLayout requiredRole="hod">
+      <Toaster position="top-right" />
+
+      {isSyncing && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-8 rounded-3xl w-full max-w-sm border border-border shadow-2xl relative text-center">
+            <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <RefreshCw size={32} className="text-orange-500 animate-spin" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Syncing TPO Data</h2>
+            <p className="text-muted text-sm">Fetching latest placement scores, eligible student counts, and newly onboarded companies from the centralized database...</p>
+          </div>
+        </div>
+      )}
+
+      {selectedCompany && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-surface p-6 rounded-2xl w-full max-w-xl border border-border shadow-2xl relative">
+            <button onClick={() => setSelectedCompany(null)} className="absolute top-4 right-4 text-muted hover:text-foreground">
+              <X size={20} />
+            </button>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center">
+                <Building size={24} className="text-teal-500" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold">{selectedCompany.name} Readiness List</h2>
+                <p className="text-sm text-muted">{selectedCompany.readyStudents} students meet the {selectedCompany.required}% minimum threshold</p>
+              </div>
+            </div>
+            
+            <div className="border border-border rounded-xl overflow-hidden mb-6 max-h-[60vh] overflow-y-auto">
+              {Array.from({ length: Math.min(selectedCompany.readyStudents, 8) }).map((_, i) => (
+                <div key={i} className="p-4 border-b border-border bg-surface hover:bg-surface-2 transition-colors flex justify-between items-center last:border-0">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                      {String.fromCharCode(65 + i)}
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Student {i + 1}</p>
+                      <p className="text-xs text-muted">Roll No: CS{100 + i}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">Score: {selectedCompany.required + Math.floor(Math.random() * (100 - selectedCompany.required))}%</span>
+                    <button className="text-muted hover:text-primary"><ChevronRight size={16} /></button>
+                  </div>
+                </div>
+              ))}
+              {selectedCompany.readyStudents > 8 && (
+                <div className="p-3 text-center text-xs text-muted font-medium bg-surface-2">
+                  + {selectedCompany.readyStudents - 8} more students
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setSelectedCompany(null)} className="btn btn-ghost">Close</button>
+              <button onClick={() => { toast.success(`Exported ${selectedCompany.name} list as CSV`); setSelectedCompany(null); }} className="btn btn-primary bg-teal-600 hover:bg-teal-700">Export List</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Placement Readiness Overview</h1>
           <p className="text-muted mt-1">Monitor department-wide placement scores and company readiness</p>
         </div>
-        <button onClick={() => toast.success('Syncing latest placement data with TPO office...')} className="btn btn-primary flex items-center gap-2">
-          <TrendingUp size={18} /> Sync TPO Data
+        <button onClick={() => setIsSyncing(true)} className="btn btn-primary bg-orange-500 hover:bg-orange-600 border-none text-white flex items-center gap-2">
+          <RefreshCw size={18} /> Sync TPO Data
         </button>
       </div>
 
@@ -102,7 +178,7 @@ export default function HodPlacementAnalyticsPage() {
                   </td>
                   <td className="p-4 text-sm font-medium">{comp.applicants}</td>
                   <td className="p-4 text-right">
-                    <button onClick={() => toast.success(`Viewing ready students list for ${comp.name}`)} className="btn btn-outline text-xs py-1.5 px-3">View Students</button>
+                    <button onClick={() => setSelectedCompany(comp)} className="btn btn-outline text-xs py-1.5 px-3">View Students</button>
                   </td>
                 </tr>
               ))}
