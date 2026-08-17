@@ -88,18 +88,18 @@ export default function FacultyQuizPage() {
  </button>
  </div>
 
- <div className="space-y-4">
+ <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
  {isLoading ? (
- <div className="flex justify-center py-12">
- <span className="w-8 h-8 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
- </div>
+ Array(6).fill(null).map((_, i) => (
+ <div key={i} className="h-48 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
+ ))
  ) : filteredQuizzes.map((quiz, i) => (
  <motion.div 
  key={quiz.id}
  initial={{ opacity: 0, y: 10 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ delay: i * 0.05 }}
- className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-orange-500/30 transition-colors group"
+ className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between gap-6 hover:border-orange-500/30 hover:-translate-y-1 transition-all duration-300 group backdrop-blur-sm shadow-sm"
  >
  <div className="flex-1">
  <div className="flex items-center gap-3 mb-2">
@@ -120,28 +120,26 @@ export default function FacultyQuizPage() {
  </div>
  </div>
 
- <div className="flex items-center gap-8 border-t md:border-t-0 md:border-l border-zinc-100 dark:border-zinc-800/60 pt-4 md:pt-0 md:pl-8">
- <div className="flex flex-col gap-1 min-w-[80px]">
+ <div className="flex items-center justify-between gap-8 border-t border-zinc-100 dark:border-zinc-800/60 pt-4 mt-auto">
+ <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Submissions</span>
  <span className="text-xl font-bold text-zinc-900 dark:text-white leading-none">
  {activeTab === 'upcoming' ? '-' : quiz.submissions}
  </span>
  </div>
  
- <Link 
- href={activeTab === 'upcoming' ? '/faculty/quiz/create' : '#'}
- onClick={(e) => {
- if (activeTab !== 'upcoming') {
- e.preventDefault();
- toast('View Results feature is under construction!');
+ <button 
+ onClick={() => {
+ if (activeTab === 'upcoming') {
+ toast.success('Opening Quiz Editor...');
  } else {
- toast.success('Loading quiz editor...');
+ toast.success('Opening Results Viewer...');
  }
  }}
  className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold rounded-xl transition-colors text-sm border border-zinc-200 dark:border-zinc-800 whitespace-nowrap"
  >
  {activeTab === 'upcoming' ? 'Edit Quiz' : 'View Results'}
- </Link>
+ </button>
  </div>
  </motion.div>
  ))}

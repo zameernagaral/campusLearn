@@ -58,12 +58,12 @@ export default function CourseDetailsPage() {
  </Link>
  </div>
 
- <div className="grid lg:grid-cols-1 gap-8">
- <div className=" space-y-6">
+ <div className="grid lg:grid-cols-3 gap-8">
+ <div className="lg:col-span-2 space-y-6">
  <motion.div 
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
- className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+ className="bg-white dark:bg-zinc-900/40 backdrop-blur-sm rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm"
  >
  <div className="flex items-center gap-3 mb-4">
  <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-500 uppercase tracking-wide">
@@ -120,7 +120,7 @@ export default function CourseDetailsPage() {
  </div>
  </motion.div>
 
- <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm">
+ <div className="bg-white dark:bg-zinc-900/40 backdrop-blur-sm rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm">
  <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">Course Curriculum</h2>
  
  <div className="space-y-4">
@@ -176,8 +176,8 @@ export default function CourseDetailsPage() {
  </div>
  </div>
 
- <div className=" space-y-6">
- <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm sticky top-24">
+ <div className="space-y-6">
+ <div className="bg-white dark:bg-zinc-900/40 backdrop-blur-sm rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm sticky top-24">
  <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 mb-6">
  <FileText size={18} className="text-orange-500" /> Syllabus & Notes
  </h3>
@@ -217,8 +217,8 @@ export default function CourseDetailsPage() {
  </div>
 
  <button 
- disabled
- className="w-full mt-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 text-sm opacity-50 cursor-not-allowed"
+ onClick={() => toast.success('Resuming course material...')}
+ className="w-full mt-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2 text-sm"
  >
  Resume Course
  </button>

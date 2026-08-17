@@ -122,38 +122,46 @@ export default function StudentDashboard() {
  </div>
  </div>
 
- {isLoading || !smartData ? (
- <div className="flex items-center justify-center h-64">
- <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
- </div>
- ) : (
- <div className="grid lg:grid-cols-1 gap-6">
- {/* Main Column */}
- <div className=" space-y-6">
- 
- {/* TODAY SECTION */}
- <section>
- <h2 className="text-lg font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--foreground)' }}>
- <Clock size={20} className="text-blue-500" /> Today's Overview
- </h2>
- <div className="grid sm:grid-cols-3 gap-4">
- <div className="card p-4 border-l-4 border-blue-500">
- <p className="text-sm font-semibold mb-1" style={{ color: 'var(--muted)' }}>Next Class</p>
- <p className="font-bold text-base line-clamp-1">{smartData.today.nextClass.subject}</p>
- <p className="text-sm mt-1 text-blue-500 font-medium">{smartData.today.nextClass.time} · {smartData.today.nextClass.room}</p>
- </div>
- <div className="card p-4 border-l-4 border-orange-500">
- <p className="text-sm font-semibold mb-1" style={{ color: 'var(--muted)' }}>Current Attendance</p>
- <p className="font-bold text-xl">{smartData.today.currentAttendance}%</p>
- <p className="text-xs mt-1 text-orange-500 font-medium">Risk: Shortage Approaching</p>
- </div>
- <div className="card p-4 border-l-4 border-green-500">
- <p className="text-sm font-semibold mb-1" style={{ color: 'var(--muted)' }}>Pending Assignments</p>
- <p className="font-bold text-xl">{smartData.today.pendingAssignments}</p>
- <p className="text-xs mt-1 text-green-500 font-medium">Due in 2 days</p>
- </div>
- </div>
- </section>
+  {isLoading || !smartData ? (
+  <div className="grid lg:grid-cols-3 gap-6">
+  <div className="lg:col-span-2 space-y-6">
+  <div className="h-40 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
+  <div className="h-64 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
+  <div className="h-48 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
+  </div>
+  <div className="space-y-6">
+  <div className="h-32 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
+  <div className="h-80 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
+  </div>
+  </div>
+  ) : (
+  <div className="grid lg:grid-cols-3 gap-6">
+  {/* Main Column */}
+  <div className="lg:col-span-2 space-y-6">
+  
+  {/* TODAY SECTION */}
+  <section>
+  <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
+  <Clock size={20} className="text-orange-500" /> Today's Overview
+  </h2>
+  <div className="grid sm:grid-cols-3 gap-4">
+  <div className="bg-white dark:bg-zinc-900/40 p-5 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center backdrop-blur-sm group hover:border-orange-500/30 transition-all hover:-translate-y-1">
+  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Next Class</p>
+  <p className="font-bold text-base line-clamp-1 text-zinc-900 dark:text-white">{smartData.today.nextClass.subject}</p>
+  <p className="text-sm mt-2 text-zinc-500 font-medium flex items-center gap-1.5"><Map size={14} className="text-orange-500"/> {smartData.today.nextClass.time} · {smartData.today.nextClass.room}</p>
+  </div>
+  <div className="bg-white dark:bg-zinc-900/40 p-5 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center backdrop-blur-sm group hover:border-orange-500/30 transition-all hover:-translate-y-1">
+  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Current Attendance</p>
+  <p className="font-bold text-2xl text-zinc-900 dark:text-white">{smartData.today.currentAttendance}%</p>
+  <p className="text-xs mt-2 text-orange-500 font-bold bg-orange-50 dark:bg-orange-500/10 px-2 py-1 rounded-md w-fit">Risk: Shortage Approaching</p>
+  </div>
+  <div className="bg-white dark:bg-zinc-900/40 p-5 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center backdrop-blur-sm group hover:border-orange-500/30 transition-all hover:-translate-y-1">
+  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Pending Assignments</p>
+  <p className="font-bold text-2xl text-zinc-900 dark:text-white">{smartData.today.pendingAssignments}</p>
+  <p className="text-xs mt-2 text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md w-fit">Due in 2 days</p>
+  </div>
+  </div>
+  </section>
 
  {/* ACADEMIC PROGRESS */}
  <section>
@@ -162,33 +170,33 @@ export default function StudentDashboard() {
  Academic Progress
  </h2>
  </div>
- <div className="card p-5">
- <div className="space-y-4">
+ <div className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm backdrop-blur-sm">
+ <div className="space-y-6">
  <div>
- <div className="flex justify-between mb-1">
- <span className="text-sm font-medium">Course Progress</span>
- <span className="text-sm font-bold">{smartData.academic.courseProgress}%</span>
+ <div className="flex justify-between mb-2">
+ <span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">Course Progress</span>
+ <span className="text-sm font-bold text-zinc-900 dark:text-white">{smartData.academic.courseProgress}%</span>
  </div>
- <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
- <div className="bg-orange-500 h-2.5 rounded-full" style={{ width: `${smartData.academic.courseProgress}%` }}></div>
- </div>
- </div>
- <div>
- <div className="flex justify-between mb-1">
- <span className="text-sm font-medium">Quiz Performance</span>
- <span className="text-sm font-bold">{smartData.academic.quizAvg}%</span>
- </div>
- <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
- <div className="bg-orange-500 h-2.5 rounded-full" style={{ width: `${smartData.academic.quizAvg}%` }}></div>
+ <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-2">
+ <div className="bg-orange-500 h-2 rounded-full" style={{ width: `${smartData.academic.courseProgress}%` }}></div>
  </div>
  </div>
  <div>
- <div className="flex justify-between mb-1">
- <span className="text-sm font-medium">Exam Preparation Readiness</span>
- <span className="text-sm font-bold">{smartData.academic.examPrep}%</span>
+ <div className="flex justify-between mb-2">
+ <span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">Quiz Performance</span>
+ <span className="text-sm font-bold text-zinc-900 dark:text-white">{smartData.academic.quizAvg}%</span>
  </div>
- <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
- <div className="bg-orange-500 h-2.5 rounded-full" style={{ width: `${smartData.academic.examPrep}%` }}></div>
+ <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-2">
+ <div className="bg-orange-500 h-2 rounded-full" style={{ width: `${smartData.academic.quizAvg}%` }}></div>
+ </div>
+ </div>
+ <div>
+ <div className="flex justify-between mb-2">
+ <span className="text-sm font-bold text-zinc-600 dark:text-zinc-400">Exam Preparation</span>
+ <span className="text-sm font-bold text-zinc-900 dark:text-white">{smartData.academic.examPrep}%</span>
+ </div>
+ <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-2">
+ <div className="bg-orange-500 h-2 rounded-full" style={{ width: `${smartData.academic.examPrep}%` }}></div>
  </div>
  </div>
  </div>
@@ -201,20 +209,20 @@ export default function StudentDashboard() {
  <h2 className="text-lg font-bold" style={{ color: 'var(--foreground)' }}>
  Career Roadmap
  </h2>
- <Link href="/student/career-roadmap" className="text-sm text-orange-500 font-medium hover:underline">View Full Roadmap</Link>
+ <Link href="/student/career-roadmap" className="text-sm text-orange-500 font-bold hover:underline">View Full Roadmap</Link>
  </div>
  <div className="grid sm:grid-cols-2 gap-4">
- <div className="card p-5 flex flex-col justify-center items-center text-center">
- <p className="text-sm" style={{ color: 'var(--muted)' }}>Current Goal</p>
- <p className="font-bold text-lg mt-1">{smartData.career.goal}</p>
+ <div className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center items-center text-center backdrop-blur-sm">
+ <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Current Goal</p>
+ <p className="font-bold text-lg mt-2 text-zinc-900 dark:text-white">{smartData.career.goal}</p>
  </div>
- <div className="card p-5">
- <p className="text-sm font-medium mb-3">Skills Progress</p>
+ <div className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm backdrop-blur-sm">
+ <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Skills Progress</p>
  <div className="flex items-end gap-2 mb-2">
- <span className="text-3xl font-bold">{smartData.career.skillsCompleted}</span>
- <span className="text-sm pb-1" style={{ color: 'var(--muted)' }}>/ {smartData.career.skillsTotal} completed</span>
+ <span className="text-3xl font-bold text-zinc-900 dark:text-white">{smartData.career.skillsCompleted}</span>
+ <span className="text-sm font-medium pb-1 text-zinc-500">/ {smartData.career.skillsTotal} completed</span>
  </div>
- <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+ <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-2">
  <div className="bg-orange-500 h-2 rounded-full" style={{ width: `${(smartData.career.skillsCompleted / smartData.career.skillsTotal) * 100}%` }}></div>
  </div>
  </div>
@@ -224,108 +232,107 @@ export default function StudentDashboard() {
 
  {/* Right Column */}
  <div className="space-y-6">
- 
- {/* AI ASSISTANT */}
- <div className="card p-1 rounded-2xl bg-orange-500">
- <div className="bg-white dark:bg-zinc-950 rounded-xl p-4 flex flex-col gap-4">
- <div className="flex items-start gap-4">
- <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
- <Bot size={20} className="text-white" />
- </div>
- <div className="flex-1">
- <h3 className="font-bold mb-1">Campus AI</h3>
- <p className="text-sm mb-3" style={{ color: 'var(--muted)' }}>"How can I help you prepare for your exams today?"</p>
- 
- {!isAskingAI ? (
- <button onClick={() => setIsAskingAI(true)} className="text-xs bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 rounded-lg font-medium transition-colors">
- Ask a question →
- </button>
- ) : (
- <form onSubmit={handleAskAI} className="flex gap-2 w-full mt-2">
- <input 
- type="text" 
- value={aiQuery}
- onChange={(e) => setAiQuery(e.target.value)}
- placeholder="Type your question..." 
- className="input flex-1 py-1 px-2 text-xs"
- autoFocus
- disabled={isAILoading}
- />
- <button disabled={isAILoading} type="submit" className="btn btn-primary py-1 px-3 text-xs">
- {isAILoading ? '...' : 'Ask'}
- </button>
- </form>
- )}
- </div>
- </div>
- </div>
- </div>
+  
+  {/* AI ASSISTANT */}
+  <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-[2px] rounded-3xl shadow-lg shadow-orange-500/20">
+  <div className="bg-white dark:bg-zinc-900 rounded-[22px] p-5 flex flex-col gap-4">
+  <div className="flex items-start gap-4">
+  <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 shadow-inner">
+  <Bot size={20} className="text-white" />
+  </div>
+  <div className="flex-1">
+  <h3 className="font-bold text-zinc-900 dark:text-white mb-1">Campus AI</h3>
+  <p className="text-sm font-medium text-zinc-500 mb-4">"How can I help you prepare for your exams today?"</p>
+  
+  {!isAskingAI ? (
+  <button onClick={() => setIsAskingAI(true)} className="text-xs bg-zinc-100 dark:bg-zinc-800 hover:bg-orange-500 hover:text-white text-zinc-700 dark:text-zinc-300 px-4 py-2.5 rounded-xl font-bold transition-colors">
+  Ask a question →
+  </button>
+  ) : (
+  <form onSubmit={handleAskAI} className="flex gap-2 w-full mt-2">
+  <input 
+  type="text" 
+  value={aiQuery}
+  onChange={(e) => setAiQuery(e.target.value)}
+  placeholder="Type your question..." 
+  className="flex-1 py-2.5 px-4 text-xs bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl focus:border-orange-500 outline-none text-zinc-900 dark:text-white font-medium"
+  autoFocus
+  disabled={isAILoading}
+  />
+  <button disabled={isAILoading} type="submit" className="bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl py-2.5 px-4 text-xs shadow-lg shadow-orange-500/20 transition-colors">
+  {isAILoading ? '...' : 'Ask'}
+  </button>
+  </form>
+  )}
+  </div>
+  </div>
+  </div>
+  </div>
 
- {/* SMART ALERTS */}
- <section>
- <h2 className="text-lg font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--foreground)' }}>
- <Bell size={20} className="text-orange-500" /> Smart Alerts
- </h2>
- <div className="space-y-3">
- {smartData.alerts.map((alert: any, i: number) => (
- <div key={i} className={`p-4 rounded-xl border-l-4 ${
- alert.type === 'warning' ? 'bg-orange-50 border-orange-500 dark:bg-orange-900/20' : 
- alert.type === 'info' ? 'bg-orange-50 border-orange-500 dark:bg-orange-900/20' : 
- 'bg-orange-50 border-orange-500 dark:bg-orange-900/20'
- }`}>
- <div className="flex items-start gap-3">
- {alert.type === 'warning' ? <AlertTriangle size={18} className="text-orange-500 mt-0.5" /> : 
- alert.type === 'info' ? <Target size={18} className="text-orange-500 mt-0.5" /> : 
- <CheckCircle size={18} className="text-orange-500 mt-0.5" />}
- <div>
- <p className="text-sm font-bold">{alert.title}</p>
- <p className="text-xs mt-1 text-gray-600 dark:text-gray-300">{alert.message}</p>
- </div>
- </div>
- </div>
- ))}
- </div>
- </section>
+  {/* SMART ALERTS */}
+  <section>
+  <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-zinc-900 dark:text-white">
+  <Bell size={20} className="text-orange-500" /> Smart Alerts
+  </h2>
+  <div className="space-y-4">
+  {smartData.alerts.map((alert: any, i: number) => (
+  <div key={i} className={`p-5 rounded-2xl border ${
+  alert.type === 'warning' ? 'bg-orange-50/50 border-orange-200 dark:bg-orange-500/5 dark:border-orange-500/20' : 
+  'bg-zinc-50/50 border-zinc-200 dark:bg-zinc-800/30 dark:border-zinc-700/50'
+  } backdrop-blur-sm transition-all hover:-translate-y-1`}>
+  <div className="flex items-start gap-4">
+  {alert.type === 'warning' ? <AlertTriangle size={20} className="text-orange-500 shrink-0" /> : 
+  alert.type === 'info' ? <Target size={20} className="text-orange-500 shrink-0" /> : 
+  <CheckCircle size={20} className="text-emerald-500 shrink-0" />}
+  <div>
+  <p className="text-sm font-bold text-zinc-900 dark:text-white">{alert.title}</p>
+  <p className="text-xs mt-1 text-zinc-600 dark:text-zinc-400 font-medium leading-relaxed">{alert.message}</p>
+  </div>
+  </div>
+  </div>
+  ))}
+  </div>
+  </section>
 
- {/* PLACEMENT READINESS */}
- <section>
- <div className="flex items-center justify-between mb-4">
- <h2 className="text-lg font-bold" style={{ color: 'var(--foreground)' }}>
- Placement
- </h2>
- <Link href="/student/placement-preparation" className="text-sm text-orange-500 font-medium hover:underline">Go to Prep</Link>
- </div>
- <div className="card p-5">
- <div className="flex items-center justify-between mb-6">
- <div>
- <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Overall Readiness</p>
- <p className="text-3xl font-bold text-orange-500">{smartData.placement.readiness}%</p>
- </div>
- <div className="w-16 h-16 rounded-full border-4 border-orange-500 flex items-center justify-center">
- <Briefcase size={24} className="text-orange-500" />
- </div>
- </div>
- 
- <div className="space-y-3">
- <div className="flex items-center justify-between text-sm">
- <span>Aptitude</span>
- <span className="font-bold">{smartData.placement.aptitude}%</span>
- </div>
- <div className="flex items-center justify-between text-sm">
- <span>Coding</span>
- <span className="font-bold">{smartData.placement.coding}%</span>
- </div>
- <div className="flex items-center justify-between text-sm">
- <span>Mock Interview</span>
- <span className="font-bold">{smartData.placement.interview}%</span>
- </div>
- <div className="flex items-center justify-between text-sm">
- <span>Resume Score</span>
- <span className="font-bold text-green-500">{smartData.placement.resume}%</span>
- </div>
- </div>
- </div>
- </section>
+  {/* PLACEMENT READINESS */}
+  <section>
+  <div className="flex items-center justify-between mb-4">
+  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
+  Placement
+  </h2>
+  <Link href="/student/placement-preparation" className="text-sm text-orange-500 font-bold hover:underline">Go to Prep</Link>
+  </div>
+  <div className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm backdrop-blur-sm group hover:border-orange-500/30 transition-all">
+  <div className="flex items-center justify-between mb-8">
+  <div>
+  <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-1">Overall Readiness</p>
+  <p className="text-4xl font-bold text-orange-500">{smartData.placement.readiness}%</p>
+  </div>
+  <div className="w-16 h-16 rounded-2xl bg-orange-100 dark:bg-orange-500/10 flex items-center justify-center">
+  <Briefcase size={28} className="text-orange-500" />
+  </div>
+  </div>
+  
+  <div className="space-y-4">
+  <div className="flex items-center justify-between text-sm">
+  <span className="font-bold text-zinc-600 dark:text-zinc-400">Aptitude</span>
+  <span className="font-bold text-zinc-900 dark:text-white">{smartData.placement.aptitude}%</span>
+  </div>
+  <div className="flex items-center justify-between text-sm">
+  <span className="font-bold text-zinc-600 dark:text-zinc-400">Coding</span>
+  <span className="font-bold text-zinc-900 dark:text-white">{smartData.placement.coding}%</span>
+  </div>
+  <div className="flex items-center justify-between text-sm">
+  <span className="font-bold text-zinc-600 dark:text-zinc-400">Mock Interview</span>
+  <span className="font-bold text-zinc-900 dark:text-white">{smartData.placement.interview}%</span>
+  </div>
+  <div className="flex items-center justify-between text-sm pt-2 border-t border-zinc-100 dark:border-zinc-800">
+  <span className="font-bold text-zinc-600 dark:text-zinc-400">Resume Score</span>
+  <span className="font-bold text-emerald-500">{smartData.placement.resume}%</span>
+  </div>
+  </div>
+  </div>
+  </section>
 
  </div>
  </div>

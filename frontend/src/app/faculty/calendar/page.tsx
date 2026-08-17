@@ -114,7 +114,7 @@ export default function FacultyCalendarPage() {
  </div>
 
  <div className="grid lg:grid-cols-4 gap-8">
- <div className="">
+ <div className="lg:col-span-3">
  <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm">
  
  {/* Calendar Header */}
