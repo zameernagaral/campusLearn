@@ -206,8 +206,8 @@ export default function TimetablePage() {
           {/* Day view */}
           <div>
             {/* Date Navigator */}
-            <div className="flex items-center gap-3 mb-4 overflow-x-auto pb-2">
-              <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() - 1); setSelectedDate(d); }} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500 shrink-0">
+            <div className="flex items-center gap-3 mb-6 overflow-x-auto pb-2">
+              <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() - 1); setSelectedDate(d); }} className="p-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500 shrink-0 border border-zinc-200 dark:border-zinc-800">
                 <ChevronLeft size={16} />
               </button>
               {Array.from({ length: 7 }, (_, i) => {
@@ -217,69 +217,92 @@ export default function TimetablePage() {
                 const isToday = d.toDateString() === new Date().toDateString();
                 return (
                   <button key={i} onClick={() => setSelectedDate(d)}
-                    className={`flex flex-col items-center min-w-[56px] py-2.5 px-1 rounded-xl transition-all ${isSelected ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400'}`}>
-                    <span className="text-[10px] font-bold uppercase tracking-wide">{DAYS[d.getDay()]}</span>
-                    <span className={`text-lg font-black mt-0.5 ${isToday && !isSelected ? 'text-orange-500' : ''}`}>{d.getDate()}</span>
-                    {isToday && <div className={`w-1 h-1 rounded-full mt-0.5 ${isSelected ? 'bg-white' : 'bg-orange-500'}`} />}
+                    className={`flex flex-col items-center min-w-[70px] py-3 px-2 rounded-2xl transition-all border ${isSelected ? 'bg-zinc-900 border-zinc-900 text-white dark:bg-zinc-800 dark:border-zinc-700 shadow-md' : 'bg-transparent border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-500 dark:text-zinc-400'}`}>
+                    <span className="text-xs font-bold uppercase tracking-widest">{DAYS[d.getDay()]}</span>
+                    <span className={`text-xl font-black mt-1 ${isToday && !isSelected ? 'text-orange-500' : ''}`}>{d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()}</span>
+                    {isToday && <div className={`w-1.5 h-1.5 rounded-full mt-1.5 ${isSelected ? 'bg-orange-500' : 'bg-orange-500'}`} />}
                   </button>
                 );
               })}
-              <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() + 1); setSelectedDate(d); }} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500 shrink-0">
+              <button onClick={() => { const d = new Date(selectedDate); d.setDate(d.getDate() + 1); setSelectedDate(d); }} className="p-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-500 shrink-0 border border-zinc-200 dark:border-zinc-800">
                 <ChevronRight size={16} />
               </button>
             </div>
 
             {isLoading ? (
-              <div className="space-y-3">
-                {[1, 2, 3].map(i => <div key={i} className="h-28 bg-zinc-100 dark:bg-zinc-800 rounded-2xl animate-pulse" />)}
+              <div className="space-y-4">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="bg-zinc-50 dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 w-full flex flex-col sm:flex-row gap-4 animate-pulse">
+                    <div className="flex-1 space-y-3">
+                      <div className="flex gap-2">
+                        <div className="h-5 w-16 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+                        <div className="h-5 w-20 bg-zinc-200 dark:bg-zinc-800 rounded-full" />
+                      </div>
+                      <div className="h-6 w-3/4 bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+                      <div className="h-4 w-1/2 bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+                    </div>
+                    <div className="sm:text-right space-y-2 mt-4 sm:mt-0 flex flex-col sm:items-end">
+                      <div className="h-5 w-32 bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+                      <div className="h-4 w-20 bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : todayClasses.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                <CalendarIcon size={40} className="text-zinc-200 dark:text-zinc-700 mb-3" />
+              <div className="flex flex-col items-center justify-center py-16 bg-zinc-50 dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800">
+                <CalendarIcon size={40} className="text-zinc-300 dark:text-zinc-700 mb-3" />
                 <p className="font-bold text-zinc-900 dark:text-white mb-1">No classes today</p>
-                <p className="text-sm text-zinc-400">Enjoy your free time!</p>
+                <p className="text-sm text-zinc-500">Enjoy your free time!</p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {todayClasses.map((cls, i) => {
                   const typeStyle = TYPE_STYLE[cls.classType] ?? TYPE_STYLE.Lecture;
-                  const Icon = typeStyle.icon;
                   const isLive = cls.status === 'Live Now';
                   const isCancelled = cls.status === 'Cancelled';
+                  
+                  // In premium dark theme, active cards have blue/indigo borders
+                  const borderColor = isLive ? 'border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.15)] dark:shadow-[0_0_20px_rgba(99,102,241,0.2)]' : 'border-zinc-200 dark:border-[#1e293b]';
+                  const bgColor = 'bg-white dark:bg-[#0f1115] hover:dark:bg-[#13161c]';
+
                   return (
-                    <motion.div key={cls._id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
-                      className={`bg-white dark:bg-zinc-900 rounded-2xl border overflow-hidden transition-all ${isLive ? 'border-red-400 dark:border-red-500/60 shadow-lg shadow-red-500/10' : isCancelled ? 'border-zinc-200 dark:border-zinc-800 opacity-60' : 'border-zinc-200 dark:border-zinc-800 hover:shadow-md hover:shadow-black/5'}`}>
-                      <div className="flex">
-                        {/* Left stripe */}
-                        <div className={`w-1 shrink-0 ${isLive ? 'bg-red-500' : isCancelled ? 'bg-zinc-300 dark:bg-zinc-700' : 'bg-orange-500'}`} />
-                        <div className="flex-1 p-4">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                                {isLive && <span className="flex items-center gap-1 text-[10px] font-black text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-500/10 px-2 py-0.5 rounded-full border border-red-200 dark:border-red-500/20"><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />LIVE NOW</span>}
-                                <span className={`text-[10px] px-2 py-0.5 font-bold rounded-full border ${STATUS_STYLE[cls.status]}`}>{cls.status}</span>
-                                <span className={`text-[10px] px-2 py-0.5 font-bold rounded-full ${typeStyle.bg} ${typeStyle.text} flex items-center gap-1`}><Icon size={9} /> {cls.classType}</span>
-                              </div>
-                              <h3 className={`font-black text-zinc-900 dark:text-white text-sm ${isCancelled ? 'line-through' : ''}`}>{cls.subject}</h3>
-                              <p className="text-xs text-zinc-400 mt-1">{facultyName(cls)}</p>
-                            </div>
-                            <div className="text-right shrink-0">
-                              <p className="font-bold text-zinc-900 dark:text-white text-sm flex items-center gap-1 justify-end"><Clock size={12} className="text-orange-500" /> {fmt(cls.startTime, 'time')}</p>
-                              <p className="text-xs text-zinc-400 mt-0.5">{fmt(cls.endTime, 'time')}</p>
-                              {cls.room && <p className="text-xs text-zinc-400 mt-1 flex items-center gap-1 justify-end"><MapPin size={10} /> {cls.room}</p>}
-                            </div>
+                    <motion.div key={cls._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
+                      className={`${bgColor} rounded-2xl border ${borderColor} overflow-hidden transition-all duration-300`}>
+                      <div className="p-5 flex flex-col sm:flex-row gap-4 justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-3 flex-wrap">
+                            {isLive && (
+                              <span className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-full border border-indigo-200 dark:border-indigo-500/20">
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />Live Now
+                              </span>
+                            )}
+                            {!isLive && <span className={`text-xs px-2.5 py-1 font-bold rounded-full border ${STATUS_STYLE[cls.status]}`}>{cls.status}</span>}
+                            <span className={`text-xs px-2.5 py-1 font-bold rounded-full ${typeStyle.bg} ${typeStyle.text}`}>{cls.classType}</span>
+                            <span className="text-xs px-2.5 py-1 font-bold rounded-full bg-blue-50 text-blue-600 border border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20">CS-A</span>
                           </div>
-                          {cls.notes && <p className="text-xs text-amber-600 dark:text-amber-400 mt-2 flex items-center gap-1"><AlertTriangle size={10} /> {cls.notes}</p>}
+                          <h3 className={`font-black text-zinc-900 dark:text-white text-lg ${isCancelled ? 'line-through text-zinc-400' : ''}`}>{cls.subject}</h3>
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Faculty: {facultyName(cls)}</p>
+                          {cls.notes && <p className="text-sm text-amber-600 dark:text-amber-400 mt-2 flex items-center gap-1.5"><AlertTriangle size={14} /> {cls.notes}</p>}
+                        </div>
+                        <div className="sm:text-right shrink-0 flex flex-col sm:items-end justify-between">
+                          <div>
+                            <p className="font-bold text-zinc-900 dark:text-white flex items-center gap-1.5 justify-start sm:justify-end">
+                              <Clock size={14} className={isLive ? 'text-indigo-500' : 'text-zinc-400'} /> 
+                              {fmt(cls.startTime, 'time')} - {fmt(cls.endTime, 'time')}
+                            </p>
+                            {cls.room && <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1.5 justify-start sm:justify-end"><MapPin size={14} /> {cls.room}</p>}
+                          </div>
+                          
                           {/* Actions */}
                           {!isCancelled && (
-                            <div className="flex gap-2 mt-3">
+                            <div className="flex gap-2 mt-4 sm:mt-0">
                               {(isLive || cls.meetingLink) && (
-                                <button onClick={() => handleJoin(cls)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${isLive ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-orange-500 hover:bg-orange-600 text-white'}`}>
-                                  <Video size={11} /> {isLive ? 'Join Now' : 'Join Link'}
+                                <button onClick={() => handleJoin(cls)} className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition-colors ${isLive ? 'bg-indigo-500 hover:bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300'}`}>
+                                  <Video size={14} /> {isLive ? 'Join Link' : 'Join Link'}
                                 </button>
                               )}
-                              <button onClick={() => handleAddToCalendar(cls)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors">
-                                <Plus size={11} /> Add to Calendar
+                              <button onClick={() => handleAddToCalendar(cls)} className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors" title="Add to Calendar">
+                                <Plus size={16} />
                               </button>
                             </div>
                           )}
