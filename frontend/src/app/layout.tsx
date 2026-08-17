@@ -12,10 +12,24 @@ export const metadata: Metadata = {
  keywords: ['e-learning', 'college', 'LMS', 'courses', 'assignments', 'attendance', 'campus'],
  authors: [{ name: 'CampusLearn Team' }],
  openGraph: {
- type: 'website',
- title: 'CampusLearn - One Platform for Smarter College Learning',
- description: 'Centralized LMS for colleges. Student, Faculty, HOD, and Admin portals.',
- siteName: 'CampusLearn',
+   type: 'website',
+   title: 'CampusLearn - One Platform for Smarter College Learning',
+   description: 'Centralized LMS for colleges. Student, Faculty, HOD, and Admin portals.',
+   siteName: 'CampusLearn',
+   images: [
+     {
+       url: '/og-image.jpg',
+       width: 1200,
+       height: 630,
+       alt: 'CampusLearn - Smarter College Learning',
+     },
+   ],
+ },
+ twitter: {
+   card: 'summary_large_image',
+   title: 'CampusLearn - One Platform for Smarter College Learning',
+   description: 'Centralized LMS for colleges. Student, Faculty, HOD, and Admin portals.',
+   images: ['/og-image.jpg'],
  },
  robots: { index: true, follow: true },
  manifest: '/manifest.json',
