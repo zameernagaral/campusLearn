@@ -54,7 +54,7 @@ export default function CalendarPage() {
  </div>
 
  <div className="grid lg:grid-cols-4 gap-8">
- <div className="lg:col-span-3">
+ <div className="">
  <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm">
  
  {/* Calendar Header */}
@@ -124,7 +124,7 @@ export default function CalendarPage() {
  </div>
 
  {/* Sidebar */}
- <div className="lg:col-span-1 space-y-6">
+ <div className=" space-y-6">
  <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm sticky top-6">
  <h3 className="font-bold text-zinc-900 dark:text-white mb-6">Upcoming Events</h3>
  

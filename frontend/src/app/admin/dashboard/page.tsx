@@ -80,8 +80,8 @@ export default function AdminDashboard() {
  </div>
 
  {/* Charts Row */}
- <div className="grid lg:grid-cols-3 gap-6 mb-6">
- <div className="lg:col-span-2 card p-5">
+ <div className="grid lg:grid-cols-1 gap-6 mb-6">
+ <div className=" card p-5">
  <h3 className="font-semibold mb-4" style={{ color: 'var(--foreground)' }}>User Growth (Last 7 Days)</h3>
  <LineChart labels={userGrowthData.labels} datasets={userGrowthData.datasets} height={220} />
  </div>
@@ -96,9 +96,9 @@ export default function AdminDashboard() {
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-6">
+ <div className="grid lg:grid-cols-1 gap-6">
  {/* Recent Courses */}
- <div className="lg:col-span-2 card p-5">
+ <div className=" card p-5">
  <div className="flex items-center justify-between mb-4">
  <h3 className="font-semibold" style={{ color: 'var(--foreground)' }}>Recent Courses</h3>
  <Link href="/admin/courses" className="text-xs" style={{ color: 'var(--primary)' }}>View all →</Link>

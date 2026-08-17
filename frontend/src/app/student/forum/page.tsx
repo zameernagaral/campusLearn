@@ -70,7 +70,7 @@ export default function ForumPage() {
  </div>
 
  <div className="grid lg:grid-cols-4 gap-6">
- <div className="lg:col-span-3 space-y-4">
+ <div className=" space-y-4">
  {/* Search Bar */}
  <div className="relative">
  <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -131,7 +131,7 @@ export default function ForumPage() {
  </div>
  </div>
 
- <div className="lg:col-span-1 space-y-6">
+ <div className=" space-y-6">
  <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm">
  <h3 className="font-bold text-zinc-900 dark:text-white mb-4">Forum Stats</h3>
  <div className="space-y-4">
@@ -155,7 +155,7 @@ export default function ForumPage() {
  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
  <motion.div 
  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
- className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+ className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm"
  onClick={() => !isSubmitting && setIsModalOpen(false)}
  />
  <motion.div 

@@ -27,7 +27,7 @@ export default function HodExamAnalyticsPage() {
  <Toaster position="top-right" />
 
  {isGeneratingReport && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-8 rounded-3xl w-full max-w-md border border-border shadow-2xl relative text-center">
  {reportProgress < 100 ? (
  <>

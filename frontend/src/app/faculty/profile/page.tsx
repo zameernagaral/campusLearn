@@ -33,13 +33,13 @@ export default function FacultyProfilePage() {
  <p className="text-zinc-500">Manage your professional information and settings</p>
  </motion.div>
 
- <div className="grid md:grid-cols-3 gap-8">
+ <div className="grid md:grid-cols-1 gap-8">
  {/* Left column - Identity */}
  <motion.div
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ delay: 0.1 }}
- className="md:col-span-1"
+ className=""
  >
  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center shadow-sm relative overflow-hidden">
  <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-blue-500/20 to-blue-500/5 dark:from-blue-500/10 dark:to-transparent" />
@@ -85,7 +85,7 @@ export default function FacultyProfilePage() {
  initial={{ opacity: 0, x: 20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ delay: 0.2 }}
- className="md:col-span-2 space-y-6"
+ className=" space-y-6"
  >
  {/* Professional Details */}
  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">
@@ -127,7 +127,7 @@ export default function FacultyProfilePage() {
  <p className="font-semibold text-zinc-900 dark:text-white text-base mb-1">Active Courses</p>
  <p className="text-sm text-zinc-500">Currently teaching 3 courses this semester</p>
  </div>
- <div className="text-2xl font-black text-blue-500">3</div>
+ <div className="text-2xl font-bold text-blue-500">3</div>
  </div>
 
  <div className="flex items-center justify-between p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
@@ -135,7 +135,7 @@ export default function FacultyProfilePage() {
  <p className="font-semibold text-zinc-900 dark:text-white text-base mb-1">Total Students</p>
  <p className="text-sm text-zinc-500">Managing 150+ students across sections</p>
  </div>
- <div className="text-2xl font-black text-blue-500">150+</div>
+ <div className="text-2xl font-bold text-blue-500">150+</div>
  </div>
  </div>
  </div>

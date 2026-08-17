@@ -69,7 +69,7 @@ export default function PlacementPreparationPage() {
 
  {activeModule === 'AI Mock Interview' && (
  <div className="w-full max-w-3xl">
- <div className="bg-black aspect-video rounded-xl border-4 border-indigo-500/50 flex flex-col items-center justify-center relative overflow-hidden mb-6">
+ <div className="bg-zinc-950 aspect-video rounded-xl border-4 border-indigo-500/50 flex flex-col items-center justify-center relative overflow-hidden mb-6">
  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
  <Users size={64} className="text-white/20 absolute" />
  <div className="z-20 text-center pb-8 mt-auto w-full px-8">
@@ -148,7 +148,7 @@ export default function PlacementPreparationPage() {
  <Toaster position="top-right" />
  
  {isUpdatingProfile && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-md border border-border shadow-2xl relative">
  <button onClick={() => setIsUpdatingProfile(false)} className="absolute top-4 right-4 text-muted hover:text-foreground">
  <X size={20} />
@@ -197,15 +197,15 @@ export default function PlacementPreparationPage() {
  </div>
 
  <div className="grid lg:grid-cols-4 gap-6 mb-6">
- <div className="lg:col-span-1 card p-6 flex flex-col items-center justify-center text-center border-t-4 border-teal-500">
+ <div className=" card p-6 flex flex-col items-center justify-center text-center border-t-4 border-teal-500">
  <div className="w-24 h-24 rounded-full border-8 border-teal-100 dark:border-teal-900 flex items-center justify-center mb-4">
- <span className="text-2xl font-black text-teal-600 dark:text-teal-400">72%</span>
+ <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">72%</span>
  </div>
  <h3 className="font-bold">Placement Ready</h3>
  <p className="text-sm text-muted mt-1">Keep practicing to reach 90%</p>
  </div>
 
- <div className="lg:col-span-3 grid sm:grid-cols-2 gap-4">
+ <div className=" grid sm:grid-cols-2 gap-4">
  <div onClick={() => setActiveModule('Aptitude')} className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
  <div className="p-3 bg-blue-100 text-blue-600 rounded-xl"><Cpu size={24} /></div>
  <div className="flex-1">
@@ -215,7 +215,7 @@ export default function PlacementPreparationPage() {
  <ArrowRight size={16} className="text-muted" />
  </div>
  <div onClick={() => setActiveModule('Coding')} className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
- <div className="p-3 bg-purple-100 text-purple-600 rounded-xl"><Code size={24} /></div>
+ <div className="p-3 bg-blue-100 text-blue-600 rounded-xl"><Code size={24} /></div>
  <div className="flex-1">
  <h4 className="font-bold">Coding Preparation</h4>
  <p className="text-xs text-muted mt-1">Score: 75%</p>
@@ -247,7 +247,7 @@ export default function PlacementPreparationPage() {
  {companies.map((company, i) => (
  <div key={i} onClick={() => alert(`Viewing AI insights and interview preparation guide for ${company.name}...`)} className="p-4 border border-border rounded-xl flex items-center justify-between hover:border-teal-500 transition-colors cursor-pointer">
  <div className="flex items-center gap-3">
- <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center font-black">{company.initial}</div>
+ <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center font-bold">{company.initial}</div>
  <div>
  <p className="font-bold">{company.name}</p>
  <p className="text-xs text-muted">{company.role}</p>

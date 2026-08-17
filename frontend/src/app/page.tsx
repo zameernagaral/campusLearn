@@ -53,7 +53,7 @@ function LandingNavbar() {
  {/* CTA buttons */}
  <div className="hidden md:flex items-center gap-3">
  <Link href="/login" className="btn btn-primary text-sm px-5 py-2">
- Sign In <ArrowRight size={14} />
+ Sign In
  </Link>
  </div>
 
@@ -91,9 +91,9 @@ function LandingNavbar() {
 function HeroSection() {
  return (
  <BeamsBackground className="pt-24 pb-16">
- <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-12">
- <div className="grid lg:grid-cols-2 gap-12 items-center">
- {/* Left content */}
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-12">
+        <div className="grid lg:grid-cols-1 gap-12 items-center text-center max-w-3xl mx-auto">
+          {/* Left content */}
  <motion.div
  initial={{ opacity: 0, x: -40 }}
  animate={{ opacity: 1, x: 0 }}
@@ -105,7 +105,7 @@ function HeroSection() {
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
- className="text-5xl lg:text-7xl font-black leading-tight mb-6 text-zinc-950 dark:text-white"
+ className="text-5xl lg:text-7xl font-bold leading-tight mb-6 text-zinc-950 dark:text-white"
  >
  Smarter <br/>
  <span className="text-orange-500">College Learning</span>
@@ -115,19 +115,19 @@ function HeroSection() {
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
- className="text-lg text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed max-w-xl"
+ className="text-lg text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed max-w-xl mx-auto"
  >
- Replace Google Classroom, WhatsApp groups, email, and multiple apps with one beautiful, powerful platform.
+ A centralized, role-based e-learning platform for colleges. Manage courses, attendance, assignments, and quizzes all in one place.
  </motion.p>
 
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
- className="flex flex-wrap gap-4 mb-12"
+ className="flex flex-wrap gap-4 mb-12 justify-center"
  >
  <Link href="/login" className="btn btn-primary px-7 py-3 text-base hover:scale-105 active:scale-95 transition-transform duration-200">
- Start Free Today <ArrowRight size={16} />
+ Start Free Today
  </Link>
  </motion.div>
  
@@ -140,7 +140,7 @@ function HeroSection() {
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
- className="flex flex-wrap gap-6 mt-12"
+ className="flex flex-wrap gap-6 mt-12 justify-center"
  >
  {[
  { value: '10,000+', label: 'Students' },
@@ -157,84 +157,6 @@ function HeroSection() {
  <p className="text-sm text-zinc-500 dark:text-zinc-400">{stat.label}</p>
  </motion.div>
  ))}
- </motion.div>
- </motion.div>
-
- {/* Right - Dashboard Preview */}
- <motion.div
- initial={{ opacity: 0, x: 40 }}
- animate={{ opacity: 1, x: 0 }}
- transition={{ duration: 0.7, delay: 0.2 }}
- className="relative hidden lg:block"
- >
- {/* Floating card 1 */}
- <motion.div
- className="absolute -top-8 -left-8 rounded-2xl p-4 shadow-xl z-10 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
- animate={{ y: [0, -8, 0] }}
- transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
- >
- <div className="flex items-center gap-2 text-zinc-900 dark:text-white">
- <CheckCircle size={16} className="text-emerald-500" />
- <span className="text-sm font-medium">Assignment submitted!</span>
- </div>
- </motion.div>
-
- {/* Main dashboard mockup */}
- <div className="rounded-3xl overflow-hidden shadow-2xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 backdrop-blur-sm">
- {/* Window chrome */}
- <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
- <div className="w-3 h-3 rounded-full bg-red-400" />
- <div className="w-3 h-3 rounded-full bg-amber-400" />
- <div className="w-3 h-3 rounded-full bg-green-400" />
- <div className="flex-1 h-5 rounded-md mx-4 bg-zinc-200 dark:bg-zinc-800" />
- </div>
-
- {/* Dashboard mockup */}
- <div className="p-4 space-y-3">
- <div className="flex gap-3">
- {[
- { label: 'Courses', value: '6', color: '#f97316' }, // orange-500
- { label: 'Attendance', value: '87%', color: '#10b981' }, // emerald-500
- { label: 'Score', value: 'A+', color: '#3b82f6' }, // blue-500
- ].map((card) => (
- <div key={card.label} className="flex-1 rounded-xl p-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
- <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{card.label}</p>
- <p className="text-lg font-bold" style={{ color: card.color }}>{card.value}</p>
- </div>
- ))}
- </div>
-
- {/* Course list */}
- <div className="rounded-xl p-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
- <p className="text-xs text-zinc-400 mb-2 font-medium">ENROLLED COURSES</p>
- {['Data Structures', 'Machine Learning', 'Database Systems'].map((course, i) => (
- <div key={course} className="flex items-center gap-2 py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
- <div className="w-6 h-6 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 text-xs font-semibold">{i + 1}</div>
- <span className="text-xs text-zinc-600 dark:text-zinc-300">{course}</span>
- <div className="ml-auto h-1.5 w-16 rounded-full bg-zinc-100 dark:bg-zinc-800">
- <div className="h-full rounded-full bg-orange-500" style={{ width: `${[75, 45, 60][i]}%` }} />
- </div>
- </div>
- ))}
- </div>
- </div>
- </div>
-
- {/* Floating card 2 */}
- <motion.div
- className="absolute -bottom-6 -right-6 rounded-2xl p-4 shadow-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
- animate={{ y: [0, 8, 0] }}
- transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
- >
- <div className="flex items-center gap-3">
- <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
- <BookOpen size={14} className="text-white" />
- </div>
- <div>
- <p className="text-xs text-zinc-500">Study Resources</p>
- <p className="text-sm font-medium text-zinc-900 dark:text-white">Access all notes...</p>
- </div>
- </div>
  </motion.div>
  </motion.div>
  </div>
@@ -268,7 +190,7 @@ function StatsSection() {
  <div className="w-14 h-14 rounded-2xl bg-orange-500/20 text-orange-500 flex items-center justify-center mx-auto mb-3">
  {stat.icon}
  </div>
- <p className="text-4xl font-black mb-1">{stat.value}</p>
+ <p className="text-4xl font-bold mb-1">{stat.value}</p>
  <p className="text-zinc-400 text-sm">{stat.label}</p>
  </motion.div>
  ))}
@@ -332,9 +254,9 @@ function HowItWorksSection() {
 function FAQSection() {
  const [openIndex, setOpenIndex] = useState<number | null>(null);
  const faqs = [
- { q: 'Is CampusLearn free to use?', a: 'Yes! CampusLearn is completely free for students. Colleges get an institutional license to set up the platform.' },
- { q: 'Can it replace Google Classroom?', a: 'Absolutely. CampusLearn includes everything Google Classroom offers plus attendance management, AI assistant, leaderboard, and much more.' },
- { q: 'Is my data secure?', a: 'We use industry-standard security and encryption.' },
+ { q: 'Is CampusLearn free to use?', a: 'Yes. CampusLearn is completely free for students. Colleges require an institutional license to deploy the platform.' },
+ { q: 'What features are included?', a: 'CampusLearn provides comprehensive attendance management, course delivery, assignment tracking, an AI assistant, and a leaderboard.' },
+ { q: 'Is my data secure?', a: 'We use industry-standard security and encryption protocols.' },
  ];
 
  return (
@@ -386,7 +308,7 @@ function CTASection() {
  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6 bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400">
  Join 10,000+ Students
  </div>
- <h2 className="text-5xl font-black text-zinc-900 dark:text-white mb-6">
+ <h2 className="text-5xl font-bold text-zinc-900 dark:text-white mb-6">
  Ready to <span className="text-orange-500">Transform</span> Your Learning?
  </h2>
  <p className="text-zinc-500 dark:text-zinc-400 text-lg mb-8 max-w-xl mx-auto">
@@ -394,7 +316,7 @@ function CTASection() {
  </p>
  <div className="flex flex-wrap justify-center gap-4">
  <Link href="/login" className="btn btn-primary px-8 py-3.5 text-base">
- Get Started <ArrowRight size={16} />
+ Get Started
  </Link>
  </div>
  </motion.div>

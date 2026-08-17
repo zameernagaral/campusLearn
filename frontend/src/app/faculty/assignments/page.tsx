@@ -98,7 +98,7 @@ export default function FacultyAssignmentsPage() {
  <div className="flex flex-col gap-1 min-w[100px]">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Submissions</span>
  <div className="flex items-end gap-1">
- <span className="text-xl font-black text-zinc-900 dark:text-white leading-none">{assignment.submissions}</span>
+ <span className="text-xl font-bold text-zinc-900 dark:text-white leading-none">{assignment.submissions}</span>
  <span className="text-sm font-semibold text-zinc-500 leading-none mb-0.5">/ {assignment.total}</span>
  </div>
  </div>

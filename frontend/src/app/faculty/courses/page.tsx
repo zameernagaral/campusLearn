@@ -39,7 +39,7 @@ export default function FacultyCoursesPage() {
  </div>
 
  {isLoading ? (
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
  {Array(6).fill(null).map((_, i) => (
  <div key={i} className="h-64 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
  ))}
@@ -53,7 +53,7 @@ export default function FacultyCoursesPage() {
  </Link>
  </div>
  ) : (
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-8">
  {courses.map((course, i) => (
  <motion.div 
  key={course._id}

@@ -86,8 +86,8 @@ export default function ExamPreparationPage() {
  </div>
  </div>
  
- <div className="w-full max-w-4xl grid md:grid-cols-3 gap-6">
- <div className="md:col-span-2 space-y-6">
+ <div className="w-full max-w-4xl grid md:grid-cols-1 gap-6">
+ <div className=" space-y-6">
  {!isTakingQuiz ? (
  <>
  <div className="bg-surface-2 p-6 rounded-xl border border-border">
@@ -104,7 +104,7 @@ export default function ExamPreparationPage() {
  
  <div className="flex gap-4">
  {videoGenerated ? (
- <div className="w-full bg-black rounded-xl aspect-video flex flex-col items-center justify-center text-white border-2 border-indigo-500 overflow-hidden relative group">
+ <div className="w-full bg-zinc-950 rounded-xl aspect-video flex flex-col items-center justify-center text-white border-2 border-indigo-500 overflow-hidden relative group">
  {isPlayingVideo ? (
  <div className="absolute inset-0 flex flex-col justify-end p-4 z-20">
  <div className="w-full flex items-center gap-4">
@@ -179,7 +179,7 @@ export default function ExamPreparationPage() {
  <div className="space-y-4">
  <div className="card p-4 bg-indigo-600 text-white border-0">
  <h3 className="font-bold mb-2">Pomodoro Timer</h3>
- <div className={`text-4xl font-black text-center mb-4 ${!timerActive && 'opacity-50'}`}>
+ <div className={`text-4xl font-bold text-center mb-4 ${!timerActive && 'opacity-50'}`}>
  {formatTime(timeLeft)}
  </div>
  <div className="flex justify-center gap-2">
@@ -220,23 +220,23 @@ export default function ExamPreparationPage() {
  <div className="relative z-10 flex justify-between items-center">
  <div>
  <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-bold mb-3">UPCOMING EXAM</div>
- <h2 className="text-3xl font-black mb-1">Database Management Systems</h2>
+ <h2 className="text-3xl font-bold mb-1">Database Management Systems</h2>
  <p className="text-white/80">Mid-Term Examination · Sem 4</p>
  </div>
  <div className="text-center bg-white/10 p-4 rounded-2xl backdrop-blur-md border border-white/20">
- <p className="text-4xl font-black">5</p>
+ <p className="text-4xl font-bold">5</p>
  <p className="text-sm font-medium uppercase tracking-wider">Days Left</p>
  </div>
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-6">
+ <div className="grid lg:grid-cols-1 gap-6">
  {/* Left Col - Progress & Plan */}
- <div className="lg:col-span-1 space-y-6">
+ <div className=" space-y-6">
  <div className="card p-5 border-t-4 border-indigo-500">
  <h3 className="font-bold mb-4 flex items-center gap-2"><Target size={18} className="text-indigo-500" /> Syllabus Progress</h3>
  <div className="flex items-end justify-between mb-2">
- <span className="text-3xl font-black">72%</span>
+ <span className="text-3xl font-bold">72%</span>
  <span className="text-sm text-muted pb-1">Completed</span>
  </div>
  <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -261,7 +261,7 @@ export default function ExamPreparationPage() {
  </div>
 
  {/* Right Col - Topic List */}
- <div className="lg:col-span-2 card p-5">
+ <div className=" card p-5">
  <div className="flex justify-between items-center mb-6">
  <h3 className="font-bold text-lg">Topic Breakdown</h3>
  <div className="flex gap-2">

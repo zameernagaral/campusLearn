@@ -123,7 +123,7 @@ export default function FacultyQuizPage() {
  <div className="flex items-center gap-8 border-t md:border-t-0 md:border-l border-zinc-100 dark:border-zinc-800/60 pt-4 md:pt-0 md:pl-8">
  <div className="flex flex-col gap-1 min-w-[80px]">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Submissions</span>
- <span className="text-xl font-black text-zinc-900 dark:text-white leading-none">
+ <span className="text-xl font-bold text-zinc-900 dark:text-white leading-none">
  {activeTab === 'upcoming' ? '-' : quiz.submissions}
  </span>
  </div>

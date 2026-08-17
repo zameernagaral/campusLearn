@@ -36,7 +36,7 @@ export default function HODReportsPage() {
  { label: 'Total Faculty', value: stats.faculty, icon: Users, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-500/10' },
  { label: 'Total Students', value: stats.students, icon: GraduationCap, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10' },
  { label: 'Active Courses', value: stats.courses, icon: BookOpen, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
- { label: 'Avg. Attendance', value: `${stats.avgAttendance}%`, icon: UserCheck, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10' }
+ { label: 'Avg. Attendance', value: `${stats.avgAttendance}%`, icon: UserCheck, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-500/10' }
  ];
 
  return (
@@ -65,7 +65,7 @@ export default function HODReportsPage() {
  {isLoading ? (
  <div className="h-8 w-16 skeleton rounded-lg" />
  ) : (
- <h3 className="text-2xl font-black text-zinc-900 dark:text-white">{stat.value}</h3>
+ <h3 className="text-2xl font-bold text-zinc-900 dark:text-white">{stat.value}</h3>
  )}
  </div>
  </motion.div>

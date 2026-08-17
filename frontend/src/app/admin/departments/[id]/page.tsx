@@ -158,10 +158,10 @@ export default function DepartmentDetailsPage({ params }: { params: Promise<{ id
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-8">
+ <div className="grid lg:grid-cols-1 gap-8">
  
  {/* Main Content (Tabs) */}
- <div className="lg:col-span-2 space-y-6">
+ <div className=" space-y-6">
  <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800">
  <div className="flex items-center gap-2">
  <button 

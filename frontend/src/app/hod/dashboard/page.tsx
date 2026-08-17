@@ -84,8 +84,8 @@ export default function HODDashboard() {
  </div>
 
  {/* Charts Row 2 + Actions */}
- <div className="grid lg:grid-cols-3 gap-6">
- <div className="lg:col-span-2 card p-5">
+ <div className="grid lg:grid-cols-1 gap-6">
+ <div className=" card p-5">
  <h3 className="font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Grade Distribution (Dept)</h3>
  <PieChart labels={gradeDistribution.labels} data={gradeDistribution.data} colors={gradeDistribution.colors} height={260} />
  </div>

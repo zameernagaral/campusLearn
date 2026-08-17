@@ -73,10 +73,10 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-8">
+ <div className="grid lg:grid-cols-1 gap-8">
  
  {/* Main Content (Enrolled Students) */}
- <div className="lg:col-span-2 space-y-6">
+ <div className=" space-y-6">
  <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
  Enrolled Students ({course.enrolledStudents?.length || 0})
  </h3>

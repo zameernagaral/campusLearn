@@ -58,8 +58,8 @@ export default function CourseDetailsPage() {
  </Link>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-8">
- <div className="lg:col-span-2 space-y-6">
+ <div className="grid lg:grid-cols-1 gap-8">
+ <div className=" space-y-6">
  <motion.div 
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -176,7 +176,7 @@ export default function CourseDetailsPage() {
  </div>
  </div>
 
- <div className="lg:col-span-1 space-y-6">
+ <div className=" space-y-6">
  <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm sticky top-24">
  <h3 className="font-bold text-zinc-900 dark:text-white flex items-center gap-2 mb-6">
  <FileText size={18} className="text-orange-500" /> Syllabus & Notes

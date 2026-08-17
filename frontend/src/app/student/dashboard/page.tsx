@@ -91,7 +91,6 @@ export default function StudentDashboard() {
  <DashboardLayout requiredRole="student">
  {/* Welcome Banner */}
  <div className="relative overflow-hidden rounded-3xl p-6 mb-6 gradient-primary">
- <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 20%, white 0%, transparent 50%)' }} />
  <div className="relative z-10 flex items-center justify-between">
  <div>
  <motion.p className="text-white/80 text-sm mb-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -128,9 +127,9 @@ export default function StudentDashboard() {
  <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
  </div>
  ) : (
- <div className="grid lg:grid-cols-3 gap-6">
+ <div className="grid lg:grid-cols-1 gap-6">
  {/* Main Column */}
- <div className="lg:col-span-2 space-y-6">
+ <div className=" space-y-6">
  
  {/* TODAY SECTION */}
  <section>

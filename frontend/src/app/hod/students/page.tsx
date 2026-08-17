@@ -55,11 +55,11 @@ export default function HODStudentsPage() {
  <table className="w-full text-left border-collapse">
  <thead>
  <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
- <th className="px-6 py-4 text-xs font-black text-zinc-400 uppercase tracking-widest">Student</th>
- <th className="px-6 py-4 text-xs font-black text-zinc-400 uppercase tracking-widest">Email</th>
- <th className="px-6 py-4 text-xs font-black text-zinc-400 uppercase tracking-widest">Semester</th>
- <th className="px-6 py-4 text-xs font-black text-zinc-400 uppercase tracking-widest">Points</th>
- <th className="px-6 py-4 text-xs font-black text-zinc-400 uppercase tracking-widest">Status</th>
+ <th className="px-6 py-4 text-xs font-bold text-zinc-400 uppercase tracking-widest">Student</th>
+ <th className="px-6 py-4 text-xs font-bold text-zinc-400 uppercase tracking-widest">Email</th>
+ <th className="px-6 py-4 text-xs font-bold text-zinc-400 uppercase tracking-widest">Semester</th>
+ <th className="px-6 py-4 text-xs font-bold text-zinc-400 uppercase tracking-widest">Points</th>
+ <th className="px-6 py-4 text-xs font-bold text-zinc-400 uppercase tracking-widest">Status</th>
  </tr>
  </thead>
  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">

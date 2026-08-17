@@ -147,7 +147,7 @@ export default function AdminSettingsPage() {
  Manage
  </button>
  ) : (
- <span className="text-sm font-black text-zinc-900 dark:text-white">{item.value}</span>
+ <span className="text-sm font-bold text-zinc-900 dark:text-white">{item.value}</span>
  )}
  </div>
  ))}

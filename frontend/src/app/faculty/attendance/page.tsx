@@ -125,9 +125,9 @@ export default function FacultyAttendancePage() {
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-8">
+ <div className="grid lg:grid-cols-1 gap-8">
  {/* Classes List */}
- <div className="lg:col-span-2 space-y-6">
+ <div className=" space-y-6">
  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Your Courses</h2>
  
  <div className="space-y-4">
@@ -174,7 +174,7 @@ export default function FacultyAttendancePage() {
  </div>
 
  {/* Recent Logs Sidebar */}
- <div className="lg:col-span-1 space-y-6">
+ <div className=" space-y-6">
  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Recent Logs</h2>
  
  <div className="bg-white dark:bg-zinc-950 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
@@ -183,7 +183,7 @@ export default function FacultyAttendancePage() {
  <div>
  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Average</p>
  <div className="flex items-baseline gap-1">
- <span className="text-3xl font-black text-zinc-900 dark:text-white">{avgAttendance}</span>
+ <span className="text-3xl font-bold text-zinc-900 dark:text-white">{avgAttendance}</span>
  <span className="text-lg font-bold text-zinc-500">%</span>
  </div>
  </div>
@@ -225,7 +225,7 @@ export default function FacultyAttendancePage() {
  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
  <motion.div 
  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
- className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+ className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm"
  onClick={() => !isSubmitting && setIsModalOpen(false)}
  />
  <motion.div 

@@ -64,7 +64,7 @@ export default function LoginPage() {
  <div className="w-14 h-14 rounded-2xl bg-orange-500 flex items-center justify-center mb-6 shadow-xl shadow-orange-500/20">
  <GraduationCap size={28} className="text-white" />
  </div>
- <h1 className="text-4xl font-black text-white mb-4 tracking-tight">
+ <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">
  CampusLearn
  </h1>
  <p className="text-zinc-400 text-lg max-w-md leading-relaxed font-medium">
@@ -72,7 +72,7 @@ export default function LoginPage() {
  </p>
  </div>
 
- <div className="space-y-4 bg-black/40 p-6 rounded-2xl border border-white/10 backdrop-blur-md w-full max-w-md">
+ <div className="space-y-4 bg-zinc-950/40 p-6 rounded-2xl border border-white/10 backdrop-blur-md w-full max-w-md">
  <p className="text-xs font-bold text-orange-500 uppercase tracking-widest mb-1">Demo Credentials</p>
  <div className="space-y-3">
  {[
@@ -103,7 +103,7 @@ export default function LoginPage() {
  <div className="w-12 h-12 rounded-2xl bg-orange-500 flex items-center justify-center mb-4 shadow-lg shadow-orange-500/20">
  <GraduationCap size={24} className="text-white" />
  </div>
- <h1 className="text-3xl font-black text-zinc-900 dark:text-white tracking-tight">CampusLearn</h1>
+ <h1 className="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">CampusLearn</h1>
  </div>
 
  <div className="mb-10">

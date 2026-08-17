@@ -27,7 +27,7 @@ export default function HodCareerAnalyticsPage() {
  <Toaster position="top-right" />
 
  {isGeneratingReport && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-8 rounded-3xl w-full max-w-md border border-border shadow-2xl relative text-center">
  {reportProgress < 100 ? (
  <>
@@ -70,7 +70,7 @@ export default function HodCareerAnalyticsPage() {
  )}
 
  {selectedDept && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-xl border border-border shadow-2xl relative">
  <button onClick={() => setSelectedDept(null)} className="absolute top-4 right-4 text-muted hover:text-foreground">
  <X size={20} />
@@ -96,9 +96,9 @@ export default function HodCareerAnalyticsPage() {
  <div className="p-4 border border-border rounded-xl bg-surface-2 flex justify-between items-center">
  <div>
  <p className="text-sm font-bold text-muted">Most Popular Goal</p>
- <p className="text-xl font-bold text-purple-500">{selectedDept.topGoal}</p>
+ <p className="text-xl font-bold text-blue-500">{selectedDept.topGoal}</p>
  </div>
- <Target size={24} className="text-purple-500 opacity-50" />
+ <Target size={24} className="text-blue-500 opacity-50" />
  </div>
  </div>
  </div>
@@ -140,9 +140,9 @@ export default function HodCareerAnalyticsPage() {
  </div>
  </div>
 
- <div className="card p-6 border-t-4 border-purple-500">
+ <div className="card p-6 border-t-4 border-blue-500">
  <div className="flex items-center gap-4 mb-4">
- <div className="p-3 bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400 rounded-xl">
+ <div className="p-3 bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-xl">
  <Map size={24} />
  </div>
  <div>
@@ -198,7 +198,7 @@ export default function HodCareerAnalyticsPage() {
  </div>
  </td>
  <td className="p-4">
- <span className="text-xs px-2 py-1 rounded-full font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30">{dept.topGoal}</span>
+ <span className="text-xs px-2 py-1 rounded-full font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30">{dept.topGoal}</span>
  </td>
  <td className="p-4 text-right">
  <button onClick={() => setSelectedDept(dept)} className="btn btn-outline text-xs py-1.5 px-3">Drill Down</button>

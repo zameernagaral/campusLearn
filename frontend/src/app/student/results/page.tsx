@@ -53,7 +53,7 @@ export default function StudentResultsPage() {
  </div>
  <div>
  <p className="text-sm" style={{ color: 'var(--muted)' }}>Cumulative GPA (CGPA)</p>
- <p className="text-3xl font-black" style={{ color: 'var(--primary)' }}>{sgpa}</p>
+ <p className="text-3xl font-bold" style={{ color: 'var(--primary)' }}>{sgpa}</p>
  </div>
  </div>
  )}
@@ -138,7 +138,7 @@ export default function StudentResultsPage() {
  <td><span className="text-sm" style={{ color: 'var(--foreground)' }}>{result.externalMarks}</span></td>
  <td><span className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>{result.totalMarks}/{result.maxMarks}</span></td>
  <td>
- <span className={`text-lg font-black ${getGradeColor(result.grade)}`}>{result.grade}</span>
+ <span className={`text-lg font-bold ${getGradeColor(result.grade)}`}>{result.grade}</span>
  </td>
  <td>
  <span className="text-sm" style={{ color: 'var(--foreground)' }}>{result.gradePoints}</span>

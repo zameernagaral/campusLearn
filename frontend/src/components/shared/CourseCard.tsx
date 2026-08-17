@@ -63,7 +63,7 @@ export function CourseCard({ course, showProgress, progress = 0, showEnroll, onE
  </div>
 
  {/* Rating */}
- <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/40 backdrop-blur-sm rounded-full px-2 py-0.5">
+ <div className="absolute top-3 right-3 flex items-center gap-1 bg-zinc-950/40 backdrop-blur-sm rounded-full px-2 py-0.5">
  <Star size={11} className="text-amber-400 fill-amber-400" />
  <span className="text-white text-xs font-semibold">{course.rating.toFixed(1)}</span>
  </div>

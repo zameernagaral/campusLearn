@@ -68,7 +68,7 @@ export default function HODCoursesPage() {
  </select>
  </div>
 
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
  {isLoading ? (
  Array(6).fill(null).map((_, i) => (
  <div key={i} className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 h-48 skeleton" />
@@ -115,7 +115,7 @@ export default function HODCoursesPage() {
  <div className="flex justify-between items-center pt-6 border-t border-zinc-100 dark:border-zinc-800/60">
  <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Enrolled</span>
- <span className="text-lg font-black text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
+ <span className="text-lg font-bold text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
  </div>
  
  <button

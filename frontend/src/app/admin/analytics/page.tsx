@@ -156,10 +156,10 @@ export default function AdminAnalyticsPage() {
  className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden group hover:border-orange-500/30 transition-colors"
  >
  <div className="absolute top-0 right-0 p-6 opacity-10 transition-opacity group-hover:opacity-20">
- <span className="text-6xl font-black text-orange-500">{i + 1}</span>
+ <span className="text-6xl font-bold text-orange-500">{i + 1}</span>
  </div>
  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 relative z-10">{metric.label}</p>
- <h3 className="text-3xl font-black text-zinc-900 dark:text-white mb-2 relative z-10">{metric.value}</h3>
+ <h3 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2 relative z-10">{metric.value}</h3>
  <p className={`text-xs font-bold relative z-10 ${
  metric.trend === 'up' ? 'text-emerald-500' : 'text-zinc-500'
  }`}>
@@ -169,8 +169,8 @@ export default function AdminAnalyticsPage() {
  ))}
  </div>
 
- <div className="grid lg:grid-cols-3 gap-8 mb-8">
- <div className="lg:col-span-2 bg-white dark:bg-zinc-950 p-6 lg:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-[400px] flex flex-col">
+ <div className="grid lg:grid-cols-1 gap-8 mb-8">
+ <div className=" bg-white dark:bg-zinc-950 p-6 lg:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-[400px] flex flex-col">
  <div className="flex justify-between items-center mb-6">
  <h3 className="text-lg font-bold text-zinc-900 dark:text-white">User Growth (Last 7 Days)</h3>
  </div>
@@ -179,7 +179,7 @@ export default function AdminAnalyticsPage() {
  </div>
  </div>
 
- <div className="lg:col-span-1 bg-white dark:bg-zinc-950 p-6 lg:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-[400px] flex flex-col">
+ <div className=" bg-white dark:bg-zinc-950 p-6 lg:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-[400px] flex flex-col">
  <div className="flex justify-between items-center mb-6">
  <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Role Distribution</h3>
  </div>

@@ -29,18 +29,18 @@ export default function AdminProfilePage() {
  </button>
  </div>
 
- <div className="grid md:grid-cols-3 gap-8">
+ <div className="grid md:grid-cols-1 gap-8">
  {/* Left Column: ID Card */}
  <motion.div 
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
- className="md:col-span-1"
+ className=""
  >
  <div className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col items-center text-center relative overflow-hidden group hover:border-orange-500/30 transition-all">
  <div className="absolute top-0 left-0 right-0 h-2 bg-orange-500" />
  
  <div className="w-24 h-24 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-6 mt-4 rotate-3 group-hover:rotate-6 transition-transform">
- <span className="text-3xl font-black text-zinc-400 dark:text-zinc-500">AU</span>
+ <span className="text-3xl font-bold text-zinc-400 dark:text-zinc-500">AU</span>
  </div>
  
  <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-1 group-hover:text-orange-500 transition-colors">
@@ -52,7 +52,7 @@ export default function AdminProfilePage() {
 
  <div className="w-full bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800">
  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Admin ID</p>
- <p className="text-lg font-black text-zinc-900 dark:text-white tracking-widest">{profile.id}</p>
+ <p className="text-lg font-bold text-zinc-900 dark:text-white tracking-widest">{profile.id}</p>
  </div>
  </div>
  </motion.div>
@@ -61,7 +61,7 @@ export default function AdminProfilePage() {
  <motion.div 
  initial={{ opacity: 0, x: 20 }}
  animate={{ opacity: 1, x: 0 }}
- className="md:col-span-2 space-y-6"
+ className=" space-y-6"
  >
  <div className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm">
  <h3 className="text-sm font-bold text-zinc-900 dark:text-white uppercase tracking-widest mb-6">Contact Information</h3>

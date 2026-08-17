@@ -34,13 +34,13 @@ export default function ProfilePage() {
  <p className="text-zinc-500">Manage your account and personal information</p>
  </motion.div>
 
- <div className="grid md:grid-cols-3 gap-8">
+ <div className="grid md:grid-cols-1 gap-8">
  {/* Left column - Identity */}
  <motion.div
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ delay: 0.1 }}
- className="md:col-span-1"
+ className=""
  >
  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center shadow-sm relative overflow-hidden">
  <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-orange-500/20 to-orange-500/5 dark:from-orange-500/10 dark:to-transparent" />
@@ -85,7 +85,7 @@ export default function ProfilePage() {
  initial={{ opacity: 0, x: 20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ delay: 0.2 }}
- className="md:col-span-2 space-y-8"
+ className=" space-y-8"
  >
  {/* Academic Info */}
  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">

@@ -41,7 +41,7 @@ export default function CertificatesPage() {
  </div>
  </div>
 
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
  {isLoading ? (
  Array(3).fill(null).map((_, i) => <div key={i} className="skeleton h-[280px] rounded-3xl" />)
  ) : (
@@ -53,7 +53,6 @@ export default function CertificatesPage() {
  transition={{ delay: i * 0.1 }}
  className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col h-full relative overflow-hidden"
  >
- <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl -mr-10 -mt-10" />
  
  <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center mb-6 shadow-sm border border-orange-100 dark:border-orange-500/20">
  <Award size={24} />

@@ -27,7 +27,7 @@ export default function TimetablePage() {
  <button onClick={() => setActiveClass(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
  <ArrowLeft size={16} /> Leave Class
  </button>
- <div className="card overflow-hidden bg-black flex flex-col h-[70vh]">
+ <div className="card overflow-hidden bg-zinc-950 flex flex-col h-[70vh]">
  <div className="p-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center text-white">
  <div>
  <h2 className="font-bold">{activeClass} - Live Session</h2>
@@ -51,7 +51,7 @@ export default function TimetablePage() {
  </div>
  <div className="absolute bottom-6 right-6 w-48 h-36 bg-gray-900 rounded-xl border-2 border-green-500 overflow-hidden flex items-center justify-center shadow-2xl">
  <Camera size={24} className="text-gray-500" />
- <p className="absolute bottom-2 left-2 text-[10px] text-white font-bold bg-black/50 px-2 py-0.5 rounded">You</p>
+ <p className="absolute bottom-2 left-2 text-[10px] text-white font-bold bg-zinc-950/50 px-2 py-0.5 rounded">You</p>
  </div>
  </div>
  <div className="p-4 bg-gray-900 border-t border-gray-800 flex justify-center gap-4">

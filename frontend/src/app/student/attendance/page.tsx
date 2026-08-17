@@ -55,7 +55,7 @@ export default function StudentAttendancePage() {
  <Toaster position="top-right" />
  
  {isSettingsOpen && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-md border border-border shadow-2xl relative">
  <button onClick={() => setIsSettingsOpen(false)} className="absolute top-4 right-4 text-muted hover:text-foreground">
  <X size={20} />
@@ -141,7 +141,7 @@ export default function StudentAttendancePage() {
  <motion.div
  initial={{ opacity: 0, scale: 0.9 }}
  animate={{ opacity: 1, scale: 1 }}
- className="lg:col-span-1 card p-6 flex flex-col items-center justify-center text-center"
+ className=" card p-6 flex flex-col items-center justify-center text-center"
  >
  <div className="relative w-28 h-28 mb-4">
  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
@@ -154,7 +154,7 @@ export default function StudentAttendancePage() {
  />
  </svg>
  <div className="absolute inset-0 flex items-center justify-center">
- <span className="text-2xl font-black" style={{ color: overall >= 75 ? '#10b981' : overall >= 60 ? '#f59e0b' : '#ef4444' }}>
+ <span className="text-2xl font-bold" style={{ color: overall >= 75 ? '#10b981' : overall >= 60 ? '#f59e0b' : '#ef4444' }}>
  {overall}%
  </span>
  </div>
@@ -166,7 +166,7 @@ export default function StudentAttendancePage() {
  </motion.div>
 
  {/* Stats */}
- <div className="lg:col-span-3 card p-5">
+ <div className=" card p-5">
  <h3 className="font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Attendance Trend</h3>
  <LineChart labels={trendData.labels} datasets={trendData.datasets} height={160} />
  </div>
@@ -205,7 +205,7 @@ export default function StudentAttendancePage() {
  </div>
  </div>
  <div className="text-right">
- <p className={`text-xl font-black ${getAttendanceColor(a.percentage)}`}>{a.percentage}%</p>
+ <p className={`text-xl font-bold ${getAttendanceColor(a.percentage)}`}>{a.percentage}%</p>
  <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: status.bg, color: status.color }}>
  {status.label}
  </span>

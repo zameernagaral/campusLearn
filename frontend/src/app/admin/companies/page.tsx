@@ -30,7 +30,7 @@ export default function AdminCompaniesPage() {
  <Toaster position="top-right" />
 
  {isAddingCompany && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-md border border-border shadow-2xl">
  <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Building size={20} className="text-primary"/> Add New Company</h2>
  <form onSubmit={handleAddCompany} className="space-y-4">
@@ -76,7 +76,7 @@ export default function AdminCompaniesPage() {
  />
  </div>
 
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
  {filteredCompanies.map(company => (
  <div key={company.id} className="card p-6 border border-border hover:shadow-lg transition-all group">
  <div className="flex justify-between items-start mb-4">

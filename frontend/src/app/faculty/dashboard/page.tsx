@@ -117,8 +117,8 @@ export default function FacultyDashboard() {
  </div>
 
  {/* Charts */}
- <div className="grid lg:grid-cols-3 gap-6 mb-6">
- <div className="lg:col-span-2 card p-5">
+ <div className="grid lg:grid-cols-1 gap-6 mb-6">
+ <div className=" card p-5">
  <h3 className="font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Weekly Attendance Overview</h3>
  <BarChart labels={attendanceData.labels} datasets={attendanceData.datasets} height={200} />
  </div>

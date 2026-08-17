@@ -43,13 +43,13 @@ export default function CareerRoadmapPage() {
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-6">
+ <div className="grid lg:grid-cols-1 gap-6">
  {/* Goal Info */}
- <div className="lg:col-span-1 space-y-6">
- <div className="card p-6 border-t-4 border-purple-500">
+ <div className=" space-y-6">
+ <div className="card p-6 border-t-4 border-blue-500">
  <div className="flex items-center justify-between mb-4">
  <div className="flex items-center gap-3">
- <Target size={24} className="text-purple-500" />
+ <Target size={24} className="text-blue-500" />
  <h2 className="text-lg font-bold">Career Goal</h2>
  </div>
  {!isEditingGoal && (
@@ -79,7 +79,7 @@ export default function CareerRoadmapPage() {
  <div className="mt-4 pt-4 border-t border-border">
  <p className="text-sm font-medium mb-2">Career Readiness</p>
  <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
- <div className="bg-purple-500 h-2 rounded-full" style={{ width: '40%' }}></div>
+ <div className="bg-blue-500 h-2 rounded-full" style={{ width: '40%' }}></div>
  </div>
  <p className="text-xs text-right mt-1">40% Ready</p>
  </div>
@@ -96,7 +96,7 @@ export default function CareerRoadmapPage() {
  </div>
 
  {/* Roadmap Path */}
- <div className="lg:col-span-2 card p-6">
+ <div className=" card p-6">
  <h2 className="text-lg font-bold mb-6 flex items-center gap-2"><Map size={20} className="text-indigo-500" /> Personalized Path</h2>
  
  <div className="relative border-l-2 border-indigo-200 dark:border-indigo-900 ml-4 space-y-8">

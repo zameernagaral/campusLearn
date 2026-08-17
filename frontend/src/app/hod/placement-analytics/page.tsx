@@ -30,7 +30,7 @@ export default function HodPlacementAnalyticsPage() {
  <Toaster position="top-right" />
 
  {isSyncing && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-8 rounded-3xl w-full max-w-sm border border-border shadow-2xl relative text-center">
  <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
  <RefreshCw size={32} className="text-orange-500 animate-spin" />
@@ -42,7 +42,7 @@ export default function HodPlacementAnalyticsPage() {
  )}
 
  {selectedCompany && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-xl border border-border shadow-2xl relative">
  <button onClick={() => setSelectedCompany(null)} className="absolute top-4 right-4 text-muted hover:text-foreground">
  <X size={20} />

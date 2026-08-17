@@ -26,7 +26,7 @@ export default function FacultyCareerAnalyticsPage() {
  <Toaster position="top-right" />
 
  {selectedStudent && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-2xl border border-border shadow-2xl relative">
  <button onClick={() => setSelectedStudent(null)} className="absolute top-4 right-4 text-muted hover:text-foreground">
  <X size={20} />
@@ -94,7 +94,7 @@ export default function FacultyCareerAnalyticsPage() {
  </div>
  </div>
 
- <div className="grid lg:grid-cols-3 gap-6 mb-6">
+ <div className="grid lg:grid-cols-1 gap-6 mb-6">
  <div className="card p-6 border-t-4 border-blue-500">
  <div className="flex items-center gap-4 mb-4">
  <div className="p-3 bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-xl">
@@ -119,9 +119,9 @@ export default function FacultyCareerAnalyticsPage() {
  </div>
  </div>
 
- <div className="card p-6 border-t-4 border-purple-500">
+ <div className="card p-6 border-t-4 border-blue-500">
  <div className="flex items-center gap-4 mb-4">
- <div className="p-3 bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400 rounded-xl">
+ <div className="p-3 bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-xl">
  <Map size={24} />
  </div>
  <div>

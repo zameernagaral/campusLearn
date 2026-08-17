@@ -29,8 +29,6 @@ export default function ForgotPasswordPage() {
  return (
  <div className="min-h-screen flex items-center justify-center p-6" style={{ background: '#0f0f1a' }}>
  <div className="absolute inset-0 overflow-hidden">
- <div className="absolute top-1/3 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-15"
- style={{ background: 'radial-gradient(circle, #6366f1, transparent)' }} />
  </div>
 
  <motion.div

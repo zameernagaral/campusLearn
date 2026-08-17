@@ -295,10 +295,19 @@ a:hover {
 
 /* ─── Skeleton ───────────────────────────────────────────────────────────────── */
 .skeleton {
-  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface) 50%, var(--surface-2) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 8px;
+  background: transparent !important;
+  animation: none !important;
+  border-radius: 0 !important;
+  position: relative;
+}
+.skeleton::after {
+  content: "Loading...";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /* ─── Sidebar ────────────────────────────────────────────────────────────────── */
@@ -476,4 +485,12 @@ tr:hover td {
 [class*="border-l-4"] {
   border-left-width: 1px !important;
   border-left-color: var(--border) !important;
+}
+
+/* Global override to remove soft corner radius (flat UI) */
+[class*="rounded"] {
+  border-radius: 0 !important;
+}
+.card, .btn, .input, .badge, .sidebar-item, .stat-card, .progress, .progress-bar, .table-container, .skeleton {
+  border-radius: 0 !important;
 }

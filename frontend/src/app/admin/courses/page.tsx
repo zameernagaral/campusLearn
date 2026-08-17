@@ -63,7 +63,7 @@ export default function AdminCoursesPage() {
  return (
  <DashboardLayout requiredRole="admin">
  {enrollModalCourse && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-white dark:bg-zinc-950 p-6 rounded-3xl w-full max-w-md border border-zinc-200 dark:border-zinc-800 shadow-2xl relative">
  <button onClick={() => setEnrollModalCourse(null)} className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-900 dark:hover:text-white">
  <X size={20} />
@@ -132,7 +132,7 @@ export default function AdminCoursesPage() {
  </select>
  </div>
 
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
  {isLoading ? (
  Array(6).fill(null).map((_, i) => (
  <div key={i} className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 h-48 skeleton" />
@@ -171,7 +171,7 @@ export default function AdminCoursesPage() {
  <div className="flex justify-between items-center pt-6 border-t border-zinc-100 dark:border-zinc-800/60">
  <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Enrolled</span>
- <span className="text-lg font-black text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
+ <span className="text-lg font-bold text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
  </div>
  
  <div className="flex justify-end gap-2 z-10 relative">

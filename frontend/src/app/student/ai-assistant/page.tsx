@@ -128,7 +128,6 @@ export default function AIAssistantPage() {
  className="w-full text-left p-3 rounded-xl transition-all hover:bg-[var(--surface-2)] group"
  >
  <div className="flex items-center gap-2 mb-1">
- <span className="text-base">{prompt.icon}</span>
  <span className="text-xs font-medium px-1.5 py-0.5 rounded-full" style={{ background: 'var(--surface-2)', color: 'var(--primary)' }}>
  {prompt.label}
  </span>
@@ -172,7 +171,7 @@ export default function AIAssistantPage() {
  transition={{ type: 'spring', stiffness: 200 }}
  className="w-20 h-20 rounded-3xl gradient-primary flex items-center justify-center mb-4 animate-float"
  >
- <Sparkles size={36} className="text-white" />
+ <Bot size={36} className="text-white" />
  </motion.div>
  <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
  Hi {user?.name?.split(' ')[0]}!
@@ -187,7 +186,6 @@ export default function AIAssistantPage() {
  <button key={p.text} onClick={() => sendMessage(p.text)}
  className="p-3 rounded-xl text-xs text-left transition-all hover:scale-105"
  style={{ background: 'var(--surface-2)', color: 'var(--muted)' }}>
- <span className="text-base block mb-1">{p.icon}</span>
  {p.label}
  </button>
  ))}

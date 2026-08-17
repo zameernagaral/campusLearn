@@ -91,7 +91,7 @@ export default function StudentCoursesPage() {
 
  {/* Course grid */}
  {isLoading ? (
- <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+ <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-4 gap-5">
  {Array(8).fill(null).map((_, i) => <CourseCardSkeleton key={i} />)}
  </div>
  ) : courses.length === 0 ? (
@@ -108,7 +108,7 @@ export default function StudentCoursesPage() {
  )}
  </div>
  ) : (
- <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+ <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-4 gap-5">
  {courses.map((course, i) => (
  <CourseCard
  key={course._id}

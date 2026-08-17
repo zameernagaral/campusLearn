@@ -12,7 +12,7 @@ const PROTECTED_ROUTES = [
 
 const AUTH_ROUTES = ['/login', '/register', '/forgot-password'];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
  const { pathname } = request.nextUrl;
 
  // Check if route is protected

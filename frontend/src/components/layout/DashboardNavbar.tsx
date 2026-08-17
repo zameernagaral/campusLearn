@@ -82,7 +82,7 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
  admin: [
  { id: 'admin-1', label: 'Dashboard', route: '/admin/dashboard', icon: <LayoutGrid className="w-4 h-4 text-orange-500" />, end: 'Page' },
  { id: 'admin-2', label: 'Manage Users', route: '/admin/users', icon: <Users className="w-4 h-4 text-blue-500" />, end: 'Page' },
- { id: 'admin-3', label: 'Departments', route: '/admin/departments', icon: <LayoutGrid className="w-4 h-4 text-purple-500" />, end: 'Page' },
+ { id: 'admin-3', label: 'Departments', route: '/admin/departments', icon: <LayoutGrid className="w-4 h-4 text-blue-500" />, end: 'Page' },
  { id: 'admin-4', label: 'University Courses', route: '/admin/courses', icon: <BookOpen className="w-4 h-4 text-green-500" />, end: 'Page' },
  { id: 'admin-5', label: 'Platform Analytics', route: '/admin/analytics', icon: <BarChart2 className="w-4 h-4 text-pink-500" />, end: 'Page' },
  { id: 'admin-6', label: 'Settings', route: '/admin/settings', icon: <Settings className="w-4 h-4 text-gray-500" />, end: 'Page' },
@@ -90,14 +90,14 @@ export function DashboardNavbar({ user, onMenuClick }: DashboardNavbarProps) {
  faculty: [
  { id: 'faculty-1', label: 'Dashboard', route: '/faculty/dashboard', icon: <LayoutGrid className="w-4 h-4 text-orange-500" />, end: 'Page' },
  { id: 'faculty-2', label: 'My Courses', route: '/faculty/courses', icon: <BookOpen className="w-4 h-4 text-blue-500" />, end: 'Page' },
- { id: 'faculty-3', label: 'Assignments', route: '/faculty/assignments', icon: <CheckSquare className="w-4 h-4 text-purple-500" />, end: 'Page' },
+ { id: 'faculty-3', label: 'Assignments', route: '/faculty/assignments', icon: <CheckSquare className="w-4 h-4 text-blue-500" />, end: 'Page' },
  { id: 'faculty-4', label: 'Quizzes', route: '/faculty/quizzes', icon: <LayoutGrid className="w-4 h-4 text-green-500" />, end: 'Page' },
  { id: 'faculty-5', label: 'Analytics', route: '/faculty/analytics', icon: <BarChart2 className="w-4 h-4 text-pink-500" />, end: 'Page' },
  ],
  student: [
  { id: 'student-1', label: 'Dashboard', route: '/student/dashboard', icon: <LayoutGrid className="w-4 h-4 text-orange-500" />, end: 'Page' },
  { id: 'student-2', label: 'My Courses', route: '/student/courses', icon: <BookOpen className="w-4 h-4 text-blue-500" />, end: 'Page' },
- { id: 'student-3', label: 'Assignments', route: '/student/assignments', icon: <CheckSquare className="w-4 h-4 text-purple-500" />, end: 'Page' },
+ { id: 'student-3', label: 'Assignments', route: '/student/assignments', icon: <CheckSquare className="w-4 h-4 text-blue-500" />, end: 'Page' },
  { id: 'student-4', label: 'Quizzes', route: '/student/quizzes', icon: <LayoutGrid className="w-4 h-4 text-green-500" />, end: 'Page' },
  { id: 'student-5', label: 'Grades & Results', route: '/student/results', icon: <BarChart2 className="w-4 h-4 text-pink-500" />, end: 'Page' },
  ]

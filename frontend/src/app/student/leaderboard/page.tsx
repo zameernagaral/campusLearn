@@ -64,7 +64,7 @@ export default function LeaderboardPage() {
  </div>
  <p className="text-xs font-semibold text-center max-w-16 truncate" style={{ color: 'var(--foreground)' }}>{top3[1].name.split(' ')[0]}</p>
  <p className="text-sm font-bold" style={{ color: '#94a3b8' }}>{top3[1].points} pts</p>
- <div className="w-16 h-16 mt-2 rounded-t-xl flex items-end justify-center pb-2 text-white font-black text-xl" style={{ background: '#94a3b8' }}>2</div>
+ <div className="w-16 h-16 mt-2 rounded-t-xl flex items-end justify-center pb-2 text-white font-bold text-xl" style={{ background: '#94a3b8' }}>2</div>
  </motion.div>
 
  {/* 1st */}
@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
  </div>
  <p className="text-sm font-semibold text-center max-w-20 truncate" style={{ color: 'var(--foreground)' }}>{top3[0].name.split(' ')[0]}</p>
  <p className="font-bold" style={{ color: '#f59e0b' }}>{top3[0].points} pts</p>
- <div className="w-20 h-24 mt-2 rounded-t-xl flex items-end justify-center pb-2 text-white font-black text-2xl gradient-primary shadow-lg">1</div>
+ <div className="w-20 h-24 mt-2 rounded-t-xl flex items-end justify-center pb-2 text-white font-bold text-2xl gradient-primary shadow-lg">1</div>
  </motion.div>
 
  {/* 3rd */}
@@ -110,7 +110,7 @@ export default function LeaderboardPage() {
  </div>
  <p className="text-xs font-semibold text-center max-w-16 truncate" style={{ color: 'var(--foreground)' }}>{top3[2].name.split(' ')[0]}</p>
  <p className="text-sm font-bold" style={{ color: '#cd7c3e' }}>{top3[2].points} pts</p>
- <div className="w-16 h-12 mt-2 rounded-t-xl flex items-end justify-center pb-2 text-white font-black text-xl" style={{ background: '#cd7c3e' }}>3</div>
+ <div className="w-16 h-12 mt-2 rounded-t-xl flex items-end justify-center pb-2 text-white font-bold text-xl" style={{ background: '#cd7c3e' }}>3</div>
  </motion.div>
  </div>
  )}

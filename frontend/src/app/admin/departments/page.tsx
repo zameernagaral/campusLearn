@@ -72,7 +72,7 @@ export default function AdminDepartmentsPage() {
  </button>
  </div>
 
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+ <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
  {isLoading ? (
  Array(6).fill(null).map((_, i) => (
  <div key={i} className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 h-48 skeleton" />
@@ -104,11 +104,11 @@ export default function AdminDepartmentsPage() {
  <div className="grid grid-cols-2 gap-4">
  <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-500/5">
  <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest block mb-1 group-hover:text-orange-500/70 transition-colors">Faculty</span>
- <span className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalFaculty || 0}</span>
+ <span className="text-2xl font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalFaculty || 0}</span>
  </div>
  <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl p-4 transition-colors group-hover:bg-orange-50 dark:group-hover:bg-orange-500/5">
  <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest block mb-1 group-hover:text-orange-500/70 transition-colors">Students</span>
- <span className="text-2xl font-black text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalStudents || 0}</span>
+ <span className="text-2xl font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors">{dept.totalStudents || 0}</span>
  </div>
  </div>
  </motion.div>
@@ -127,7 +127,7 @@ export default function AdminDepartmentsPage() {
  {/* Add Department Modal */}
  <AnimatePresence>
  {showAddModal && (
- <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+ <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/50 backdrop-blur-sm">
  <motion.div
  initial={{ opacity: 0, scale: 0.95 }}
  animate={{ opacity: 1, scale: 1 }}

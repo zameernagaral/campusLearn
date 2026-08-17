@@ -171,19 +171,19 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-zinc-100 dark:border-zinc-800/60">
  <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Enrolled Students</span>
- <span className="text-xl font-black text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
+ <span className="text-xl font-bold text-zinc-900 dark:text-white">{course.enrolledStudents?.length || 0}</span>
  </div>
  <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Course Credits</span>
- <span className="text-xl font-black text-zinc-900 dark:text-white">{course.credits}</span>
+ <span className="text-xl font-bold text-zinc-900 dark:text-white">{course.credits}</span>
  </div>
  <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Assignments</span>
- <span className="text-xl font-black text-zinc-900 dark:text-white">0</span>
+ <span className="text-xl font-bold text-zinc-900 dark:text-white">0</span>
  </div>
  <div className="flex flex-col gap-1">
  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Total Modules</span>
- <span className="text-xl font-black text-zinc-900 dark:text-white">{course.modules?.length || 0}</span>
+ <span className="text-xl font-bold text-zinc-900 dark:text-white">{course.modules?.length || 0}</span>
  </div>
  </div>
  </div>

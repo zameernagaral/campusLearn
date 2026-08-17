@@ -256,7 +256,7 @@ export default function StudentQuizPage() {
  : <XCircle size={48} className="text-red-500" />}
  </motion.div>
 
- <h2 className="text-2xl font-black mb-2" style={{ color: 'var(--foreground)' }}>
+ <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
  {result.passed ? ' Congratulations!' : ' Better luck next time!'}
  </h2>
  <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>
@@ -274,7 +274,7 @@ export default function StudentQuizPage() {
  />
  </svg>
  <div className="absolute inset-0 flex flex-col items-center justify-center">
- <span className="text-3xl font-black" style={{ color: result.passed ? '#10b981' : '#ef4444' }}>
+ <span className="text-3xl font-bold" style={{ color: result.passed ? '#10b981' : '#ef4444' }}>
  {result.score}
  </span>
  <span className="text-xs" style={{ color: 'var(--muted)' }}>/ {result.total}</span>

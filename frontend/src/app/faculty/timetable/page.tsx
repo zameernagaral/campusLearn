@@ -35,7 +35,7 @@ export default function FacultyTimetablePage() {
  <button onClick={() => setActiveClass(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
  <ArrowLeft size={16} /> End Class
  </button>
- <div className="card overflow-hidden bg-black flex flex-col h-[70vh]">
+ <div className="card overflow-hidden bg-zinc-950 flex flex-col h-[70vh]">
  <div className="p-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center text-white">
  <div>
  <h2 className="font-bold">{activeClass} - Live Session</h2>
@@ -76,7 +76,7 @@ export default function FacultyTimetablePage() {
  <Toaster position="top-right" />
  
  {isUploadingTimetable && (
- <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+ <div className="fixed inset-0 bg-zinc-950/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
  <div className="bg-surface p-6 rounded-2xl w-full max-w-md border border-border shadow-2xl relative">
  <button onClick={() => { setIsUploadingTimetable(false); setFile(null); }} className="absolute top-4 right-4 text-muted hover:text-foreground">
  <X size={20} />
@@ -152,7 +152,7 @@ export default function FacultyTimetablePage() {
  {cls.status}
  </span>
  <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200">{cls.type}</span>
- <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200">{cls.batch}</span>
+ <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200">{cls.batch}</span>
  </div>
  <h3 className="text-xl font-bold mt-2">{cls.subject}</h3>
  <p className="text-muted text-sm mt-1">Batch: {cls.batch} • Room: {cls.room}</p>
