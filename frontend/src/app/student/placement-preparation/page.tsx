@@ -12,6 +12,7 @@ export default function PlacementPreparationPage() {
 
   const [activeModule, setActiveModule] = useState<string | null>(null);
   const [isAssessing, setIsAssessing] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const handleAddCompany = () => {
     const companyName = window.prompt('Enter target company name:');
@@ -38,14 +39,33 @@ export default function PlacementPreparationPage() {
               <span className="text-xs font-bold text-muted uppercase tracking-wider mb-2 block">Question 1 of 15</span>
               <h2 className="text-xl font-medium mb-6">What is the time complexity of binary search?</h2>
               <div className="space-y-3">
-                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(1)</button>
-                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(n)</button>
-                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(log n)</button>
-                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(n^2)</button>
+                {['O(1)', 'O(n)', 'O(log n)', 'O(n^2)'].map((opt, i) => (
+                  <button 
+                    key={i}
+                    onClick={() => setSelectedOption(i)}
+                    className={`w-full text-left p-4 rounded-lg border transition-colors ${selectedOption === i ? 'border-primary bg-primary/10 ring-2 ring-primary/20' : 'border-border hover:border-primary hover:bg-primary/5'}`}
+                  >
+                    {opt}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="w-full max-w-2xl mt-6 flex justify-end">
-              <button onClick={() => { setIsAssessing(false); setActiveModule(null); }} className="btn btn-primary">Submit Test</button>
+              <button 
+                onClick={() => { 
+                  if (selectedOption === null) {
+                    alert('Please select an option first!');
+                    return;
+                  }
+                  setIsAssessing(false); 
+                  setActiveModule(null); 
+                  setSelectedOption(null);
+                  alert('Test Submitted Successfully! AI is analyzing your results...');
+                }} 
+                className="btn btn-primary"
+              >
+                Submit Test
+              </button>
             </div>
           </div>
         </DashboardLayout>

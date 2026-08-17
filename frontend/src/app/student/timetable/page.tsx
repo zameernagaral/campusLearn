@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 export default function TimetablePage() {
   const [activeDay, setActiveDay] = useState('Monday');
-  const [activeClass, setActiveClass] = useState<string | null>(null);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -20,35 +19,6 @@ export default function TimetablePage() {
   ];
 
   const displayedClasses = allClasses.filter(c => c.day === activeDay);
-
-  if (activeClass) {
-    return (
-      <DashboardLayout requiredRole="student">
-        <button onClick={() => setActiveClass(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
-          <ArrowLeft size={16} /> Leave Class
-        </button>
-        <div className="card overflow-hidden bg-black flex flex-col h-[70vh]">
-          <div className="p-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center text-white">
-            <h2 className="font-bold">{activeClass} - Live Session</h2>
-            <div className="flex items-center gap-2 text-sm text-red-500 font-medium">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> REC
-            </div>
-          </div>
-          <div className="flex-1 p-4 flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full bg-gray-800 flex items-center justify-center border-4 border-gray-700">
-              <span className="text-4xl text-gray-500">Dr</span>
-            </div>
-          </div>
-          <div className="p-4 bg-gray-900 border-t border-gray-800 flex justify-center gap-4">
-            <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><MicOff size={20} /></button>
-            <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><Camera size={20} /></button>
-            <button className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-gray-700"><MonitorUp size={20} /></button>
-            <button onClick={() => setActiveClass(null)} className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600"><Video size={20} /></button>
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
 
   return (
     <DashboardLayout requiredRole="student">
@@ -108,10 +78,19 @@ export default function TimetablePage() {
               </div>
               
               {cls.status === 'Live Now' && (
-                <div className="mt-4 pt-4 border-t border-border flex justify-end">
-                  <button onClick={() => setActiveClass(cls.subject)} className="btn btn-primary flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white">
-                    <Video size={18} /> Join Class
-                  </button>
+                <div className="mt-4 pt-4 border-t border-border flex justify-between items-center">
+                  <div className="text-[10px] text-muted font-medium">
+                    <p>Phone: +1 513-536-8015</p>
+                    <p>PIN: 756 633 577#</p>
+                  </div>
+                  <a 
+                    href="https://meet.google.com/sst-xvef-rvj" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-primary flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <Video size={18} /> Join Google Meet
+                  </a>
                 </div>
               )}
             </div>

@@ -128,6 +128,18 @@ export default function CareerRoadmapPage() {
                       <button onClick={() => handleMarkComplete(step.id)} className="btn btn-outline text-xs py-1.5 px-3">Mark Complete</button>
                     </div>
                   )}
+                  {step.status === 'Not Started' && (
+                    <div className="mt-4 flex gap-2">
+                      <button 
+                        onClick={() => {
+                          setRoadmapSteps(steps => steps.map(s => s.id === step.id ? { ...s, status: 'Learning' } : s));
+                        }} 
+                        className="btn btn-outline text-xs py-1.5 px-3"
+                      >
+                        Start Learning
+                      </button>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}

@@ -14,13 +14,19 @@ export default function ExamPreparationPage() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (timerActive && isStudying && timeLeft > 0) {
+    if (timerActive && isStudying) {
       interval = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [timerActive, isStudying, timeLeft]);
+  }, [timerActive, isStudying]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -168,7 +174,7 @@ export default function ExamPreparationPage() {
               <p className="font-bold text-sm">1. Transaction Management</p>
               <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">Predicted weightage: 15 Marks</p>
               <div className="mt-3 flex gap-2">
-                <button onClick={() => { setIsStudying('Transaction Management'); setTimeLeft(25 * 60); setTimerActive(true); }} className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-xs w-full py-2">Enter Focus Mode</button>
+                <button onClick={() => { setIsStudying('Transaction Management'); setTimeLeft(25 * 60); setTimerActive(true); setVideoGenerated(false); setIsGenerating(false); }} className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-xs w-full py-2">Enter Focus Mode</button>
               </div>
             </div>
             <div className="p-3 bg-surface-2 rounded-xl border border-border">
@@ -208,7 +214,7 @@ export default function ExamPreparationPage() {
                        <span className="badge bg-gray-100 text-gray-600">Not Started</span>}
                     </td>
                     <td>
-                      <button onClick={() => { setIsStudying(t.name); setTimeLeft(25 * 60); setTimerActive(true); }} className="text-xs text-indigo-600 font-bold hover:underline bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded">Study →</button>
+                      <button onClick={() => { setIsStudying(t.name); setTimeLeft(25 * 60); setTimerActive(true); setVideoGenerated(false); setIsGenerating(false); }} className="text-xs text-indigo-600 font-bold hover:underline bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded">Study →</button>
                     </td>
                   </tr>
                 ))}
