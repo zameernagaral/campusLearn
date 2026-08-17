@@ -11,6 +11,7 @@ export default function PlacementPreparationPage() {
   ]);
 
   const [activeModule, setActiveModule] = useState<string | null>(null);
+  const [isAssessing, setIsAssessing] = useState(false);
 
   const handleAddCompany = () => {
     const companyName = window.prompt('Enter target company name:');
@@ -25,6 +26,32 @@ export default function PlacementPreparationPage() {
   };
 
   if (activeModule) {
+    if (isAssessing) {
+      return (
+        <DashboardLayout requiredRole="student">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">{activeModule} Assessment</h1>
+            <span className="text-red-500 font-bold bg-red-100 dark:bg-red-900/30 px-3 py-1 rounded-lg animate-pulse">09:59</span>
+          </div>
+          <div className="card p-8 min-h-[50vh] flex flex-col justify-center items-center">
+            <div className="w-full max-w-2xl bg-surface-2 p-6 rounded-xl border border-border">
+              <span className="text-xs font-bold text-muted uppercase tracking-wider mb-2 block">Question 1 of 15</span>
+              <h2 className="text-xl font-medium mb-6">What is the time complexity of binary search?</h2>
+              <div className="space-y-3">
+                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(1)</button>
+                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(n)</button>
+                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(log n)</button>
+                <button className="w-full text-left p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors">O(n^2)</button>
+              </div>
+            </div>
+            <div className="w-full max-w-2xl mt-6 flex justify-end">
+              <button onClick={() => { setIsAssessing(false); setActiveModule(null); }} className="btn btn-primary">Submit Test</button>
+            </div>
+          </div>
+        </DashboardLayout>
+      );
+    }
+
     return (
       <DashboardLayout requiredRole="student">
         <button onClick={() => setActiveModule(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
@@ -41,7 +68,7 @@ export default function PlacementPreparationPage() {
           <p className="text-muted max-w-md mx-auto mb-8">
             This interactive module provides AI-driven adaptive questions to evaluate and improve your skills in {activeModule}.
           </p>
-          <button className="btn btn-primary px-8 py-3 text-lg">Start Assessment</button>
+          <button onClick={() => setIsAssessing(true)} className="btn btn-primary px-8 py-3 text-lg">Start Assessment</button>
         </div>
       </DashboardLayout>
     );

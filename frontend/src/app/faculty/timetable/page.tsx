@@ -1,7 +1,7 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp, Users } from 'lucide-react';
+import { Clock, Calendar as CalendarIcon, Video, MapPin, AlertTriangle, ArrowLeft, Mic, MicOff, Camera, MonitorUp, Users, Upload } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -76,6 +76,9 @@ export default function FacultyTimetablePage() {
           <h1 className="text-2xl font-bold text-foreground">Teaching Schedule</h1>
           <p className="text-muted mt-1">Manage your classes and start live lectures</p>
         </div>
+        <button onClick={() => toast.success('Timetable uploaded and synced successfully!')} className="btn btn-outline flex items-center gap-2">
+          <Upload size={18} /> Upload Timetable
+        </button>
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-4 mb-4 hide-scrollbar">

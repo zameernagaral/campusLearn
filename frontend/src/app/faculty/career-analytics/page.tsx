@@ -2,6 +2,7 @@
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Target, Users, Map, TrendingUp, BarChart2, Star } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function FacultyCareerAnalyticsPage() {
   const studentsProgress = [
@@ -102,7 +103,7 @@ export default function FacultyCareerAnalyticsPage() {
                     }`}>{student.status}</span>
                   </td>
                   <td className="p-4 text-right">
-                    <button className="btn btn-outline text-xs py-1.5 px-3">View Details</button>
+                    <button onClick={() => toast.success(`Opening detailed career portfolio for ${student.name}`)} className="btn btn-outline text-xs py-1.5 px-3">View Details</button>
                   </td>
                 </tr>
               ))}

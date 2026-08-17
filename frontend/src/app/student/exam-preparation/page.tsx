@@ -1,16 +1,76 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Target, Book, Clock, AlertCircle, FileText, CheckCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Target, Book, Clock, AlertCircle, FileText, CheckCircle, Brain, ArrowLeft, Lightbulb, PlayCircle } from 'lucide-react';
+import { useState } from 'react';
 
 export default function ExamPreparationPage() {
+  const [isStudying, setIsStudying] = useState<string | null>(null);
+
   const topics = [
     { name: 'Normalization (1NF, 2NF, 3NF, BCNF)', importance: '🔴 Very Important', status: 'Completed' },
     { name: 'Transaction Management (ACID properties)', importance: '🔴 Very Important', status: 'Learning' },
     { name: 'Concurrency Control', importance: '🟠 Important', status: 'Not Started' },
     { name: 'Indexing (B-Trees, Hash Indexes)', importance: '🟡 Moderate', status: 'Not Started' }
   ];
+
+  if (isStudying) {
+    return (
+      <DashboardLayout requiredRole="student">
+        <button onClick={() => setIsStudying(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
+          <ArrowLeft size={16} /> End Study Session
+        </button>
+        <div className="card p-8 min-h-[60vh] flex flex-col items-center">
+          <div className="w-full max-w-4xl flex justify-between items-center mb-8 pb-4 border-b border-border">
+            <h1 className="text-2xl font-bold flex items-center gap-2"><Brain className="text-indigo-500" /> AI Focus Mode</h1>
+            <div className="flex items-center gap-2 text-indigo-500 font-mono font-bold bg-indigo-50 dark:bg-indigo-900/30 px-4 py-2 rounded-lg">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+              Focus Tracking Active
+            </div>
+          </div>
+          
+          <div className="w-full max-w-4xl grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 space-y-6">
+              <div className="bg-surface-2 p-6 rounded-xl border border-border">
+                <h2 className="text-xl font-bold mb-4">{isStudying}</h2>
+                <div className="prose prose-sm dark:prose-invert">
+                  <p><strong>1. Introduction</strong><br/>This topic covers the fundamental principles of data organization within a relational database...</p>
+                  <div className="my-4 p-4 bg-amber-50 dark:bg-amber-900/10 border-l-4 border-amber-500 rounded-r">
+                    <p className="font-bold text-amber-700 dark:text-amber-500 mb-1 flex items-center gap-2"><Lightbulb size={16} /> AI Summary Note</p>
+                    <p className="text-sm text-amber-600 dark:text-amber-400">Historically, this topic accounts for 15% of the final exam questions. Focus heavily on ACID properties.</p>
+                  </div>
+                  <p><strong>2. Core Principles</strong><br/>Ensure you memorize the 4 main properties as they are frequently tested as short notes.</p>
+                </div>
+              </div>
+              
+              <div className="flex gap-4">
+                <button className="btn btn-primary flex-1 flex items-center justify-center gap-2"><PlayCircle size={18} /> Generate AI Video Summary</button>
+                <button className="btn btn-outline flex-1">Take Topic Quiz</button>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="card p-4 bg-indigo-600 text-white border-0">
+                <h3 className="font-bold mb-2">Pomodoro Timer</h3>
+                <div className="text-4xl font-black text-center mb-4">24:59</div>
+                <div className="flex justify-center gap-2">
+                  <button className="btn bg-white text-indigo-600 hover:bg-gray-100 px-4 py-1 rounded">Pause</button>
+                </div>
+              </div>
+
+              <div className="card p-4">
+                <h3 className="font-bold text-sm mb-3">Predicted Exam Questions</h3>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex gap-2 items-start"><AlertCircle size={16} className="text-red-500 shrink-0 mt-0.5" /> Explain the difference between 3NF and BCNF with examples.</li>
+                  <li className="flex gap-2 items-start"><AlertCircle size={16} className="text-orange-500 shrink-0 mt-0.5" /> Describe the ACID properties of a transaction.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout requiredRole="student">
@@ -53,13 +113,13 @@ export default function ExamPreparationPage() {
             </div>
           </div>
 
-          <div className="card p-5">
-            <h3 className="font-bold mb-4 flex items-center gap-2"><Book size={18} className="text-green-500" /> Today's Smart Plan</h3>
-            <div className="p-3 bg-surface-2 rounded-xl mb-3 border border-border">
+          <div className="card p-5 border border-indigo-200 dark:border-indigo-900 shadow-lg shadow-indigo-500/5">
+            <h3 className="font-bold mb-4 flex items-center gap-2"><Brain size={18} className="text-indigo-500 animate-pulse" /> AI Recommended Plan</h3>
+            <div className="p-3 bg-indigo-50 dark:bg-indigo-900/10 rounded-xl mb-3 border border-indigo-100 dark:border-indigo-800">
               <p className="font-bold text-sm">1. Transaction Management</p>
-              <p className="text-xs text-muted mt-1">Est. time: 45 mins · 🔴 Very Important</p>
+              <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-medium">Predicted weightage: 15 Marks</p>
               <div className="mt-3 flex gap-2">
-                <button className="btn btn-primary text-xs w-full py-1.5">Start Studying</button>
+                <button onClick={() => setIsStudying('Transaction Management')} className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-xs w-full py-2">Enter Focus Mode</button>
               </div>
             </div>
             <div className="p-3 bg-surface-2 rounded-xl border border-border">
@@ -74,8 +134,7 @@ export default function ExamPreparationPage() {
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold text-lg">Topic Breakdown</h3>
             <div className="flex gap-2">
-              <button className="btn btn-outline text-xs"><FileText size={14} /> Previous Papers</button>
-              <button className="btn btn-outline text-xs"><Book size={14} /> Mock Test</button>
+              <button className="btn btn-outline text-xs"><FileText size={14} /> AI Mock Paper</button>
             </div>
           </div>
 
@@ -100,7 +159,7 @@ export default function ExamPreparationPage() {
                        <span className="badge bg-gray-100 text-gray-600">Not Started</span>}
                     </td>
                     <td>
-                      <button className="text-xs text-primary font-bold hover:underline">Study →</button>
+                      <button onClick={() => setIsStudying(t.name)} className="text-xs text-indigo-600 font-bold hover:underline bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded">Study →</button>
                     </td>
                   </tr>
                 ))}

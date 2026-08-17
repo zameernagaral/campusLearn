@@ -1,7 +1,7 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Layers, CheckCircle, Clock, BookOpen, AlertCircle, Plus, Send } from 'lucide-react';
+import { Layers, CheckCircle, Clock, BookOpen, AlertCircle, Plus, Send, Edit2 } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -99,7 +99,12 @@ export default function FacultyExamPortionsPage() {
             </div>
 
             <div className="flex-1 space-y-3 mb-6 border-t border-border pt-4">
-              <h3 className="font-semibold text-sm mb-3">Syllabus Breakdown</h3>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-semibold text-sm">Syllabus Breakdown</h3>
+                <button onClick={() => toast.success('Add new portion modal opened')} className="text-xs text-indigo-500 font-medium hover:underline flex items-center gap-1">
+                  <Plus size={12} /> Add Portion
+                </button>
+              </div>
               {course.portions.map((portion, idx) => (
                 <div 
                   key={idx} 
@@ -112,11 +117,16 @@ export default function FacultyExamPortionsPage() {
                      <AlertCircle size={18} className="text-gray-400" />}
                     <span className={`font-medium ${portion.status === 'Pending' ? 'text-muted' : ''}`}>{portion.title}</span>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    portion.status === 'Completed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30' :
-                    portion.status === 'In Progress' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30' :
-                    'bg-gray-100 text-gray-500 dark:bg-gray-800'
-                  }`}>{portion.status}</span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs px-2 py-1 rounded-full ${
+                      portion.status === 'Completed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30' :
+                      portion.status === 'In Progress' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30' :
+                      'bg-gray-100 text-gray-500 dark:bg-gray-800'
+                    }`}>{portion.status}</span>
+                    <button onClick={(e) => { e.stopPropagation(); toast.success('Edit portion modal opened'); }} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                      <Edit2 size={14} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
