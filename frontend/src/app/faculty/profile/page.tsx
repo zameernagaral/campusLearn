@@ -33,13 +33,13 @@ export default function FacultyProfilePage() {
  <p className="text-zinc-500">Manage your professional information and settings</p>
  </motion.div>
 
- <div className="grid md:grid-cols-1 gap-8">
+ <div className="grid md:grid-cols-3 gap-8">
  {/* Left column - Identity */}
  <motion.div
  initial={{ opacity: 0, x: -20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ delay: 0.1 }}
- className=""
+ className="md:col-span-1"
  >
  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center shadow-sm relative overflow-hidden">
  <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-blue-500/20 to-blue-500/5 dark:from-blue-500/10 dark:to-transparent" />
@@ -57,8 +57,8 @@ export default function FacultyProfilePage() {
  <p className="text-zinc-500 font-medium mb-6">Faculty Member</p>
 
  <div className="flex justify-center gap-3 mb-8">
- <button disabled title="Feature coming soon" style={{ opacity: 0.5, cursor: "not-allowed" }} className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
- Edit Profile
+ <button disabled title="Only Admins can edit profiles" style={{ opacity: 0.5, cursor: "not-allowed" }} className="flex-1 py-2.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-semibold rounded-xl flex items-center justify-center transition-colors text-sm">
+ Only Admin Can Edit Profile
  </button>
  </div>
 
@@ -85,7 +85,7 @@ export default function FacultyProfilePage() {
  initial={{ opacity: 0, x: 20 }}
  animate={{ opacity: 1, x: 0 }}
  transition={{ delay: 0.2 }}
- className=" space-y-6"
+ className="md:col-span-2 space-y-6"
  >
  {/* Professional Details */}
  <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-sm">

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+let API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 if (API_URL.endsWith('/')) {
  API_URL = API_URL.slice(0, -1);
 }

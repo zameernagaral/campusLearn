@@ -130,9 +130,9 @@ export default function FacultyAttendancePage() {
  <div className=" space-y-6">
  <h2 className="text-lg font-bold text-zinc-900 dark:text-white">Your Courses</h2>
  
- <div className="space-y-4">
+ <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
  {isLoading ? (
- Array(3).fill(null).map((_, i) => <div key={i} className="skeleton h-24 rounded-3xl" />)
+ Array(6).fill(null).map((_, i) => <div key={i} className="h-48 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />)
  ) : courses.length === 0 ? (
  <div className="bg-white dark:bg-zinc-950 p-8 text-center rounded-3xl border border-zinc-200 dark:border-zinc-800">
  <p className="text-zinc-500">You are not assigned to any courses.</p>
@@ -144,18 +144,18 @@ export default function FacultyAttendancePage() {
  initial={{ opacity: 0, y: 10 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ delay: i * 0.1 }}
- className="bg-white dark:bg-zinc-950 p-6 lg:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm hover:border-emerald-500/30 transition-colors group"
+ className="bg-white dark:bg-zinc-900/40 p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between gap-6 hover:border-orange-500/30 hover:-translate-y-1 transition-all duration-300 group backdrop-blur-sm shadow-sm"
  >
  <div>
  <div className="flex items-center gap-3 mb-3">
  <span className="px-2.5 py-1 bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 text-[10px] font-bold uppercase tracking-widest rounded-md">
  {course.level}
  </span>
- <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500">
+ <span className="text-[10px] font-bold uppercase tracking-widest text-orange-500">
  Active
  </span>
  </div>
- <h3 className="text-xl font-bold text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors mb-1">
+ <h3 className="text-xl font-bold text-zinc-900 dark:text-white group-hover:text-orange-500 transition-colors mb-1">
  {course.title}
  </h3>
  <p className="text-sm font-medium text-zinc-500">{course.enrolledStudents?.length || 0} Students Enrolled</p>
@@ -163,7 +163,7 @@ export default function FacultyAttendancePage() {
  
  <button 
  onClick={() => openMarkModal(course)}
- className="px-8 py-3.5 font-bold rounded-xl transition-all text-sm whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20"
+ className="px-8 py-3.5 font-bold rounded-xl transition-all text-sm whitespace-nowrap bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/20 mt-auto"
  >
  Mark Attendance
  </button>

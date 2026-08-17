@@ -37,7 +37,6 @@ const corsOptions = {
     if (!origin) return callback(null, true);
 
     const allowedOrigins = [
-      'http://localhost:3000',
       process.env.CLIENT_URL,
     ].filter(Boolean);
 

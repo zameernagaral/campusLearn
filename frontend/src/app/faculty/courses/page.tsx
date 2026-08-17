@@ -39,7 +39,7 @@ export default function FacultyCoursesPage() {
  </div>
 
  {isLoading ? (
- <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
+ <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
  {Array(6).fill(null).map((_, i) => (
  <div key={i} className="h-64 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-3xl" />
  ))}
@@ -53,14 +53,14 @@ export default function FacultyCoursesPage() {
  </Link>
  </div>
  ) : (
- <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-8">
+ <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
  {courses.map((course, i) => (
  <motion.div 
  key={course._id}
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
  transition={{ delay: i * 0.1 }}
- className="bg-white dark:bg-zinc-950 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col h-full group hover:shadow-2xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all relative overflow-hidden"
+ className="bg-white dark:bg-zinc-900/40 rounded-3xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col h-full group hover:shadow-2xl hover:shadow-orange-500/10 hover:border-orange-500/30 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden backdrop-blur-sm"
  >
  {/* Subtle top glow */}
  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

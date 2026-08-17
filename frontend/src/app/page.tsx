@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 
 import BeamsBackground from '@/components/ui/beams-background';
-import ActionSearchBar from '@/components/ui/action-search-bar';
 import CardFlip from '@/components/ui/card-flip';
 
 // ─── Landing Navbar ───────────────────────────────────────────────────────────
@@ -39,7 +38,7 @@ function LandingNavbar() {
 
  {/* Desktop nav */}
  <div className="hidden md:flex items-center gap-8">
- {['Features', 'Stats', 'How It Works', 'FAQ'].map(item => (
+ {['Stats', 'How It Works', 'FAQ'].map(item => (
  <a
  key={item}
  href={`#${item.toLowerCase().replace(/ /g, '-')}`}
@@ -74,7 +73,7 @@ function LandingNavbar() {
  className="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800"
  >
  <div className="px-6 py-4 space-y-3">
- {['Features', 'Stats', 'How It Works', 'FAQ'].map(item => (
+ {['Stats', 'How It Works', 'FAQ'].map(item => (
  <a key={item} href={`#${item.toLowerCase().replace(/ /g, '-')}`} className="block text-zinc-600 dark:text-zinc-300 hover:text-orange-500 py-2 text-sm" onClick={() => setMenuOpen(false)}>
  {item}
  </a>
@@ -132,34 +131,6 @@ function HeroSection() {
  <Link href="#how-it-works" className="btn btn-secondary px-7 py-3 text-base">
  Learn How It Works
  </Link>
- </motion.div>
- 
- <div className="relative z-50">
- <ActionSearchBar />
- </div>
-
- {/* Stats */}
- <motion.div
- initial={{ opacity: 0, y: 20 }}
- animate={{ opacity: 1, y: 0 }}
- transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
- className="flex flex-wrap gap-6 mt-12 justify-center"
- >
- {[
- { value: '10,000+', label: 'Students' },
- { value: '500+', label: 'Courses' },
- { value: '98%', label: 'Satisfaction' },
- ].map((stat, i) => (
- <motion.div
- key={stat.label}
- whileHover={{ y: -5, scale: 1.05 }}
- transition={{ type: "spring", stiffness: 300 }}
- className="cursor-default"
- >
- <p className="text-2xl font-bold text-zinc-900 dark:text-white">{stat.value}</p>
- <p className="text-sm text-zinc-500 dark:text-zinc-400">{stat.label}</p>
- </motion.div>
- ))}
  </motion.div>
  </motion.div>
  </div>
@@ -230,15 +201,15 @@ function HowItWorksSection() {
  <div className="hidden md:block absolute top-10 left-[10%] right-[10%] h-px bg-zinc-200 dark:bg-zinc-800" />
 
  {steps.map((step, i) => (
- <motion.div
- key={step.step}
- initial={{ opacity: 0, y: 30 }}
- whileInView={{ opacity: 1, y: 0 }}
- whileHover={{ y: -10, scale: 1.05 }}
- viewport={{ once: true }}
- transition={{ duration: 0.4, delay: i * 0.12, type: "spring", stiffness: 300 }}
- className="text-center relative z-10 cursor-default"
- >
+            <motion.div
+              key={step.step}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: i * 0.1, type: "spring", bounce: 0.3 }}
+              className="text-center relative z-10 cursor-default p-6 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+            >
  <div className="w-20 h-20 rounded-2xl bg-orange-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/20">
  <div className="text-white">{step.icon}</div>
  </div>
@@ -315,28 +286,33 @@ function FAQSection() {
 
 // ─── CTA Section ──────────────────────────────────────────────────────────────
 function CTASection() {
- return (
- <section className="py-24 bg-white dark:bg-zinc-950">
- <div className="max-w-4xl mx-auto px-6 text-center">
- <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
- <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6 bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400">
- Join 10,000+ Students
- </div>
- <h2 className="text-5xl font-bold text-zinc-900 dark:text-white mb-6">
- Ready to <span className="text-orange-500">Transform</span> Your Learning?
- </h2>
- <p className="text-zinc-500 dark:text-zinc-400 text-lg mb-8 max-w-xl mx-auto">
- Join CampusLearn today and experience the future of college education.
- </p>
- <div className="flex flex-wrap justify-center gap-4">
- <Link href="/login" className="btn btn-primary px-8 py-3.5 text-base">
- Get Started
- </Link>
- </div>
- </motion.div>
- </div>
- </section>
- );
+  return (
+    <section className="py-24 bg-white dark:bg-zinc-950">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6 bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400">
+            Join 10,000+ Students
+          </div>
+          <h2 className="text-5xl font-bold text-zinc-900 dark:text-white mb-6 tracking-tight">
+            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-400">Transform</span> Your Learning?
+          </h2>
+          <p className="text-zinc-600 dark:text-zinc-400 text-lg mb-8 max-w-xl mx-auto leading-relaxed">
+            Join CampusLearn today and experience the future of college education.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/login" className="btn btn-primary px-8 py-3.5 text-base shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-shadow">
+              Get Started
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
 }
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
@@ -356,17 +332,17 @@ function Footer() {
  One Platform for Smarter College Learning. Replacing multiple apps with one beautiful solution.
  </p>
  </div>
- {[
- { title: 'Platform', links: ['Features', 'Courses', 'Analytics'] },
- { title: 'Roles', links: ['Students', 'Faculty', 'Admin'] },
- { title: 'Company', links: ['About', 'Contact', 'Privacy'] },
- ].map(col => (
+          {[
+            { title: 'Platform', links: [{ name: 'Stats', href: '#stats' }, { name: 'How It Works', href: '#how-it-works' }] },
+            { title: 'Support', links: [{ name: 'FAQ', href: '#faq' }, { name: 'Contact Admin', href: '#' }] },
+            { title: 'Company', links: [{ name: 'Privacy Policy', href: '/privacy' }, { name: 'Terms of Service', href: '/terms' }] },
+          ].map(col => (
  <div key={col.title}>
  <h4 className="font-semibold text-zinc-900 dark:text-white text-sm mb-4">{col.title}</h4>
  <ul className="space-y-2">
  {col.links.map(link => (
- <li key={link}>
- <a href="#" className="text-sm text-zinc-500 hover:text-orange-500 dark:text-zinc-400 transition-colors">{link}</a>
+ <li key={link.name}>
+ <Link href={link.href} className="text-sm text-zinc-500 hover:text-orange-500 dark:text-zinc-400 transition-colors">{link.name}</Link>
  </li>
  ))}
  </ul>
@@ -374,8 +350,8 @@ function Footer() {
  ))}
  </div>
  <div className="border-t border-zinc-200 dark:border-zinc-800 pt-6 flex flex-col md:flex-row items-center justify-between">
- <p className="text-xs text-zinc-400">© 2024 CampusLearn. All rights reserved.</p>
- <p className="text-xs text-zinc-400 mt-2 md:mt-0">Made with ️ by CampusLearn Team</p>
+ <p className="text-xs text-zinc-400">© 2026 CampusLearn. All rights reserved.</p>
+ <p className="text-xs text-zinc-400 mt-2 md:mt-0">Made with ❤️ by CampusLearn Team</p>
  </div>
  </div>
  </footer>

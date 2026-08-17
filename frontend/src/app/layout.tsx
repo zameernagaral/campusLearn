@@ -44,6 +44,8 @@ export const viewport: Viewport = {
  initialScale: 1,
 };
 
+import { CookieBanner } from '@/components/cookie-banner';
+
 export default function RootLayout({
  children,
 }: {
@@ -55,7 +57,10 @@ export default function RootLayout({
  <link rel="preconnect" href="https://fonts.googleapis.com" />
  </head>
  <body className={`antialiased`}>
- <Providers>{children}</Providers>
+ <Providers>
+   {children}
+   <CookieBanner />
+ </Providers>
  </body>
  </html>
  );

@@ -254,7 +254,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: st
  </div>
  {lesson.type === 'document' && lesson.documentUrl && (
  <a 
- href={lesson.documentUrl.startsWith('http') ? lesson.documentUrl : `http://localhost:5001/${lesson.documentUrl.replace(/\\/g, '/')}`} 
+ href={lesson.documentUrl.startsWith('http') ? lesson.documentUrl : `${(process.env.NEXT_PUBLIC_API_URL || '').replace('/api', '')}/${lesson.documentUrl.replace(/\\/g, '/')}`}
  target="_blank" 
  rel="noopener noreferrer"
  className="text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors px-3 py-1.5 rounded-lg bg-orange-50 dark:bg-orange-500/10 hover:bg-orange-100 dark:hover:bg-orange-500/20"

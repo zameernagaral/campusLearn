@@ -486,11 +486,3 @@ tr:hover td {
   border-left-width: 1px !important;
   border-left-color: var(--border) !important;
 }
-
-/* Global override to remove soft corner radius (flat UI) */
-[class*="rounded"] {
-  border-radius: 0 !important;
-}
-.card, .btn, .input, .badge, .sidebar-item, .stat-card, .progress, .progress-bar, .table-container, .skeleton {
-  border-radius: 0 !important;
-}

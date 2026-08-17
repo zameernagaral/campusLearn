@@ -93,7 +93,7 @@ const uploadAny = multer({
 // Middleware wrapper to format local paths to be accessible via URL
 const formatLocalPath = (req, res, next) => {
   if (!hasCloudinary) {
-    const formatPath = (filePath) => `${process.env.API_URL || 'http://localhost:5001'}/${filePath.replace(/\\/g, '/')}`;
+    const formatPath = (filePath) => `${process.env.API_URL || ''}/${filePath.replace(/\\/g, '/')}`;
 
     if (req.file) {
       req.file.path = formatPath(req.file.path);
