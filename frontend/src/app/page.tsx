@@ -126,8 +126,11 @@ function HeroSection() {
  transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
  className="flex flex-wrap gap-4 mb-12 justify-center"
  >
- <Link href="/login" className="btn btn-primary px-7 py-3 text-base hover:scale-105 active:scale-95 transition-transform duration-200">
+ <Link href="/login" className="btn btn-primary px-7 py-3 text-base">
  Start Free Today
+ </Link>
+ <Link href="#how-it-works" className="btn btn-secondary px-7 py-3 text-base">
+ Learn How It Works
  </Link>
  </motion.div>
  
