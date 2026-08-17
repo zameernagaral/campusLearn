@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { attendanceAPI } from '@/lib/api';
-import { UserCheck, AlertTriangle, CheckCircle, Clock, TrendingUp } from 'lucide-react';
+import { UserCheck, AlertTriangle, CheckCircle, Clock, TrendingUp, Bell } from 'lucide-react';
 import { getAttendanceColor } from '@/lib/utils';
 import { BarChart, LineChart } from '@/components/charts/Charts';
 import { motion } from 'framer-motion';
@@ -46,9 +46,45 @@ export default function StudentAttendancePage() {
     return { label: 'Critical', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' };
   };
 
+  const shortageAlerts = attendance.filter(a => a.percentage < 75);
+
   return (
     <DashboardLayout requiredRole="student">
-      <h1 className="text-2xl font-bold mb-6" style={{ color: 'var(--foreground)' }}>My Attendance</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>My Attendance</h1>
+        <button className="btn btn-outline flex items-center gap-2"><Bell size={16} /> Notification Settings</button>
+      </div>
+
+      {/* Intelligent Shortage Detection */}
+      {shortageAlerts.length > 0 ? (
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 card p-5 border-l-4 border-red-500 bg-red-50 dark:bg-red-900/10">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-full">
+              <AlertTriangle size={24} />
+            </div>
+            <div>
+              <h3 className="font-bold text-red-700 dark:text-red-400 text-lg">AI Shortage Detection Alert</h3>
+              <p className="text-sm text-red-600 dark:text-red-300 mt-1">
+                You have dropped below the mandatory 75% attendance threshold in the following courses. You must attend the next consecutive classes to avoid exam debarment.
+              </p>
+              <div className="mt-3 space-y-2">
+                {shortageAlerts.map(course => (
+                  <div key={course.course} className="flex items-center gap-2 text-sm font-medium">
+                    <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                    {course.title}: <span className="text-red-600 dark:text-red-400 font-bold">{course.percentage}%</span>
+                    <span className="text-xs text-muted ml-2">(Requires {Math.ceil((75 * course.total - 100 * course.present) / 25)} more present classes)</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ) : (
+        <div className="mb-6 card p-4 border-l-4 border-green-500 flex items-center gap-3 bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-400">
+          <CheckCircle size={20} />
+          <p className="font-medium text-sm">Great job! Your attendance is above the 75% threshold in all subjects.</p>
+        </div>
+      )}
 
       <div className="grid lg:grid-cols-4 gap-5 mb-6">
         {/* Overall */}

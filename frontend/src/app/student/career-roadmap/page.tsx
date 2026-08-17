@@ -1,21 +1,38 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Map, Target, Briefcase, ChevronRight, CheckCircle, Circle } from 'lucide-react';
+import { Map, Target, Briefcase, ChevronRight, CheckCircle, Circle, Edit2, X, Check } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function CareerRoadmapPage() {
   const [goal, setGoal] = useState('Full Stack Developer');
+  const [isEditingGoal, setIsEditingGoal] = useState(false);
+  const [tempGoal, setTempGoal] = useState(goal);
   
-  const roadmapSteps = [
-    { title: 'Programming Fundamentals', status: 'Completed' },
-    { title: 'Data Structures & Algorithms', status: 'Completed' },
-    { title: 'Database Management', status: 'Learning' },
-    { title: 'Backend Frameworks', status: 'Not Started' },
-    { title: 'Frontend Frameworks', status: 'Not Started' },
-    { title: 'Cloud Computing', status: 'Not Started' },
-  ];
+  const [roadmapSteps, setRoadmapSteps] = useState([
+    { id: 1, title: 'Programming Fundamentals', status: 'Completed' },
+    { id: 2, title: 'Data Structures & Algorithms', status: 'Completed' },
+    { id: 3, title: 'Database Management', status: 'Learning' },
+    { id: 4, title: 'Backend Frameworks', status: 'Not Started' },
+    { id: 5, title: 'Frontend Frameworks', status: 'Not Started' },
+    { id: 6, title: 'Cloud Computing', status: 'Not Started' },
+  ]);
+
+  const handleSaveGoal = () => {
+    if (tempGoal.trim() !== '') {
+      setGoal(tempGoal);
+      setIsEditingGoal(false);
+    }
+  };
+
+  const handleMarkComplete = (id: number) => {
+    setRoadmapSteps(steps => steps.map(s => {
+      if (s.id === id) return { ...s, status: 'Completed' };
+      if (s.id === id + 1) return { ...s, status: 'Learning' };
+      return s;
+    }));
+  };
 
   return (
     <DashboardLayout requiredRole="student">
@@ -24,18 +41,40 @@ export default function CareerRoadmapPage() {
           <h1 className="text-2xl font-bold text-foreground">My Career Roadmap</h1>
           <p className="text-muted mt-1">Plan your path to your dream career</p>
         </div>
-        <button className="btn btn-primary">Edit Goal</button>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Goal Info */}
         <div className="lg:col-span-1 space-y-6">
           <div className="card p-6 border-t-4 border-purple-500">
-            <div className="flex items-center gap-3 mb-4">
-              <Target size={24} className="text-purple-500" />
-              <h2 className="text-lg font-bold">Career Goal</h2>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Target size={24} className="text-purple-500" />
+                <h2 className="text-lg font-bold">Career Goal</h2>
+              </div>
+              {!isEditingGoal && (
+                <button onClick={() => setIsEditingGoal(true)} className="p-2 bg-surface-2 rounded-lg hover:bg-surface-3 text-muted">
+                  <Edit2 size={16} />
+                </button>
+              )}
             </div>
-            <p className="text-2xl font-bold mb-2">{goal}</p>
+            
+            {isEditingGoal ? (
+              <div className="flex gap-2 items-center mb-2">
+                <input 
+                  type="text" 
+                  value={tempGoal} 
+                  onChange={(e) => setTempGoal(e.target.value)} 
+                  className="input flex-1 py-1 px-2"
+                  autoFocus
+                />
+                <button onClick={handleSaveGoal} className="p-1.5 bg-green-100 text-green-700 rounded hover:bg-green-200"><Check size={16} /></button>
+                <button onClick={() => setIsEditingGoal(false)} className="p-1.5 bg-red-100 text-red-700 rounded hover:bg-red-200"><X size={16} /></button>
+              </div>
+            ) : (
+              <p className="text-2xl font-bold mb-2">{goal}</p>
+            )}
+            
             <p className="text-sm text-muted">Target Role: SDE I</p>
             <div className="mt-4 pt-4 border-t border-border">
               <p className="text-sm font-medium mb-2">Career Readiness</p>
@@ -63,7 +102,7 @@ export default function CareerRoadmapPage() {
           <div className="relative border-l-2 border-indigo-200 dark:border-indigo-900 ml-4 space-y-8">
             {roadmapSteps.map((step, i) => (
               <motion.div 
-                key={i} 
+                key={step.id} 
                 initial={{ opacity: 0, x: -20 }} 
                 animate={{ opacity: 1, x: 0 }} 
                 transition={{ delay: i * 0.1 }}
@@ -86,7 +125,7 @@ export default function CareerRoadmapPage() {
                   {step.status === 'Learning' && (
                     <div className="mt-4 flex gap-2">
                       <button className="btn btn-primary text-xs py-1.5 px-3">Start Course</button>
-                      <button className="btn btn-outline text-xs py-1.5 px-3">Mark Complete</button>
+                      <button onClick={() => handleMarkComplete(step.id)} className="btn btn-outline text-xs py-1.5 px-3">Mark Complete</button>
                     </div>
                   )}
                 </div>

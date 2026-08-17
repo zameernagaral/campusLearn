@@ -1,9 +1,52 @@
 'use client';
 
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { Briefcase, Code, Users, FileText, Cpu, Star, ArrowRight } from 'lucide-react';
+import { Briefcase, Code, Users, FileText, Cpu, Star, ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
 
 export default function PlacementPreparationPage() {
+  const [companies, setCompanies] = useState([
+    { name: 'Google', role: 'Software Engineer', match: 85, initial: 'G' },
+    { name: 'Microsoft', role: 'SDE', match: 70, initial: 'M' }
+  ]);
+
+  const [activeModule, setActiveModule] = useState<string | null>(null);
+
+  const handleAddCompany = () => {
+    const companyName = window.prompt('Enter target company name:');
+    if (companyName && companyName.trim() !== '') {
+      setCompanies([...companies, {
+        name: companyName,
+        role: 'Software Engineer',
+        match: Math.floor(Math.random() * 40) + 50, // random 50-90
+        initial: companyName.charAt(0).toUpperCase()
+      }]);
+    }
+  };
+
+  if (activeModule) {
+    return (
+      <DashboardLayout requiredRole="student">
+        <button onClick={() => setActiveModule(null)} className="btn btn-ghost mb-4 flex items-center gap-2">
+          <ArrowLeft size={16} /> Back to Dashboard
+        </button>
+        <div className="card p-8 text-center min-h-[60vh] flex flex-col justify-center items-center">
+          <div className="w-20 h-20 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-6">
+            {activeModule === 'Aptitude' && <Cpu size={40} />}
+            {activeModule === 'Coding' && <Code size={40} />}
+            {activeModule === 'AI Mock Interview' && <Users size={40} />}
+            {activeModule === 'Resume Analyzer' && <FileText size={40} />}
+          </div>
+          <h1 className="text-3xl font-bold mb-4">{activeModule} Preparation Module</h1>
+          <p className="text-muted max-w-md mx-auto mb-8">
+            This interactive module provides AI-driven adaptive questions to evaluate and improve your skills in {activeModule}.
+          </p>
+          <button className="btn btn-primary px-8 py-3 text-lg">Start Assessment</button>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout requiredRole="student">
       <div className="flex items-center justify-between mb-6">
@@ -24,7 +67,7 @@ export default function PlacementPreparationPage() {
         </div>
 
         <div className="lg:col-span-3 grid sm:grid-cols-2 gap-4">
-          <div className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
+          <div onClick={() => setActiveModule('Aptitude')} className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
             <div className="p-3 bg-blue-100 text-blue-600 rounded-xl"><Cpu size={24} /></div>
             <div className="flex-1">
               <h4 className="font-bold">Aptitude Preparation</h4>
@@ -32,7 +75,7 @@ export default function PlacementPreparationPage() {
             </div>
             <ArrowRight size={16} className="text-muted" />
           </div>
-          <div className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
+          <div onClick={() => setActiveModule('Coding')} className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
             <div className="p-3 bg-purple-100 text-purple-600 rounded-xl"><Code size={24} /></div>
             <div className="flex-1">
               <h4 className="font-bold">Coding Preparation</h4>
@@ -40,7 +83,7 @@ export default function PlacementPreparationPage() {
             </div>
             <ArrowRight size={16} className="text-muted" />
           </div>
-          <div className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
+          <div onClick={() => setActiveModule('AI Mock Interview')} className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
             <div className="p-3 bg-pink-100 text-pink-600 rounded-xl"><Users size={24} /></div>
             <div className="flex-1">
               <h4 className="font-bold">AI Mock Interviews</h4>
@@ -48,7 +91,7 @@ export default function PlacementPreparationPage() {
             </div>
             <ArrowRight size={16} className="text-muted" />
           </div>
-          <div className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
+          <div onClick={() => setActiveModule('Resume Analyzer')} className="card p-4 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
             <div className="p-3 bg-orange-100 text-orange-600 rounded-xl"><FileText size={24} /></div>
             <div className="flex-1">
               <h4 className="font-bold">Resume Analyzer</h4>
@@ -62,27 +105,19 @@ export default function PlacementPreparationPage() {
       <div className="card p-6">
         <h3 className="font-bold text-lg mb-4 flex items-center gap-2"><Briefcase size={20} className="text-teal-500"/> Target Companies</h3>
         <div className="grid sm:grid-cols-3 gap-4">
-          <div className="p-4 border border-border rounded-xl flex items-center justify-between hover:border-teal-500 transition-colors cursor-pointer">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center font-black">G</div>
-              <div>
-                <p className="font-bold">Google</p>
-                <p className="text-xs text-muted">Software Engineer</p>
+          {companies.map((company, i) => (
+            <div key={i} className="p-4 border border-border rounded-xl flex items-center justify-between hover:border-teal-500 transition-colors cursor-pointer">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center font-black">{company.initial}</div>
+                <div>
+                  <p className="font-bold">{company.name}</p>
+                  <p className="text-xs text-muted">{company.role}</p>
+                </div>
               </div>
+              <span className="text-xs font-bold text-teal-600">{company.match}% Match</span>
             </div>
-            <span className="text-xs font-bold text-teal-600">85% Match</span>
-          </div>
-          <div className="p-4 border border-border rounded-xl flex items-center justify-between hover:border-teal-500 transition-colors cursor-pointer">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center font-black">M</div>
-              <div>
-                <p className="font-bold">Microsoft</p>
-                <p className="text-xs text-muted">SDE</p>
-              </div>
-            </div>
-            <span className="text-xs font-bold text-teal-600">70% Match</span>
-          </div>
-          <div className="p-4 border border-border rounded-xl flex items-center justify-between hover:border-teal-500 transition-colors cursor-pointer border-dashed">
+          ))}
+          <div onClick={handleAddCompany} className="p-4 border border-border rounded-xl flex items-center justify-between hover:border-teal-500 transition-colors cursor-pointer border-dashed">
             <div className="flex items-center gap-3 text-muted">
               <Star size={24} />
               <p className="font-bold">Add Company</p>
