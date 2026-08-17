@@ -121,7 +121,7 @@ export default function ExamPreparationPage() {
                             <p className="mt-4 font-bold z-20">AI Summary: {isStudying}</p>
                           </>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/50 to-purple-900/50 z-10"></div>
+                        <div className="absolute inset-0 bg-indigo-900/40 z-10"></div>
                         {isPlayingVideo && (
                           <div className="absolute inset-0 z-0 opacity-30 flex items-center justify-center">
                             <div className="w-64 h-64 border-[20px] border-indigo-500/30 rounded-full animate-pulse"></div>
@@ -213,7 +213,7 @@ export default function ExamPreparationPage() {
       </div>
 
       {/* Hero Exam Countdown */}
-      <div className="card p-6 mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white relative overflow-hidden">
+      <div className="card p-6 mb-6 bg-indigo-600 text-white relative overflow-hidden">
         <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4">
           <Clock size={150} />
         </div>

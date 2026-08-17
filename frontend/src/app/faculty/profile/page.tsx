@@ -45,7 +45,7 @@ export default function FacultyProfilePage() {
             <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-blue-500/20 to-blue-500/5 dark:from-blue-500/10 dark:to-transparent" />
             
             <div className="relative z-10">
-              <div className="w-28 h-28 mx-auto bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-4xl font-bold text-white shadow-xl shadow-blue-500/20 mb-6 border-4 border-white dark:border-zinc-900">
+              <div className="w-28 h-28 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-4xl font-bold text-white shadow-xl shadow-blue-500/20 mb-6 border-4 border-white dark:border-zinc-900">
                 {user.avatar ? (
                   <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
                 ) : (

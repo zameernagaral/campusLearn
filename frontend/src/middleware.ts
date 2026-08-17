@@ -14,19 +14,46 @@ const AUTH_ROUTES = ['/login', '/register', '/forgot-password'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
   // Check if route is protected
   const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
   const isAuthRoute = AUTH_ROUTES.some(route => pathname.startsWith(route));
-  
-  // Get token from cookie or header
-  // Note: For proper JWT validation in middleware, we'd need a lightweight JWT check
-  // The full auth check happens in the client via authStore
-  const token = request.cookies.get('accessToken')?.value;
 
-  // If accessing auth route while logged in, redirect to dashboard
+  // Get token and role from cookie
+  const token = request.cookies.get('accessToken')?.value;
+  const userRole = request.cookies.get('userRole')?.value;
+
+  // Force HTTPS in production
+  if (process.env.NODE_ENV === 'production' && request.headers.get('x-forwarded-proto') === 'http') {
+    const host = request.headers.get('host') || request.nextUrl.host;
+    return NextResponse.redirect(`https://${host}${request.nextUrl.pathname}${request.nextUrl.search}`, 301);
+  }
+
+  // Enforce server side auth: Redirect unauthenticated users to login
+  if (isProtected && !token) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // If accessing auth route while logged in, redirect to their dashboard
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    const role = userRole || 'student';
+    return NextResponse.redirect(new URL(`/${role}/dashboard`, request.url));
+  }
+
+  // Enforce strict role isolation based on the URL path
+  if (isProtected && token && userRole) {
+    if (pathname.startsWith('/student') && userRole !== 'student') {
+      return NextResponse.redirect(new URL(`/${userRole}/dashboard`, request.url));
+    }
+    if (pathname.startsWith('/faculty') && userRole !== 'faculty') {
+      return NextResponse.redirect(new URL(`/${userRole}/dashboard`, request.url));
+    }
+    if (pathname.startsWith('/hod') && userRole !== 'hod') {
+      return NextResponse.redirect(new URL(`/${userRole}/dashboard`, request.url));
+    }
+    if (pathname.startsWith('/admin') && userRole !== 'admin') {
+      return NextResponse.redirect(new URL(`/${userRole}/dashboard`, request.url));
+    }
   }
 
   return NextResponse.next();

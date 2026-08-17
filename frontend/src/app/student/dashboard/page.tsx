@@ -228,10 +228,10 @@ export default function StudentDashboard() {
           <div className="space-y-6">
             
             {/* AI ASSISTANT */}
-            <div className="card p-1 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-              <div className="bg-white dark:bg-gray-900 rounded-xl p-4 flex flex-col gap-4">
+            <div className="card p-1 rounded-2xl bg-orange-500">
+              <div className="bg-white dark:bg-zinc-950 rounded-xl p-4 flex flex-col gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
                     <Bot size={20} className="text-white" />
                   </div>
                   <div className="flex-1">

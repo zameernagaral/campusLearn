@@ -37,6 +37,11 @@ export const useAuthStore = create<AuthState>()(
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
 
+          // Store in cookies for Next.js middleware
+          // Note: added secure and samesite=strict
+          document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; samesite=strict; secure`;
+          document.cookie = `userRole=${user.role}; path=/; max-age=604800; samesite=strict; secure`;
+
           set({ user, accessToken, refreshToken, isAuthenticated: true, isLoading: false });
         } catch (error) {
           set({ isLoading: false });
@@ -47,6 +52,8 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        document.cookie = `accessToken=; path=/; max-age=0; samesite=strict; secure`;
+        document.cookie = `userRole=; path=/; max-age=0; samesite=strict; secure`;
         set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
       },
 
@@ -55,6 +62,7 @@ export const useAuthStore = create<AuthState>()(
       setTokens: (accessToken, refreshToken) => {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+        document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; samesite=strict; secure`;
         set({ accessToken, refreshToken });
       },
 
@@ -73,6 +81,8 @@ export const useAuthStore = create<AuthState>()(
           if (error.response?.status === 401 || error.response?.status === 403) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
+            document.cookie = `accessToken=; path=/; max-age=0; samesite=strict; secure`;
+            document.cookie = `userRole=; path=/; max-age=0; samesite=strict; secure`;
             set({ user: null, isAuthenticated: false, isLoading: false });
           } else {
             // If it's a network error or 500, keep the current state but stop loading

@@ -25,5 +25,16 @@ const authLimiter = rateLimit({
   },
 });
 
+// Extremely strict limiter for login endpoint to prevent brute force
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 min
+  max: 5, // 5 attempts per IP per 15 minutes
+  message: {
+    success: false,
+    message: 'Too many login attempts from this IP, please try again after 15 minutes.',
+  },
+});
+
 module.exports = rateLimiter;
 module.exports.authLimiter = authLimiter;
+module.exports.loginLimiter = loginLimiter;

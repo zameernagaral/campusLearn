@@ -16,6 +16,7 @@ import BackgroundPaths from '@/components/ui/background-paths';
 const schema = z.object({
   email: z.string().regex(/^\S+@\S+\.\S+$/, 'Invalid email'),
   password: z.string().min(1, 'Password is required'),
+  botCheck: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -30,6 +31,12 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: FormData) => {
+    // Bot Protection: Honeypot field
+    if (data.botCheck) {
+      toast.error('Automated bot behavior detected.');
+      return;
+    }
+
     try {
       await login(data.email, data.password);
       const { user } = useAuthStore.getState();
@@ -138,6 +145,18 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && <p className="text-red-500 text-xs mt-2 font-medium">{errors.password.message}</p>}
+            </div>
+
+            {/* Honeypot field for bot protection */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="bot-check">Do not fill this out if you are human</label>
+              <input
+                id="bot-check"
+                {...register('botCheck')}
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
             </div>
 
             <button
