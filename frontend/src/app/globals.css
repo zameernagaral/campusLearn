@@ -86,7 +86,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 15px;
   line-height: 1.6;
   transition: background 0.3s ease, color 0.3s ease;
@@ -147,7 +147,6 @@ a:hover {
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* ─── Gradient Utilities (Replaced with monochromatic) ────────────────────────── */
@@ -171,13 +170,11 @@ a:hover {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ─── Button Base ────────────────────────────────────────────────────────────── */
@@ -200,13 +197,11 @@ a:hover {
 .btn-primary {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
 }
 
 .btn-primary:hover {
   background: var(--primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
 }
 
 .btn-secondary {
@@ -367,12 +362,11 @@ a:hover {
   border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s;
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
 
 .stat-card::before {
@@ -463,4 +457,23 @@ tr:hover td {
   background: rgba(249, 115, 22, 0.2);
   color: var(--foreground);
 }
+}
+
+/* Global override to remove all tailwind drop shadows */
+[class*="shadow"] {
+  box-shadow: none !important;
+}
+
+/* Global override to remove liquid glass / backdrop-blur effects */
+[class*="backdrop-blur"],
+.glass,
+.glass-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Global override to remove colored left stripes */
+[class*="border-l-4"] {
+  border-left-width: 1px !important;
+  border-left-color: var(--border) !important;
 }

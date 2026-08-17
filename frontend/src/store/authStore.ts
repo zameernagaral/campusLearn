@@ -4,101 +4,101 @@ import type { User } from '@/types';
 import { authAPI } from '@/lib/api';
 
 interface AuthState {
-  user: User | null;
-  accessToken: string | null;
-  refreshToken: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
+ user: User | null;
+ accessToken: string | null;
+ refreshToken: string | null;
+ isAuthenticated: boolean;
+ isLoading: boolean;
 
-  // Actions
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  setUser: (user: User) => void;
-  setTokens: (accessToken: string, refreshToken: string) => void;
-  checkAuth: () => Promise<void>;
+ // Actions
+ login: (email: string, password: string) => Promise<void>;
+ logout: () => void;
+ setUser: (user: User) => void;
+ setTokens: (accessToken: string, refreshToken: string) => void;
+ checkAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
-  persist(
-    (set, get) => ({
-      user: null,
-      accessToken: null,
-      refreshToken: null,
-      isAuthenticated: false,
-      isLoading: true,
+ persist(
+ (set, get) => ({
+ user: null,
+ accessToken: null,
+ refreshToken: null,
+ isAuthenticated: false,
+ isLoading: true,
 
-      login: async (email, password) => {
-        set({ isLoading: true });
-        try {
-          const { data } = await authAPI.login(email, password);
-          const { user, accessToken, refreshToken } = data.data;
+ login: async (email, password) => {
+ set({ isLoading: true });
+ try {
+ const { data } = await authAPI.login(email, password);
+ const { user, accessToken, refreshToken } = data.data;
 
-          // Store tokens in localStorage
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
+ // Store tokens in localStorage
+ localStorage.setItem('accessToken', accessToken);
+ localStorage.setItem('refreshToken', refreshToken);
 
-          // Store in cookies for Next.js middleware
-          // Note: added secure and samesite=strict
-          document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; samesite=strict; secure`;
-          document.cookie = `userRole=${user.role}; path=/; max-age=604800; samesite=strict; secure`;
+ // Store in cookies for Next.js middleware
+ // Note: added secure and samesite=strict
+ document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; samesite=strict; secure`;
+ document.cookie = `userRole=${user.role}; path=/; max-age=604800; samesite=strict; secure`;
 
-          set({ user, accessToken, refreshToken, isAuthenticated: true, isLoading: false });
-        } catch (error) {
-          set({ isLoading: false });
-          throw error;
-        }
-      },
+ set({ user, accessToken, refreshToken, isAuthenticated: true, isLoading: false });
+ } catch (error) {
+ set({ isLoading: false });
+ throw error;
+ }
+ },
 
-      logout: () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        document.cookie = `accessToken=; path=/; max-age=0; samesite=strict; secure`;
-        document.cookie = `userRole=; path=/; max-age=0; samesite=strict; secure`;
-        set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
-      },
+ logout: () => {
+ localStorage.removeItem('accessToken');
+ localStorage.removeItem('refreshToken');
+ document.cookie = `accessToken=; path=/; max-age=0; samesite=strict; secure`;
+ document.cookie = `userRole=; path=/; max-age=0; samesite=strict; secure`;
+ set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+ },
 
-      setUser: (user) => set({ user }),
+ setUser: (user) => set({ user }),
 
-      setTokens: (accessToken, refreshToken) => {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; samesite=strict; secure`;
-        set({ accessToken, refreshToken });
-      },
+ setTokens: (accessToken, refreshToken) => {
+ localStorage.setItem('accessToken', accessToken);
+ localStorage.setItem('refreshToken', refreshToken);
+ document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; samesite=strict; secure`;
+ set({ accessToken, refreshToken });
+ },
 
-      checkAuth: async () => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-          set({ isAuthenticated: false, user: null, isLoading: false });
-          return;
-        }
-        try {
-          set({ isLoading: true });
-          const { data } = await authAPI.getMe();
-          set({ user: data.data, isAuthenticated: true, isLoading: false });
-        } catch (error: any) {
-          // Only log out if the token is explicitly invalid (401)
-          if (error.response?.status === 401 || error.response?.status === 403) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            document.cookie = `accessToken=; path=/; max-age=0; samesite=strict; secure`;
-            document.cookie = `userRole=; path=/; max-age=0; samesite=strict; secure`;
-            set({ user: null, isAuthenticated: false, isLoading: false });
-          } else {
-            // If it's a network error or 500, keep the current state but stop loading
-            set({ isLoading: false });
-          }
-        }
-      },
-    }),
-    {
-      name: 'campuslearn-auth',
-      partialize: (state) => ({
-        user: state.user,
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
-        isAuthenticated: state.isAuthenticated,
-      }),
-    }
-  )
+ checkAuth: async () => {
+ const token = localStorage.getItem('accessToken');
+ if (!token) {
+ set({ isAuthenticated: false, user: null, isLoading: false });
+ return;
+ }
+ try {
+ set({ isLoading: true });
+ const { data } = await authAPI.getMe();
+ set({ user: data.data, isAuthenticated: true, isLoading: false });
+ } catch (error: any) {
+ // Only log out if the token is explicitly invalid (401)
+ if (error.response?.status === 401 || error.response?.status === 403) {
+ localStorage.removeItem('accessToken');
+ localStorage.removeItem('refreshToken');
+ document.cookie = `accessToken=; path=/; max-age=0; samesite=strict; secure`;
+ document.cookie = `userRole=; path=/; max-age=0; samesite=strict; secure`;
+ set({ user: null, isAuthenticated: false, isLoading: false });
+ } else {
+ // If it's a network error or 500, keep the current state but stop loading
+ set({ isLoading: false });
+ }
+ }
+ },
+ }),
+ {
+ name: 'campuslearn-auth',
+ partialize: (state) => ({
+ user: state.user,
+ accessToken: state.accessToken,
+ refreshToken: state.refreshToken,
+ isAuthenticated: state.isAuthenticated,
+ }),
+ }
+ )
 );
