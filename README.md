@@ -136,3 +136,19 @@ campuslearn/
 ```
 
 ---
+
+## 👥 Team Members & Contributions
+
+This project was collaboratively developed by the following 5 members. Each member took ownership of core modules within the CampusLearn ecosystem to ensure a seamless, full-stack application.
+
+| Name | Primary Role | Key Features & Contributions |
+| :--- | :--- | :--- |
+| **[Member 1 Name]** | Frontend Lead & UI/UX | Designed the premium dark/light theme, built the Next.js frontend architecture, state management (Zustand), and responsive layouts. |
+| **[Member 2 Name]** | Backend & Database Lead | Developed the Express.js REST API, designed MongoDB schemas, configured Cloudinary media uploads, and implemented JWT authentication. |
+| **[Member 3 Name]** | Admin & Analytics Developer | Built the Admin Analytics Dashboard, Global Placement Overview, Exam Preparation tracking, and Bulk CSV User Onboarding logic. |
+| **[Member 4 Name]** | Faculty & Academic Developer | Implemented Course Management, Assignment creation/grading, automated Timetables, and Student Attendance tracking modules. |
+| **[Member 5 Name]** | Student Portal & AI Integration | Developed the Student Dashboard, Career Roadmap tracking, interactive Discussion forums, and AI-powered Resume Analysis/Quizzes. |
+
+> **Note:** Replace the `[Member X Name]` brackets above with the actual names of your team members before submitting to your professor!
+
+---
